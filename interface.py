@@ -1,6 +1,6 @@
 import pygame
 
-from pyngine.constants import Color, Font
+from constants import Color, Font
 
 class Interface(object):
 

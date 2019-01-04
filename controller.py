@@ -3,8 +3,8 @@ from collections import defaultdict
 
 from thread import Thread
 
-from pyngine.constants import Mouse
-from pyngine.panel import Panel
+from constants import Mouse
+from panel import Panel
 
 class Controller(object):
 

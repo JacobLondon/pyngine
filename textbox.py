@@ -1,10 +1,10 @@
 import pygame
 
-from pyngine.constants import Color, Font, Anchor
-from pyngine.component import Component
-from pyngine.panel import Panel
-from pyngine.label import Label
-from pyngine.layout import Relative
+from constants import Color, Font, Anchor
+from component import Component
+from panel import Panel
+from label import Label
+from layout import Relative
 
 class Textbox(Component):
 

@@ -1,6 +1,6 @@
 import pygame
 
-from pyngine.component import Component
+from component import Component
 
 class Panel(Component):
 
