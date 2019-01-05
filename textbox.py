@@ -1,10 +1,10 @@
 import pygame
 
-from constants import Color, Font, Anchor
-from component import Component
-from panel import Panel
-from label import Label
-from layout import Relative
+from .constants import Color, Font, Anchor
+from .component import Component
+from .panel import Panel
+from .label import Label
+from .layout import Relative
 
 class Textbox(Component):
 

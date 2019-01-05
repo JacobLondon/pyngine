@@ -1,6 +1,6 @@
 
-from constants import Anchor, Font, Color
-from layout import Grid
+from .constants import Anchor, Font, Color
+from .layout import Grid
 
 class Component(object):
 

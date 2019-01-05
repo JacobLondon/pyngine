@@ -1,6 +1,6 @@
 
-from constants import Color, Font, Anchor
-from component import Component
+from .constants import Color, Font, Anchor
+from .component import Component
 
 class Label(Component):
 

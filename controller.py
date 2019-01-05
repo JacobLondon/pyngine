@@ -1,10 +1,9 @@
 import pygame, time, threading
 from collections import defaultdict
 
-from thread import Thread
-
-from constants import Mouse
-from panel import Panel
+from .thread import Thread
+from .constants import Mouse
+from .panel import Panel
 
 class Controller(object):
 
