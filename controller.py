@@ -1,7 +1,7 @@
-import pygame, time, threading
+import pygame, time
+from threading import Thread, active_count as active_threads
 from collections import defaultdict
 
-from .thread import Thread
 from .constants import Mouse
 from .panel import Panel
 
@@ -24,7 +24,7 @@ class Controller(object):
         self.mouse_presses = defaultdict(lambda: False)
         self.mouse_x, self.mouse_y = pygame.mouse.get_pos()
 
-        self.tick_thread = Thread(target=self.tick, args=())
+        self.tick_thread = Thread(target=self.tick, args=(), daemon=True)
 
         # create an empty panel for components to be on
         self.background_panel = Panel(self.interface)
@@ -40,7 +40,7 @@ class Controller(object):
     # thread handling ticking
     def tick(self):
         while self.ticking:
-            print(threading.active_count())
+            print(active_threads())
             self.tick_actions()
             time.sleep(1 / self.tick_rate)
 
@@ -125,7 +125,7 @@ class Controller(object):
             self.key_actions()
             self.mouse_actions()
             self.component_actions()
-            Thread(target=self.update, args=()).start()
+            Thread(target=self.update, args=(), daemon=True).start()
 
         return self.close()
 
