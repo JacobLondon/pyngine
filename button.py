@@ -8,6 +8,7 @@ from .layout import Relative
 
 class Button(Component):
 
+
         def __init__(self, interface, text):
             Component.__init__(self, interface)
             self.text = text
