@@ -9,8 +9,8 @@ from .layout import Relative
 class Button(Component):
 
 
-        def __init__(self, interface, text):
-            Component.__init__(self, interface)
+        def __init__(self, controller, text):
+            Component.__init__(self, controller)
             self.text = text
             self.scale = 2
             self.background = Color.button
@@ -24,9 +24,9 @@ class Button(Component):
             self.height *= self.scale
 
             # button is made with a label on a panel
-            self.panel = Panel(interface)
+            self.panel = Panel(self.controller)
 
-            self.label = Label(interface, self.text)
+            self.label = Label(self.controller, self.text)
             self.label.anchor = Anchor.center
 
         def load(self):
@@ -51,22 +51,12 @@ class Button(Component):
             self.label.background = None
             self.label.load()
 
-        def refresh(self):
-
-            if not self.visible:
-                return
-
-            # change color based on mouse hovering
-            x, y = pygame.mouse.get_pos()
-            if self.in_component(x, y):
+        def refresh_actions(self):
+            if self.hovering:
                 self.panel.background = self.hover
-                self.focused = True
             else:
                 self.panel.background = self.background
-                self.focused = False
 
-            self.draw_component()
-
-        def draw_component(self):
+        def draw(self):
             self.panel.refresh()
             self.label.refresh()

@@ -18,16 +18,17 @@ class Controller(object):
 
         self.interface = interface
         if clear:
-            interface.clear()
+            self.interface.clear()
 
         self.key_presses = defaultdict(lambda: False)
         self.mouse_presses = defaultdict(lambda: False)
         self.mouse_x, self.mouse_y = pygame.mouse.get_pos()
+        self.clicked_x, self.clicked_y = 0, 0
 
-        self.tick_thread = Thread(target=self.tick, args=(), daemon=True)
+        self.tick_thread = Thread(target=self.tick, args=())
 
         # create an empty panel for components to be on
-        self.background_panel = Panel(self.interface)
+        self.background_panel = Panel(self)
         self.background_panel.width = interface.resolution[0]
         self.background_panel.height = interface.resolution[1]
 
@@ -125,7 +126,7 @@ class Controller(object):
             self.key_actions()
             self.mouse_actions()
             self.component_actions()
-            Thread(target=self.update, args=(), daemon=True).start()
+            Thread(target=self.update, args=()).start()
 
         return self.close()
 
@@ -171,6 +172,7 @@ class Controller(object):
 
     def mouse_actions(self):
         if self.mouse_presses[Mouse.l_click]:
+            self.clicked_x, self.clicked_y = pygame.mouse.get_pos()
             self.l_click_down()
         if self.mouse_presses[Mouse.m_click]:
             self.m_click_down()

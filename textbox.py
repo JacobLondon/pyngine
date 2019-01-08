@@ -1,4 +1,4 @@
-import pygame
+import pygame, copy
 
 from .constants import Color, Font, Anchor
 from .component import Component
@@ -8,22 +8,23 @@ from .layout import Relative
 
 class Textbox(Component):
 
-    def __init__(self, interface, num_chars=15):
-        Component.__init__(self, interface)
+    def __init__(self, controller, num_chars=15):
+        Component.__init__(self, controller)
         self.num_chars = num_chars
+        self.typing = False
 
         self.background = Color.white
         self.foreground = Color.black
         self.font = Font.large
 
         # textbox made with a label on a panel
-        self.panel = Panel(interface)
+        self.panel = Panel(self.controller)
 
-        self.label = Label(interface, self.text)
+        self.label = Label(self.controller, self.text)
 
     def load(self):
 
-        self.width, self.height = self.font.size(' ' * 3 * self.num_chars)
+        self.width, self.height = self.font.size('o' * self.num_chars)
         self.set_anchor()
 
         self.panel.anchor = self.anchor
@@ -43,19 +44,20 @@ class Textbox(Component):
         self.label.background = None
         self.label.load()
 
-    def refresh(self):
+    def refresh_actions(self):
+        if self.focused and not self.typing:
+            self.controller.typing = True
+            self.typing = True
+            self.controller.typed_text = copy.copy(self.text)
 
-        if not self.visible:
-            return
+        if self.focused and self.typing:
+            self.text = copy.copy(self.controller.typed_text)
+            self.controller.typed_text = self.controller.typed_text[:self.num_chars]
+            self.load()
 
-        x, y = pygame.mouse.get_pos()
-        if self.in_component(x, y):
-            self.focused = True
-        else:
-            self.focused = False
+        if not self.focused:
+            self.typing = False
 
-        self.draw_component()
-
-    def draw_component(self):
+    def draw(self):
         self.panel.refresh()
         self.label.refresh()

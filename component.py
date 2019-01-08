@@ -1,18 +1,20 @@
+import copy
 
 from .constants import Anchor, Font, Color
 from .layout import Grid
 
 class Component(object):
 
-    def __init__(self, interface):
+    def __init__(self, controller):
 
-        self.interface = interface
+        self.controller = controller
         self.loc = (0, 0)
         self.anchored_loc = (0, 0)
         self.width = 0
         self.height = 0
         self.visible = True
         self.focused = False
+        self.hovering = False
         self.container = []
 
         self.text = ''
@@ -39,13 +41,25 @@ class Component(object):
         pass
 
     def refresh(self):
+        if not self.visible:
+            return
+
+        x, y = copy.copy((self.controller.mouse_x, self.controller.mouse_y))
+        self.hovering = self.within(x, y)
+        x, y = copy.copy((self.controller.clicked_x, self.controller.clicked_y))
+        self.focused = self.within(x, y)
+
+        self.refresh_actions()
+        self.draw()
+
+    def refresh_actions(self):
         pass
 
-    def draw_component(self):
+    def draw(self):
         pass
 
-    # determine if the coordinates are inside of a given component
-    def in_component(self, x, y):
+    # determine if the coordinates are within itself
+    def within(self, x, y):
         left = self.anchored_loc[0]
         right = self.anchored_loc[0] + self.width
         top = self.anchored_loc[1]
