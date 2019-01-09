@@ -19,6 +19,7 @@ class Textbox(Component):
 
         # textbox made with a label on a panel
         self.panel = Panel(self.controller)
+
         self.label = Label(self.controller, self.text)
         self.label.anchor = Anchor.northwest
 
@@ -27,18 +28,16 @@ class Textbox(Component):
         self.width, self.height = self.font.size('o' * self.num_chars)
         self.set_anchor()
 
+        self.panel.anchor = self.anchor
         self.panel.loc = self.loc
+        self.panel.background = self.background
         self.panel.width = self.width
         self.panel.height = self.height
-        self.panel.visible = self.visible
-        self.panel.anchor = self.anchor
-        self.panel.background = self.background
         self.panel.load()
 
         # update the label with button's members
         self.center_layout = Relative(self.panel)
         self.label.loc = self.center_layout.northwest
-        self.label.visible = self.visible
         self.label.text = self.text
         self.label.font = self.font
         self.label.foreground = self.foreground
@@ -51,7 +50,6 @@ class Textbox(Component):
             self.controller.typing = True
             self.typing = True
             self.controller.typed_text = copy.copy(self.text)
-
         # when the user is typing
         if self.focused and self.typing:
             self.text = copy.copy(self.controller.typed_text)

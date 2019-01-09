@@ -38,6 +38,7 @@ class Button(Component):
             self.panel.height = self.height
             self.panel.background = self.background
             self.panel.anchor = self.anchor
+            self.panel.visible = self.visible
             self.panel.load()
 
             # update the label with button's members
@@ -47,6 +48,7 @@ class Button(Component):
             self.label.font = self.font
             self.label.foreground = self.foreground
             self.label.background = None
+            self.label.visible = self.visible
             self.label.load()
 
         def refresh_actions(self):

@@ -1,4 +1,4 @@
-import pygame, time
+import pygame, time, copy
 from threading import Thread, active_count as active_threads
 from collections import defaultdict
 
@@ -41,7 +41,7 @@ class Controller(object):
     # thread handling ticking
     def tick(self):
         while self.ticking:
-            #print(active_threads())
+            print(active_threads())
             self.tick_actions()
             time.sleep(1 / self.tick_rate)
 
@@ -173,6 +173,7 @@ class Controller(object):
     def mouse_actions(self):
         if self.mouse_presses[Mouse.l_click]:
             self.clicked_x, self.clicked_y = pygame.mouse.get_pos()
+            self.typing = copy.copy(self.background_panel.focused)
             self.l_click_down()
         if self.mouse_presses[Mouse.m_click]:
             self.m_click_down()
@@ -221,6 +222,3 @@ class Controller(object):
         pass
     def down_keydown(self):
         pass
-
-    def background_panel_clicked(self):
-        self.typing = False
