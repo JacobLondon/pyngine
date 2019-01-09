@@ -1,4 +1,4 @@
-import copy
+import pygame, copy
 
 from .constants import Anchor, Font, Color
 from .layout import Grid
@@ -7,6 +7,7 @@ class Component(object):
 
     def __init__(self, controller):
 
+        pygame.font.init()
         self.controller = controller
         self.loc = (0, 0)
         self.anchored_loc = (0, 0)

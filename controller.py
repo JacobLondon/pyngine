@@ -25,7 +25,7 @@ class Controller(object):
         self.mouse_x, self.mouse_y = pygame.mouse.get_pos()
         self.clicked_x, self.clicked_y = 0, 0
 
-        self.tick_thread = Thread(target=self.tick, args=())
+        self.tick_thread = Thread(target=self.tick)
 
         # create an empty panel for components to be on
         self.background_panel = Panel(self)
@@ -41,7 +41,7 @@ class Controller(object):
     # thread handling ticking
     def tick(self):
         while self.ticking:
-            print(active_threads())
+            #print(active_threads())
             self.tick_actions()
             time.sleep(1 / self.tick_rate)
 

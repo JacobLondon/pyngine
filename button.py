@@ -8,7 +8,6 @@ from .layout import Relative
 
 class Button(Component):
 
-
         def __init__(self, controller, text):
             Component.__init__(self, controller)
             self.text = text
@@ -34,19 +33,18 @@ class Button(Component):
             self.set_anchor()
 
             # update the panel with button's members
-            self.panel.anchor = self.anchor
             self.panel.loc = self.loc
-            self.panel.background = self.background
             self.panel.width = self.width
             self.panel.height = self.height
+            self.panel.background = self.background
+            self.panel.anchor = self.anchor
             self.panel.load()
 
             # update the label with button's members
             self.center_layout = Relative(self.panel)
+            self.label.loc = self.center_layout.center
             self.label.text = self.text
             self.label.font = self.font
-            self.label.loc = self.center_layout.center
-            self.label.anchor = Anchor.center
             self.label.foreground = self.foreground
             self.label.background = None
             self.label.load()
