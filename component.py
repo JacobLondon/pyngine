@@ -47,7 +47,7 @@ class Component(object):
 
         x, y = copy.copy((self.controller.mouse_x, self.controller.mouse_y))
         self.hovering = self.within(x, y)
-        x, y = copy.copy((self.controller.clicked_x, self.controller.clicked_y))
+        x, y = copy.copy((self.controller.l_clicked_x, self.controller.l_clicked_y))
         self.focused = self.within(x, y)
 
         self.refresh_actions()

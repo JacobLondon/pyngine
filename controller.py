@@ -1,4 +1,4 @@
-import pygame, time, copy
+import pygame, time, copy, re
 from threading import Thread, active_count as active_threads
 from collections import defaultdict
 
@@ -13,8 +13,19 @@ class Controller(object):
         self.ticking = True     # ticking separate from framerate
         self.done = False       # controller looping
         self.quit = False       # close and return controller
+
         self.typing = False     # user is typing text
+        self.shift = False      # shift is being held while typing
         self.typed_text = ''    # the text the user is typing
+        self.ignored_keys = [
+            pygame.K_CAPSLOCK, pygame.K_LSHIFT, pygame.K_RSHIFT,
+            pygame.K_LCTRL, pygame.K_RCTRL, pygame.K_LALT, pygame.K_RALT,
+            pygame.K_LSUPER, pygame.K_RSUPER, pygame.K_NUMLOCK, pygame.K_PRINT,
+            pygame.K_SCROLLOCK, pygame.K_PAUSE, pygame.K_INSERT, pygame.K_HOME,
+            pygame.K_PAGEUP, pygame.K_PAGEDOWN, pygame.K_DELETE, pygame.K_END,
+            pygame.K_UP, pygame.K_DOWN, pygame.K_LEFT, pygame.K_RIGHT,
+            pygame.K_F1, pygame.K_F2, pygame.K_F3, pygame.K_F4, pygame.K_F5, pygame.K_F6,
+            pygame.K_F7, pygame.K_F8, pygame.K_F9, pygame.K_F10, pygame.K_F11, pygame.K_F12]
 
         self.interface = interface
         if clear:
@@ -23,7 +34,9 @@ class Controller(object):
         self.key_presses = defaultdict(lambda: False)
         self.mouse_presses = defaultdict(lambda: False)
         self.mouse_x, self.mouse_y = pygame.mouse.get_pos()
-        self.clicked_x, self.clicked_y = 0, 0
+        self.l_clicked_x, self.l_clicked_y = -1, -1
+        self.m_clicked_x, self.m_clicked_y = -1, -1
+        self.r_clicked_x, self.r_clicked_y = -1, -1
 
         self.tick_thread = Thread(target=self.tick)
 
@@ -126,7 +139,7 @@ class Controller(object):
             self.key_actions()
             self.mouse_actions()
             self.component_actions()
-            Thread(target=self.update, args=()).start()
+            Thread(target=self.update).start()
 
         return self.close()
 
@@ -147,12 +160,7 @@ class Controller(object):
 
         # control user text input
         if self.typing and event.type == pygame.KEYDOWN:
-            if self.key_presses[pygame.K_BACKSPACE]:
-                self.typed_text = self.typed_text[:-1]
-            elif self.key_presses[pygame.K_SPACE]:
-                self.typed_text += ' '
-            else:
-                self.typed_text += pygame.key.name(event.key)
+            self.typing_actions(event)
 
         # mouse starts clicking/scrolling
         if event.type == pygame.MOUSEBUTTONDOWN:
@@ -170,14 +178,123 @@ class Controller(object):
     def component_actions(self):
         pass
 
+    def typing_actions(self, event):
+
+        self.shift = self.key_presses[pygame.K_RSHIFT] or \
+            self.key_presses[pygame.K_LSHIFT]
+
+        # special keys
+        if self.key_presses[pygame.K_BACKSPACE]:
+            self.typed_text = self.typed_text[:-1]
+        elif self.key_presses[pygame.K_TAB]:
+            self.typed_text += ' ' * 4
+        elif self.key_presses[pygame.K_RETURN]:
+            self.typing = False
+        elif self.key_presses[pygame.K_ESCAPE]:
+            self.typing = False
+        elif self.key_presses[pygame.K_SPACE]:
+            self.typed_text += ' '
+
+        elif self.shift:
+            # shifted number keys
+            if self.key_presses[pygame.K_1]:
+                self.typed_text += '!'
+            elif self.key_presses[pygame.K_2]:
+                self.typed_text += '@'
+            elif self.key_presses[pygame.K_3]:
+                self.typed_text += '#'
+            elif self.key_presses[pygame.K_4]:
+                self.typed_text += '$'
+            elif self.key_presses[pygame.K_5]:
+                self.typed_text += '%'
+            elif self.key_presses[pygame.K_6]:
+                self.typed_text += '^'
+            elif self.key_presses[pygame.K_7]:
+                self.typed_text += '&'
+            elif self.key_presses[pygame.K_8]:
+                self.typed_text += '*'
+            elif self.key_presses[pygame.K_9]:
+                self.typed_text += '('
+            elif self.key_presses[pygame.K_0]:
+                self.typed_text += ')'
+
+            # shifted letter keys
+            elif pygame.key.name(event.key).isalpha():
+                self.typed_text += pygame.key.name(event.key).upper()
+
+            # misc shifted keys
+            elif self.key_presses[pygame.K_BACKQUOTE]:
+                self.typed_text += '~'
+            elif self.key_presses[pygame.K_MINUS]:
+                self.typed_text += '_'
+            elif self.key_presses[pygame.K_EQUALS]:
+                self.typed_text += '+'
+            elif self.key_presses[pygame.K_LEFTBRACKET]:
+                self.typed_text += '{'
+            elif self.key_presses[pygame.K_RIGHTBRACKET]:
+                self.typed_text += '}'
+            elif self.key_presses[pygame.K_BACKSLASH]:
+                self.typed_text += '|'
+            elif self.key_presses[pygame.K_SEMICOLON]:
+                self.typed_text += ':'
+            elif self.key_presses[pygame.K_QUOTE]:
+                self.typed_text += '"'
+            elif self.key_presses[pygame.K_PERIOD]:
+                self.typed_text += '<'
+            elif self.key_presses[pygame.K_COMMA]:
+                self.typed_text += '>'
+            elif self.key_presses[pygame.K_SLASH]:
+                self.typed_text += '?'
+
+        # keypad keys
+        elif self.key_presses[pygame.K_KP0]:
+            self.typed_text += '0'
+        elif self.key_presses[pygame.K_KP1]:
+            self.typed_text += '1'
+        elif self.key_presses[pygame.K_KP2]:
+            self.typed_text += '2'
+        elif self.key_presses[pygame.K_KP3]:
+            self.typed_text += '3'
+        elif self.key_presses[pygame.K_KP4]:
+            self.typed_text += '4'
+        elif self.key_presses[pygame.K_KP5]:
+            self.typed_text += '5'
+        elif self.key_presses[pygame.K_KP6]:
+            self.typed_text += '6'
+        elif self.key_presses[pygame.K_KP7]:
+            self.typed_text += '7'
+        elif self.key_presses[pygame.K_KP8]:
+            self.typed_text += '8'
+        elif self.key_presses[pygame.K_KP9]:
+            self.typed_text += '9'
+        elif self.key_presses[pygame.K_KP_PERIOD]:
+            self.typed_text += '.'
+        elif self.key_presses[pygame.K_KP_DIVIDE]:
+            self.typed_text += '/'
+        elif self.key_presses[pygame.K_KP_MULTIPLY]:
+            self.typed_text += '*'
+        elif self.key_presses[pygame.K_KP_MINUS]:
+            self.typed_text += '-'
+        elif self.key_presses[pygame.K_KP_PLUS]:
+            self.typed_text += '+'
+        elif self.key_presses[pygame.K_KP_ENTER]:
+            self.typing = False
+        elif self.key_presses[pygame.K_KP_EQUALS]:
+            self.typed_text += '='
+
+        elif event.key not in self.ignored_keys:
+            self.typed_text += pygame.key.name(event.key)
+
     def mouse_actions(self):
         if self.mouse_presses[Mouse.l_click]:
-            self.clicked_x, self.clicked_y = pygame.mouse.get_pos()
+            self.l_clicked_x, self.l_clicked_y = pygame.mouse.get_pos()
             self.typing = copy.copy(self.background_panel.focused)
             self.l_click_down()
         if self.mouse_presses[Mouse.m_click]:
+            self.m_clicked_x, self.m_clicked_y = pygame.mouse.get_pos()
             self.m_click_down()
         if self.mouse_presses[Mouse.r_click]:
+            self.r_clicked_x, self.r_clicked_y = pygame.mouse.get_pos()
             self.r_click_down()
         if self.mouse_presses[Mouse.scroll_up]:
             self.scroll_up()
