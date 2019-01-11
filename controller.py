@@ -54,7 +54,7 @@ class Controller(object):
     # thread handling ticking
     def tick(self):
         while self.ticking:
-            #print(active_threads())
+            print(active_threads())
             self.tick_actions()
             time.sleep(1 / self.tick_rate)
 
@@ -334,6 +334,12 @@ class Controller(object):
             self.s_keydown()
         if self.key_presses[pygame.K_d]:
             self.d_keydown()
+
+        self.custom_key_actions()
+
+    # let the user define custom key checks
+    def custom_key_actions(self):
+        pass
 
     def return_keydown(self):
         pass

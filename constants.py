@@ -20,10 +20,15 @@ class Color(object):
 
 class Dir(object):
 
-    right = 2
-    left = 3
-    down = 1
-    up = -1
+    right = 1
+    left = 2
+    down = 3
+    up = 4
+    up_right = 5
+    down_right = 6
+    down_left = 7
+    up_left = 8
+
 
 class Font(object):
     pygame.font.init()
