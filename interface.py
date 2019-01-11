@@ -28,8 +28,7 @@ class Interface(object):
 
     # draw a tile defined in config
     def draw_tile(self, x, y, color):
-        area = [self.tile_width * x, self.tile_height * y,
-                self.tile_width, self.tile_height]
+        area = [x, y, self.tile_width, self.tile_height]
         pygame.draw.rect(self.display, color, area)
 
     # draw a sprite on a tile

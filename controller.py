@@ -54,7 +54,7 @@ class Controller(object):
     # thread handling ticking
     def tick(self):
         while self.ticking:
-            print(active_threads())
+            #print(active_threads())
             self.tick_actions()
             time.sleep(1 / self.tick_rate)
 
@@ -126,7 +126,6 @@ class Controller(object):
             self.open_on_close()
 
         self.initialize_components()
-        self.load_components()
         self.load_components()
         self.setup()
         self.tick_thread.start()
@@ -327,6 +326,15 @@ class Controller(object):
         if self.key_presses[pygame.K_DOWN]:
             self.down_keydown()
 
+        if self.key_presses[pygame.K_w]:
+            self.w_keydown()
+        if self.key_presses[pygame.K_a]:
+            self.a_keydown()
+        if self.key_presses[pygame.K_s]:
+            self.s_keydown()
+        if self.key_presses[pygame.K_d]:
+            self.d_keydown()
+
     def return_keydown(self):
         pass
     def escape_keydown(self):
@@ -338,4 +346,13 @@ class Controller(object):
     def up_keydown(self):
         pass
     def down_keydown(self):
+        pass
+
+    def w_keydown(self):
+        pass
+    def a_keydown(self):
+        pass
+    def s_keydown(self):
+        pass
+    def d_keydown(self):
         pass
