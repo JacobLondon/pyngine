@@ -40,6 +40,8 @@ class Controller(object):
 
         self.tick_thread = Thread(target=self.tick)
 
+        self.components = []
+
         # create an empty panel for components to be on
         self.background_panel = Panel(self)
         self.background_panel.width = interface.resolution[0]
@@ -49,7 +51,13 @@ class Controller(object):
         pass
 
     def load_components(self):
-        pass
+        for component in self.components:
+            component.load()
+
+    # refresh/update components
+    def update_components(self):
+        for component in self.components:
+            component.refresh()
 
     # thread handling ticking
     def tick(self):
@@ -83,10 +91,6 @@ class Controller(object):
 
     # draw things behind all items
     def draw_background(self):
-        pass
-
-    # refresh/update components
-    def update_components(self):
         pass
 
     # custom actions during update
@@ -313,6 +317,9 @@ class Controller(object):
 
     # do actions based on what was pressed
     def key_actions(self):
+
+        self.custom_key_actions()
+
         if self.key_presses[pygame.K_RETURN]:
             self.return_keydown()
         if self.key_presses[pygame.K_ESCAPE]:
@@ -334,8 +341,6 @@ class Controller(object):
             self.s_keydown()
         if self.key_presses[pygame.K_d]:
             self.d_keydown()
-
-        self.custom_key_actions()
 
     # let the user define custom key checks
     def custom_key_actions(self):

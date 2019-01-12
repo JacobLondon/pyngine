@@ -9,6 +9,8 @@ class Component(object):
 
         pygame.font.init()
         self.controller = controller
+        self.controller.components.append(self)
+        
         self.loc = (0, 0)
         self.anchored_loc = (0, 0)
         self.width = 0

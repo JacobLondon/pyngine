@@ -58,5 +58,4 @@ class Button(Component):
                 self.panel.background = self.background
 
         def draw(self):
-            self.panel.refresh()
-            self.label.refresh()
+            pass
