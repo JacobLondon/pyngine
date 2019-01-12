@@ -97,7 +97,7 @@ class Controller(object):
     def update_actions(self):
         pass
 
-    # do before the game loop
+    # do before the game loop, after component loading
     def setup(self):
         pass
 
@@ -123,6 +123,7 @@ class Controller(object):
         # by default, close the program
         self.interface.close()
 
+    # the program loop
     def run(self):
 
         # the connection failed before running
@@ -134,7 +135,7 @@ class Controller(object):
         self.setup()
         self.tick_thread.start()
 
-        # game loop for controller
+        # loop over every frame
         while not self.done:
             for event in pygame.event.get():
                 self.handle_event(event)
