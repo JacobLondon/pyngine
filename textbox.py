@@ -23,9 +23,10 @@ class Textbox(Component):
         self.label = Label(self.controller, self.text)
         self.label.anchor = Anchor.northwest
 
+        self.width, self.height = self.font.size('o' * self.num_chars)
+
     def load(self):
 
-        self.width, self.height = self.font.size('o' * self.num_chars)
         self.set_anchor()
 
         self.panel.anchor = self.anchor
