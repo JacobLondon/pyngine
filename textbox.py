@@ -1,4 +1,5 @@
-import pygame, copy
+import pygame, copy, time
+from threading import Thread
 
 from .constants import Color, Font, Anchor
 from .component import Component
@@ -12,6 +13,8 @@ class Textbox(Component):
         Component.__init__(self, controller)
         self.num_chars = num_chars
         self.typing = False
+        self.cursor_active = False
+        self.cursor_rate = 0.5
 
         self.background = Color.white
         self.foreground = Color.black
@@ -21,9 +24,11 @@ class Textbox(Component):
         self.panel = Panel(self.controller)
 
         self.label = Label(self.controller, self.text)
-        self.label.anchor = Anchor.northwest
 
         self.width, self.height = self.font.size('o' * self.num_chars)
+
+        self.cursor_label = Label(self.controller, '|')
+        self.cursor_label.visible = False
 
     def load(self):
 
@@ -45,24 +50,46 @@ class Textbox(Component):
         self.label.background = None
         self.label.load()
 
+        # keep the cursor on the far right of the text
+        w = self.label.font.size(self.label.text)[0]
+        self.cursor_label.loc = self.center_layout.northwest
+        self.cursor_label.loc = (self.cursor_label.loc[0] + w, self.cursor_label.loc[1])
+        self.cursor_label.font = self.font
+        self.cursor_label.foreground = self.foreground
+        self.cursor_label.background = None
+        self.cursor_label.load()
+
     def refresh_actions(self):
         # typing setup
         if self.focused and not self.typing:
             self.controller.typing = True
             self.typing = True
             self.controller.typed_text = copy.copy(self.text)
+
         # when the user is typing
         if self.focused and self.typing:
             self.text = copy.copy(self.controller.typed_text)
             self.controller.typed_text = self.controller.typed_text[:self.num_chars]
             self.load()
 
-        # stop and start typing
-        if not self.focused:
-            self.typing = False
-        if self.focused:
-            self.typing = True
+        # start/stop typing
+        self.typing = self.focused
+
+        # setup cursor flashing
+        if self.typing and not self.cursor_active:
+            self.cursor_active = True
+            Thread(target=self.flash_cursor, daemon=True).start()
 
     def draw(self):
         self.panel.refresh()
         self.label.refresh()
+        self.cursor_label.refresh()
+
+    # running and close down of cursor flashing
+    def flash_cursor(self):
+        while self.typing:
+            self.cursor_label.visible = not self.cursor_label.visible
+            time.sleep(self.cursor_rate)
+
+        self.cursor_active = False
+        self.cursor_label.visible = False

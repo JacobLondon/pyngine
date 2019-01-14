@@ -62,7 +62,7 @@ class Controller(object):
     # thread handling ticking
     def tick(self):
         while self.ticking:
-            #print(active_threads())
+            print(active_threads())
             self.tick_actions()
             time.sleep(1 / self.tick_rate)
 

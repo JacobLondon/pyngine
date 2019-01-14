@@ -1,3 +1,4 @@
+import pygame
 
 from .constants import Color, Font, Anchor
 from .component import Component
@@ -9,6 +10,7 @@ class Label(Component):
         self.text = text
 
     def load(self):
+        pygame.font.init()
         self.width, self.height = self.font.size(self.text)
         self.set_anchor()
 
