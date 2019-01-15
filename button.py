@@ -8,10 +8,13 @@ from .layout import Relative
 
 class Button(Component):
 
-        def __init__(self, controller, text):
-            Component.__init__(self, controller)
+        def __init__(self, controller, text, parent=None):
+            Component.__init__(self, controller, parent)
             self.text = text
+            self.action = None
             self.scale = 2
+            self.pressed = False
+
             self.background = Color.button
             self.foreground = Color.black
             self.hover = Color.hover
@@ -23,9 +26,9 @@ class Button(Component):
             self.height *= self.scale
 
             # button is made with a label on a panel
-            self.panel = Panel(self.controller)
+            self.panel = Panel(self.controller, parent=self)
 
-            self.label = Label(self.controller, self.text)
+            self.label = Label(self.controller, self.text, parent=self)
             self.label.anchor = Anchor.center
 
         def load(self):
@@ -57,5 +60,7 @@ class Button(Component):
             else:
                 self.panel.background = self.background
 
-        def draw(self):
-            pass
+            # do action on focus
+            if self.focused and self.action is not None:
+                self.focused = False
+                self.action()

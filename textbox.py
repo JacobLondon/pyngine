@@ -9,8 +9,8 @@ from .layout import Relative
 
 class Textbox(Component):
 
-    def __init__(self, controller, num_chars=15):
-        Component.__init__(self, controller)
+    def __init__(self, controller, num_chars=15, parent=None):
+        Component.__init__(self, controller, parent)
         self.num_chars = num_chars
         self.typing = False
         self.cursor_active = False
@@ -21,9 +21,9 @@ class Textbox(Component):
         self.font = Font.large
 
         # textbox made with a label on a panel
-        self.panel = Panel(self.controller)
+        self.panel = Panel(self.controller, parent=self)
 
-        self.label = Label(self.controller, self.text)
+        self.label = Label(self.controller, self.text, parent=self)
 
         self.width, self.height = self.font.size('o' * self.num_chars)
 

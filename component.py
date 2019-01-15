@@ -1,15 +1,21 @@
 import pygame, copy
 
-from .constants import Anchor, Font, Color
+from .constants import Anchor, Font, Color, Mouse
 from .layout import Grid
 
 class Component(object):
 
-    def __init__(self, controller):
+    def __init__(self, controller, parent=None):
 
         pygame.font.init()
+
+        # the controller the component belongs to can be auto refreshed
         self.controller = controller
         self.controller.components.append(self)
+
+        # parent component's list of subcomponents
+        if parent is not None:
+            parent.subcomponents.append(self)
         
         self.loc = (0, 0)
         self.anchored_loc = (0, 0)
@@ -17,8 +23,10 @@ class Component(object):
         self.height = 0
         self.visible = True
         self.focused = False
+        self.pressing = False   # true when mouse down on component
+        self.pressed = False    # true when pressing first becomes true
         self.hovering = False
-        self.container = []
+        self.subcomponents = []
 
         self.text = ''
         self.font = Font.standard
@@ -43,17 +51,49 @@ class Component(object):
     def load(self):
         pass
 
+    # always do before a refresh
+    def prerefresh_actions(self):
+        pass
+
     def refresh(self):
+        self.prerefresh_actions()  
+
+        # ensure visibility is the same to children components
+        for sub in self.subcomponents:
+            sub.visible = self.visible
+
+        # children, like parent can lose visibility
         if not self.visible:
+            self.focused = False
+            for sub in self.subcomponents:
+                sub.focused = False
             return
 
+        # mouse within bounds of component
         x, y = copy.copy((self.controller.mouse_x, self.controller.mouse_y))
         self.hovering = self.within(x, y)
-        x, y = copy.copy((self.controller.l_clicked_x, self.controller.l_clicked_y))
-        self.focused = self.within(x, y)
 
+        # holding left click in the component
+        x, y = copy.copy((self.controller.l_clicked_x, self.controller.l_clicked_y))
+        self.pressing = self.within(x, y) and self.controller.mouse_presses[Mouse.l_click]
+
+        self.determine_focus()
         self.refresh_actions()
         self.draw()
+
+    def determine_focus(self):
+        # component started being pressed on / positive edge of click
+        if self.pressing and not self.pressed:
+            self.pressed = True
+
+        # the mouse leaves the bounds
+        if not self.hovering:
+            self.pressed = False
+
+        # negative edge of click
+        if self.pressed and not self.controller.mouse_presses[Mouse.l_click] and self.hovering:
+            self.pressed = False
+            self.focused = True
 
     def refresh_actions(self):
         pass

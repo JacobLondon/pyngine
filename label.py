@@ -5,8 +5,8 @@ from .component import Component
 
 class Label(Component):
 
-    def __init__(self, controller, text):
-        Component.__init__(self, controller)
+    def __init__(self, controller, text, parent=None):
+        Component.__init__(self, controller, parent)
         self.text = text
 
     def load(self):

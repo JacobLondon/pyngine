@@ -9,8 +9,8 @@ from .layout import Relative
 
 class Bar(Component):
     
-    def __init__(self, controller):
-        Component.__init__(self, controller)
+    def __init__(self, controller, parent=None):
+        Component.__init__(self, controller, parent)
         self.percentage = 0
         self.text = '0 %'
 
@@ -20,9 +20,9 @@ class Bar(Component):
         self.width, self.height = self.font.size(self.text)
 
         # panels for front/back, label for percentage text
-        self.back_panel = Panel(self.controller)
-        self.front_panel = Panel(self.controller)
-        self.label = Label(self.controller, self.text)
+        self.back_panel = Panel(self.controller, parent=self)
+        self.front_panel = Panel(self.controller, parent=self)
+        self.label = Label(self.controller, self.text, parent=self)
         self.label.anchor = Anchor.center
 
     def load(self):
