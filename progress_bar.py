@@ -9,8 +9,8 @@ from .layout import Relative
 
 class Bar(Component):
     
-    def __init__(self, controller, parent=None):
-        Component.__init__(self, controller, parent)
+    def __init__(self, controller, parent=None, in_foreground=True):
+        Component.__init__(self, controller, parent, in_foreground)
         self.percentage = 0
         self.text = '0 %'
 

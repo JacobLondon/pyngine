@@ -4,8 +4,8 @@ from .component import Component
 
 class Panel(Component):
 
-    def __init__(self, controller, parent=None):
-        Component.__init__(self, controller, parent)
+    def __init__(self, controller, parent=None, in_foreground=True):
+        Component.__init__(self, controller, parent, in_foreground)
 
     def load(self):
         self.set_anchor()

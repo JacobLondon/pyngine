@@ -23,6 +23,8 @@ class Interface(object):
 
     # call to update the screen
     def update(self):
+        # update loaded images
+        #pygame.display.flip()
         pygame.display.update()
         self.clock.tick(self.refresh_rate)
 

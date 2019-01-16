@@ -1,27 +1,25 @@
 import pygame, copy
 
+from .screen_object import Screen_Object
 from .constants import Anchor, Font, Color, Mouse
-from .layout import Grid
 
-class Component(object):
+class Component(Screen_Object):
 
-    def __init__(self, controller, parent=None):
-
+    def __init__(self, controller, parent=None, in_foreground=True):
+        Screen_Object.__init__(self)
         pygame.font.init()
 
         # the controller the component belongs to can be auto refreshed
         self.controller = controller
-        self.controller.components.append(self)
+        if in_foreground:
+            self.controller.foreground_components.append(self)
+        else:
+            self.controller.background_components.append(self)
 
         # parent component's list of subcomponents
         if parent is not None:
             parent.subcomponents.append(self)
-        
-        self.loc = (0, 0)
-        self.anchored_loc = (0, 0)
-        self.width = 0
-        self.height = 0
-        self.visible = True
+
         self.focused = False
         self.pressing = False   # true when mouse down on component
         self.pressed = False    # true when pressing first becomes true
@@ -32,21 +30,6 @@ class Component(object):
         self.font = Font.standard
         self.foreground = Color.foreground
         self.background = Color.background
-        self.anchor = Anchor.northwest
-
-    # set the relative location determined by the anchor used
-    def set_anchor(self):
-
-        if self.anchor == Anchor.northwest:
-            self.anchored_loc = self.loc
-        elif self.anchor == Anchor.northeast:
-            self.anchored_loc = (self.loc[0] - self.width, self.loc[1])
-        elif self.anchor == Anchor.southwest:
-            self.anchored_loc = (self.loc[0], self.loc[1] - self.height)
-        elif self.anchor == Anchor.southeast:
-            self.anchored_loc = (self.loc[0] - self.width, self.loc[1] - self.height)
-        elif self.anchor == Anchor.center:
-            self.anchored_loc = (self.loc[0] - self.width / 2, self.loc[1] - self.height / 2)
 
     def load(self):
         pass

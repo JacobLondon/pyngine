@@ -40,23 +40,30 @@ class Controller(object):
 
         self.tick_thread = Thread(target=self.tick)
 
-        self.components = []
+        self.foreground_components = []
+        self.background_components = []
 
         # create an empty panel for components to be on
         self.background_panel = Panel(self)
         self.background_panel.width = interface.resolution[0]
         self.background_panel.height = interface.resolution[1]
+        self.background_panel.visible = False
+
+    def initialize_surfaces(self):
+        pass
 
     def initialize_components(self):
         pass
 
     def load_components(self):
-        for component in self.components:
+        for component in self.background_components:
+            component.load()
+        for component in self.foreground_components:
             component.load()
 
     # refresh/update components
-    def update_components(self):
-        for component in self.components:
+    def update_components(self, components):
+        for component in components:
             component.refresh()
 
     # thread handling ticking
@@ -78,19 +85,35 @@ class Controller(object):
 
         # clear screen before drawing
         self.clear()
+        
+        # draw behind custom actions
         self.draw_background()
 
-        # custom component updates
-        self.update_components()
+        self.update_components(self.background_components)
 
         # draw and update controller items
         self.update_actions()
+
+        # draw above custom actions and below components
+        self.draw_midground()
+
+        # custom component updates
+        self.update_components(self.foreground_components)
+        
+        # draw above all
+        self.draw_foreground()
 
         # pygame update
         self.interface.update()
 
     # draw things behind all items
     def draw_background(self):
+        pass
+
+    def draw_midground(self):
+        pass
+
+    def draw_foreground(self):
         pass
 
     # custom actions during update
@@ -130,6 +153,7 @@ class Controller(object):
         if self.done:
             self.open_on_close()
 
+        self.initialize_surfaces()
         self.initialize_components()
         self.load_components()
         self.setup()
