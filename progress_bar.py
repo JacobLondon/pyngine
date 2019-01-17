@@ -1,5 +1,4 @@
 import pygame
-from decimal import *
 
 from .constants import Color, Font, Anchor
 from .component import Component

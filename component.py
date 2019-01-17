@@ -1,12 +1,12 @@
 import pygame, copy
 
-from .screen_object import Screen_Object
+from .screen_object import ScreenObject
 from .constants import Anchor, Font, Color, Mouse
 
-class Component(Screen_Object):
+class Component(ScreenObject):
 
     def __init__(self, controller, parent=None, in_foreground=True):
-        Screen_Object.__init__(self)
+        ScreenObject.__init__(self)
         pygame.font.init()
 
         # the controller the component belongs to can be auto refreshed
@@ -30,6 +30,8 @@ class Component(Screen_Object):
         self.font = Font.standard
         self.foreground = Color.foreground
         self.background = Color.background
+        self.anchor = Anchor.northwest
+        self.anchored_loc = (0, 0)
 
     def load(self):
         pass
@@ -63,6 +65,20 @@ class Component(Screen_Object):
         self.determine_focus()
         self.refresh_actions()
         self.draw()
+
+     # set the relative location determined by the anchor used
+    def set_anchor(self):
+
+        if self.anchor == Anchor.northwest:
+            self.anchored_loc = self.loc
+        elif self.anchor == Anchor.northeast:
+            self.anchored_loc = (self.loc[0] - self.width, self.loc[1])
+        elif self.anchor == Anchor.southwest:
+            self.anchored_loc = (self.loc[0], self.loc[1] - self.height)
+        elif self.anchor == Anchor.southeast:
+            self.anchored_loc = (self.loc[0] - self.width, self.loc[1] - self.height)
+        elif self.anchor == Anchor.center:
+            self.anchored_loc = (self.loc[0] - self.width / 2, self.loc[1] - self.height / 2)
 
     def determine_focus(self):
         # component started being pressed on / positive edge of click
