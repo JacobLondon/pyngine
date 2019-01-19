@@ -15,8 +15,8 @@ class Color(object):
 
     pause = (67, 85, 123)
 
-    button = (130,130,130)
-    hover = (200,200,255)
+    button = (60,64,72)
+    hover = (144,151,165)
 
 class Dir(object):
 

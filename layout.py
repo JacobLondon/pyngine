@@ -3,12 +3,15 @@ class Grid(object):
 
     # map the grid to the entire display
     def __init__(self, component, width=1, height=1):
+        self.component = component
         self.width = component.width // width
         self.height = component.height // height
 
     # return top left pixel of given x, y coord on the grid
     def get_pixel(self, x, y):
-        return (self.width * (x - 1), self.height * (y - 1))
+        gx = self.component.loc[0] + self.width * x
+        gy = self.component.loc[1] + self.height * y
+        return (gx, gy)
 
 class Relative(object):
 

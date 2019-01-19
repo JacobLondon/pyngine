@@ -124,6 +124,9 @@ class Controller(object):
     def setup(self):
         pass
 
+    def stop(self):
+        self.done = True
+
     # the program will exit
     def close(self):
         self.ticking = False
