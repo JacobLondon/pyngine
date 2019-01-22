@@ -13,9 +13,9 @@ class Color(object):
     background = black
     foreground = white
 
-    pause = (67, 85, 123)
+    pause = (24, 26, 31)
 
-    button = (60,64,72)
+    button = (80,84,92)
     hover = (144,151,165)
 
 class Dir(object):

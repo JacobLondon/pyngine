@@ -193,13 +193,15 @@ class Controller(object):
         if self.typing and event.type == pygame.KEYDOWN:
             self.typing_actions(event)
 
-        # mouse starts clicking/scrolling
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            self.mouse_presses[event.button] = True
-
         # mouse stops clicking/scrolling
-        elif event.type == pygame.MOUSEBUTTONUP:
-            self.mouse_presses[event.button] = False
+        if event.type == pygame.MOUSEBUTTONUP:
+            if not event.button == Mouse.scroll_up \
+                and not event.button == Mouse.scroll_down:
+                self.mouse_presses[event.button] = False
+
+        # mouse starts clicking/scrolling
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            self.mouse_presses[event.button] = True
 
         # mouse moves
         if event.type == pygame.MOUSEMOTION:
@@ -329,8 +331,10 @@ class Controller(object):
             self.r_click_down()
         if self.mouse_presses[Mouse.scroll_up]:
             self.scroll_up()
+            self.mouse_presses[Mouse.scroll_up] = False
         if self.mouse_presses[Mouse.scroll_down]:
             self.scroll_down()
+            self.mouse_presses[Mouse.scroll_down] = False
 
     def l_click_down(self):
         pass
