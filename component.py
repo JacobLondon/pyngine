@@ -47,7 +47,7 @@ class Component(ScreenObject):
         for sub in self.subcomponents:
             sub.visible = self.visible
 
-        # children, like parent can lose visibility
+        # children, with parent will lose visibility
         if not self.visible:
             self.focused = False
             for sub in self.subcomponents:
@@ -66,6 +66,24 @@ class Component(ScreenObject):
         self.refresh_actions()
         self.draw()
 
+    def determine_focus(self):
+        # component started being pressed on / positive edge of click
+        if self.pressing and not self.pressed:
+            self.pressed = True
+            self.focused = False
+
+        # the mouse leaves the bounds
+        if not self.hovering:
+            self.pressed = False
+
+        # negative edge of click
+        if self.pressed and not self.controller.mouse_presses[Mouse.l_click] and self.hovering:
+            self.pressed = False
+            self.focused = True
+
+    def refresh_actions(self):
+        pass
+
      # set the relative location determined by the anchor used
     def set_anchor(self):
 
@@ -79,25 +97,6 @@ class Component(ScreenObject):
             self.anchored_loc = (self.loc[0] - self.width, self.loc[1] - self.height)
         elif self.anchor == Anchor.center:
             self.anchored_loc = (self.loc[0] - self.width / 2, self.loc[1] - self.height / 2)
-
-    def determine_focus(self):
-        # component started being pressed on / positive edge of click
-        if self.pressing and not self.pressed:
-            self.pressed = True
-
-        # the mouse leaves the bounds
-        if not self.hovering:
-            self.pressed = False
-
-        # negative edge of click
-        if self.pressed and not self.controller.mouse_presses[Mouse.l_click] and self.hovering:
-            self.pressed = False
-            self.focused = True
-        else:
-            self.focused = False
-
-    def refresh_actions(self):
-        pass
 
     def draw(self):
         pass

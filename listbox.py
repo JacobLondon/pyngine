@@ -24,21 +24,20 @@ class Listbox(Component):
 
         # traverse from the top shown component
         for i in range(len(self.subcomponents)):
+            self.subcomponents[i].loc = self.item_layout.get_pixel(0, i - self.scrolled_index)
+            self.subcomponents[i].width = self.width
+            self.subcomponents[i].height = self.item_height
+            self.subcomponents[i].anchor = Anchor.northeast
+
+            # set visibility if on/off panel
             if i < self.scrolled_index:
                 self.subcomponents[i].visible = False
-
             elif self.scrolled_index <= i < self.scrolled_index + self.num_visible_items:
-                #print(self.subcomponents[i].label.text)
                 self.subcomponents[i].visible = self.visible
-                self.subcomponents[i].loc = self.item_layout.get_pixel(0, i - self.scrolled_index)
-
-                self.subcomponents[i].width = self.width
-                self.subcomponents[i].height = self.item_height
-                self.subcomponents[i].anchor = Anchor.northeast
-                self.subcomponents[i].load()
             else:
-                print(self.subcomponents[i].label.text)
                 self.subcomponents[i].visible = False
+                
+            self.subcomponents[i].load()
 
     def refresh_actions(self):
 
