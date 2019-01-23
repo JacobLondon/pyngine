@@ -164,12 +164,14 @@ class Controller(object):
 
         # loop over every frame
         while not self.done:
-            for event in pygame.event.get():
-                self.handle_event(event)
-
             self.key_actions()
             self.mouse_actions()
             self.component_actions()
+
+            # handle all events per frame
+            for event in pygame.event.get():
+                self.handle_event(event)
+
             Thread(target=self.update).start()
 
         return self.close()

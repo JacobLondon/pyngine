@@ -11,49 +11,51 @@ class Listbox(Component):
         Component.__init__(self, controller, parent, in_foreground)
         self.scrolled_index = 0
         self.num_visible_items = 5
+        self.height_scaling = 0.9
 
         self.background = Color.dark_gray
 
     def load(self):
         
-        self.item_height = self.height / self.num_visible_items * 0.9
+        self.item_height = self.height / self.num_visible_items * self.height_scaling
         self.set_anchor()
 
         self.item_layout = Grid(self, 1, self.num_visible_items)
 
         # traverse from the top shown component
-        for i in range(self.num_visible_items):
-            index = i + self.scrolled_index
-            if index >= len(self.subcomponents):
-                break
+        for i in range(len(self.subcomponents)):
+            if i < self.scrolled_index:
+                self.subcomponents[i].visible = False
 
-            self.subcomponents[index].visible = self.visible
-            self.subcomponents[index].loc = self.item_layout.get_pixel(0, i)
+            elif self.scrolled_index <= i < self.scrolled_index + self.num_visible_items:
+                #print(self.subcomponents[i].label.text)
+                self.subcomponents[i].visible = self.visible
+                self.subcomponents[i].loc = self.item_layout.get_pixel(0, i - self.scrolled_index)
 
-            self.subcomponents[index].width = self.width
-            self.subcomponents[index].height = self.item_height
-            self.subcomponents[index].anchor = Anchor.northeast
-            self.subcomponents[index].load()
+                self.subcomponents[i].width = self.width
+                self.subcomponents[i].height = self.item_height
+                self.subcomponents[i].anchor = Anchor.northeast
+                self.subcomponents[i].load()
+            else:
+                print(self.subcomponents[i].label.text)
+                self.subcomponents[i].visible = False
 
     def refresh_actions(self):
 
         # scroll control
         if self.hovering:
-            print('hovering')
             if self.controller.mouse_presses[Mouse.scroll_up]:
                 self.scroll_up()
             elif self.controller.mouse_presses[Mouse.scroll_down]:
                 self.scroll_down()
 
     def scroll_up(self):
-        print('scroll up')
         if self.scrolled_index - 1 >= 0:
             self.scrolled_index -= 1
             self.load()
 
     def scroll_down(self):
-        print('scroll down')
-        if self.scrolled_index + 1 < len(self.subcomponents):
+        if self.scrolled_index + self.num_visible_items < len(self.subcomponents):
             self.scrolled_index += 1
             self.load()
 

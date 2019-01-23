@@ -93,6 +93,8 @@ class Component(ScreenObject):
         if self.pressed and not self.controller.mouse_presses[Mouse.l_click] and self.hovering:
             self.pressed = False
             self.focused = True
+        else:
+            self.focused = False
 
     def refresh_actions(self):
         pass

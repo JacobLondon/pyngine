@@ -12,11 +12,10 @@ class Color(object):
 
     background = black
     foreground = white
-
     pause = (24, 26, 31)
-
     button = (80,84,92)
     hover = (144,151,165)
+    missile = (57,179,255)
 
 class Dir(object):
 
