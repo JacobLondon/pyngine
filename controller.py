@@ -1,4 +1,4 @@
-import pygame, time, copy, re
+import pygame, time, copy, re, time
 from threading import Thread, active_count as active_threads
 from collections import defaultdict
 
@@ -9,6 +9,8 @@ class Controller(object):
 
     def __init__(self, interface, tick_rate=1, clear=True):
 
+        self.update_time = time.time()
+        self.delta_time = 0
         self.tick_rate = tick_rate
         self.ticking = True     # ticking separate from framerate
         self.done = False       # controller looping
@@ -39,6 +41,7 @@ class Controller(object):
         self.r_clicked_x, self.r_clicked_y = -1, -1
 
         self.tick_thread = Thread(target=self.tick)
+        self.update_thread = Thread(target=self.update)
 
         self.foreground_components = []
         self.background_components = []
@@ -66,6 +69,9 @@ class Controller(object):
         for component in components:
             component.refresh()
 
+    def elapsed_time(self):
+        return self.update_time - time.time()
+
     # thread handling ticking
     def tick(self):
         while self.ticking:
@@ -82,6 +88,8 @@ class Controller(object):
 
     # do on every frame
     def update(self):
+
+        self.update_time = time.time()
 
         # clear screen before drawing
         self.clear()
@@ -105,6 +113,8 @@ class Controller(object):
 
         # pygame update
         self.interface.update()
+
+        self.delta_time = self.interface.frame_time - self.elapsed_time()
 
     # draw things behind all items
     def draw_background(self):
@@ -171,8 +181,10 @@ class Controller(object):
             # handle all events per frame
             for event in pygame.event.get():
                 self.handle_event(event)
-
-            Thread(target=self.update).start()
+            
+            self.update_thread = Thread(target=self.update)
+            self.update_thread.start()
+            self.update_thread.join()
 
         return self.close()
 

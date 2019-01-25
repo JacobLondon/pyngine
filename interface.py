@@ -13,6 +13,7 @@ class Interface(object):
         self.tile_width = resolution[0] / grid_width
         self.tile_height = resolution[1] / grid_height
         self.refresh_rate = refresh_rate
+        self.frame_time = 1 / self.refresh_rate
         self.display = pygame.display.set_mode(self.resolution)
         pygame.display.set_caption(window_text)
         pygame.display.update()
@@ -41,6 +42,14 @@ class Interface(object):
     def draw_area(self, x, y, width, height, color):
         area = [x, y, width, height]
         pygame.draw.rect(self.display, color, area)
+
+    def draw_line(self, x0, y0, x1, y1, color=Color.white):
+        pygame.draw.line(self.display, color, (x0, y0), (x1, y1))
+
+    def draw_triangle(self, x0, y0, x1, y1, x2, y2, color=Color.white):
+        self.draw_line(x0, y0, x1, y1, color)
+        self.draw_line(x1, y1, x2, y2, color)
+        self.draw_line(x2, y2, x0, y0, color)
 
     # set the screen to background color
     def clear(self):
