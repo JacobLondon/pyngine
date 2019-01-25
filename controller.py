@@ -11,6 +11,7 @@ class Controller(object):
 
         self.update_time = time.time()
         self.delta_time = 0
+        self.fps = 0
         self.tick_rate = tick_rate
         self.ticking = True     # ticking separate from framerate
         self.done = False       # controller looping
@@ -41,7 +42,6 @@ class Controller(object):
         self.r_clicked_x, self.r_clicked_y = -1, -1
 
         self.tick_thread = Thread(target=self.tick)
-        self.update_thread = Thread(target=self.update)
 
         self.foreground_components = []
         self.background_components = []
@@ -70,7 +70,7 @@ class Controller(object):
             component.refresh()
 
     def elapsed_time(self):
-        return self.update_time - time.time()
+        return time.time() - self.update_time
 
     # thread handling ticking
     def tick(self):
@@ -114,7 +114,8 @@ class Controller(object):
         # pygame update
         self.interface.update()
 
-        self.delta_time = self.interface.frame_time - self.elapsed_time()
+        self.delta_time = self.elapsed_time()
+        self.fps = 1 / self.delta_time
 
     # draw things behind all items
     def draw_background(self):
@@ -174,6 +175,9 @@ class Controller(object):
 
         # loop over every frame
         while not self.done:
+            t = Thread(target=self.update)
+            t.start()
+
             self.key_actions()
             self.mouse_actions()
             self.component_actions()
@@ -182,9 +186,7 @@ class Controller(object):
             for event in pygame.event.get():
                 self.handle_event(event)
             
-            self.update_thread = Thread(target=self.update)
-            self.update_thread.start()
-            self.update_thread.join()
+            t.join()
 
         return self.close()
 

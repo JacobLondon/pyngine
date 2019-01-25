@@ -51,6 +51,10 @@ class Interface(object):
         self.draw_line(x1, y1, x2, y2, color)
         self.draw_line(x2, y2, x0, y0, color)
 
+    def fill_triangle(self, x0, y0, x1, y1, x2, y2, color=Color.white):
+        pointlist = [(x0, y0), (x1, y1), (x2, y2)]
+        pygame.draw.polygon(self.display, color, pointlist)
+
     # set the screen to background color
     def clear(self):
         area = [0, 0, self.resolution[0], self.resolution[1]]
