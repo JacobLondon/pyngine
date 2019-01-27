@@ -37,9 +37,12 @@ class Controller(object):
         self.key_presses = defaultdict(lambda: False)
         self.mouse_presses = defaultdict(lambda: False)
         self.mouse_x, self.mouse_y = pygame.mouse.get_pos()
+        self.delta_x, self.delta_y = 0, 0
         self.l_clicked_x, self.l_clicked_y = -1, -1
         self.m_clicked_x, self.m_clicked_y = -1, -1
         self.r_clicked_x, self.r_clicked_y = -1, -1
+        self.mouse_visible = True
+        self.center_mouse = False
 
         self.tick_thread = Thread(target=self.tick)
 
@@ -114,6 +117,7 @@ class Controller(object):
         # pygame update
         self.interface.update()
 
+        # track display stats
         self.delta_time = self.elapsed_time()
         self.fps = 1 / self.delta_time
 
@@ -221,7 +225,14 @@ class Controller(object):
 
         # mouse moves
         if event.type == pygame.MOUSEMOTION:
-            self.mouse_x, self.mouse_y = pygame.mouse.get_pos()
+            x, y = pygame.mouse.get_pos()
+            self.delta_x = x - self.mouse_x
+            self.delta_y = y - self.mouse_y
+            self.mouse_x, self.mouse_y = x, y
+
+            # center mouse
+            if self.center_mouse:
+                self.fix_mouse()
 
     # actions for components
     def component_actions(self):
@@ -334,6 +345,14 @@ class Controller(object):
         elif event.key not in self.ignored_keys:
             self.typed_text += pygame.key.name(event.key)
 
+    def set_mouse_visible(self, visible=True):
+        self.mouse_visible = visible
+        pygame.mouse.set_visible(visible)
+
+    def fix_mouse(self):
+        loc = [self.interface.resolution[0] / 2, self.interface.resolution[1] / 2]
+        pygame.mouse.set_pos(*loc)
+
     def mouse_actions(self):
         if self.mouse_presses[Mouse.l_click]:
             self.l_clicked_x, self.l_clicked_y = pygame.mouse.get_pos()
@@ -389,6 +408,10 @@ class Controller(object):
             self.s_keydown()
         if self.key_presses[pygame.K_d]:
             self.d_keydown()
+        if self.key_presses[pygame.K_SPACE]:
+            self.space_keydown()
+        if self.key_presses[pygame.K_LSHIFT]:
+            self.lshift_keydown()
 
     # let the user define custom key checks
     def custom_key_actions(self):
@@ -414,4 +437,8 @@ class Controller(object):
     def s_keydown(self):
         pass
     def d_keydown(self):
+        pass
+    def space_keydown(self):
+        pass
+    def lshift_keydown(self):
         pass
