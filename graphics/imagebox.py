@@ -4,8 +4,8 @@ from .image import Image
 
 class Imagebox(Component):
 
-    def __init__(self, controller, path, parent=None, in_foreground=True):
-        Component.__init__(self, controller, parent, in_foreground)
+    def __init__(self, controller, path, parent=None, z=0, in_foreground=True):
+        Component.__init__(self, controller, parent, z, in_foreground)
         
         self.image = Image(path)
         self.reset = self.image.reset

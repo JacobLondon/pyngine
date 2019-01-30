@@ -1,6 +1,4 @@
 
-from .constants import Anchor
-
 class ScreenObject(object):
 
     def __init__(self):

@@ -7,8 +7,10 @@ from .panel import Panel
 
 class Controller(object):
 
-    def __init__(self, interface, tick_rate=1, clear=True):
+    def __init__(self, interface, tick_rate=1, clear=True, debug=False, deprication=False):
 
+        self.debug = debug
+        self.deprication = deprication
         self.update_time = time.time()
         self.delta_time = 0
         self.fps = 0
@@ -46,6 +48,10 @@ class Controller(object):
 
         self.tick_thread = Thread(target=self.tick)
 
+        # new technique for tracking components
+        self.components = {}
+        self.component_index = 0
+        # depricated update method
         self.foreground_components = []
         self.background_components = []
 
@@ -61,16 +67,47 @@ class Controller(object):
     def initialize_components(self):
         pass
 
+    '''Depricated method!!!
+    '''
     def load_components(self):
         for component in self.background_components:
             component.load()
         for component in self.foreground_components:
             component.load()
 
-    # refresh/update components
+    '''Depricated method!!!
+    '''
     def update_components(self, components):
         for component in components:
             component.refresh()
+
+    '''New way of tracking components
+    '''
+    def add(self, component, z=0):
+        # append in next available index
+        if z == 0:
+            while self.component_index in self.components:
+                self.component_index += 1
+            self.components[self.component_index] = component
+        # insert at given z index
+        else:
+            if z in self.components and self.debug:
+                print('Warning: overriding component at z index:', z)
+            self.components[z] = component
+
+    def __str__(self):
+        for z in self.components.keys():
+            print('z = ', str(z), '\tComponent:', str(self.components[z]))
+
+    '''New way of updating components
+    '''
+    def draw(self):
+        for key in self.components:
+            self.components[key].refresh()
+
+    def load(self):
+        for key in self.components:
+            self.components[key].load()
 
     def elapsed_time(self):
         return time.time() - self.update_time
@@ -78,9 +115,14 @@ class Controller(object):
     # thread handling ticking
     def tick(self):
         while self.ticking:
-            print(active_threads())
+            self.debug_actions()
             self.tick_actions()
             time.sleep(1 / self.tick_rate)
+
+    def debug_actions(self):
+        if self.debug:
+            print('Threads:', active_threads())
+            print('FPS:', self.fps)
 
     # custom actions during tick
     def tick_actions(self):
@@ -97,26 +139,26 @@ class Controller(object):
         # clear screen before drawing
         self.clear()
         
-        # draw behind custom actions
-        self.draw_background()
+        '''Old technique of updating items
+        '''
+        if self.deprication:
+            # draw behind custom actions
+            self.draw_background()
+            self.update_components(self.background_components)
+            # draw and update controller items
+            self.update_actions()
+            # draw above custom actions and below components
+            self.draw_midground()
+            # custom component updates
+            self.update_components(self.foreground_components)
+            # draw above all
+            self.draw_foreground()
 
-        self.update_components(self.background_components)
-
-        # draw and update controller items
-        self.update_actions()
-
-        # draw above custom actions and below components
-        self.draw_midground()
-
-        # custom component updates
-        self.update_components(self.foreground_components)
-        
-        # draw above all
-        self.draw_foreground()
+        else:
+            self.draw()
 
         # pygame update
         self.interface.update()
-
         # track display stats
         self.delta_time = self.elapsed_time()
         self.fps = 1 / self.delta_time
@@ -166,14 +208,20 @@ class Controller(object):
 
     # the program loop
     def run(self):
-
-        # the connection failed before running
+        # the close before running
         if self.done:
             self.open_on_close()
 
         self.initialize_surfaces()
         self.initialize_components()
-        self.load_components()
+
+        ''' depricated loading method!!! '''
+        if self.deprication:
+            self.load_components()
+        else:
+            ''' new loading method '''
+            self.load()
+        
         self.setup()
         self.tick_thread.start()
 

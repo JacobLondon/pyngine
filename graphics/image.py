@@ -11,8 +11,14 @@ class Image(ScreenObject):
         self.surf = pygame.image.load(self.path).convert_alpha()
         self.width = self.surf.get_width()
         self.height = self.surf.get_height()
+        
+        self.refresh = self.draw
+        self.load = self.draw
 
         self.reset()
+
+    def __str__(self):
+        return self.path
 
     def reset(self):
         self.angle = 0

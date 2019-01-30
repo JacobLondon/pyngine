@@ -7,8 +7,8 @@ from .panel import Panel
 
 class Listbox(Component):
 
-    def __init__(self, controller, parent=None, in_foreground=True):
-        Component.__init__(self, controller, parent, in_foreground)
+    def __init__(self, controller, parent=None, z=0, in_foreground=True):
+        Component.__init__(self, controller, parent, z, in_foreground)
         self.scrolled_index = 0
         self.num_visible_items = 5
         self.height_scaling = 0.9

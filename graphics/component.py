@@ -5,16 +5,22 @@ from .constants import Anchor, Font, Color, Mouse
 
 class Component(ScreenObject):
 
-    def __init__(self, controller, parent=None, in_foreground=True):
+    def __init__(self, controller, parent=None, z=0, in_foreground=True):
         ScreenObject.__init__(self)
         pygame.font.init()
 
         # the controller the component belongs to can be auto refreshed
         self.controller = controller
-        if in_foreground:
-            self.controller.foreground_components.append(self)
+        '''Depricated technique of tracking components!!!
+        '''
+        if self.controller.deprication:
+            if in_foreground:
+                self.controller.foreground_components.append(self)
+            else:
+                self.controller.background_components.append(self)
         else:
-            self.controller.background_components.append(self)
+            '''New technique for tracking components'''
+            self.controller.add(self, z)
 
         # parent component's list of subcomponents
         if parent is not None:
@@ -33,16 +39,13 @@ class Component(ScreenObject):
         self.anchor = Anchor.northwest
         self.anchored_loc = (0, 0)
 
+    def __str__(self):
+        return "'" + str(self.text) + "' at " + str(self.anchored_loc)
+
     def load(self):
         pass
 
-    # always do before a refresh
-    def prerefresh_actions(self):
-        pass
-
     def refresh(self):
-        self.prerefresh_actions()  
-
         # ensure visibility is the same to children components
         for sub in self.subcomponents:
             sub.visible = self.visible
@@ -81,7 +84,11 @@ class Component(ScreenObject):
             self.pressed = False
             self.focused = True
 
+    # do every frame for the component if it is visible
     def refresh_actions(self):
+        pass
+
+    def draw(self):
         pass
 
      # set the relative location determined by the anchor used
@@ -97,9 +104,6 @@ class Component(ScreenObject):
             self.anchored_loc = (self.loc[0] - self.width, self.loc[1] - self.height)
         elif self.anchor == Anchor.center:
             self.anchored_loc = (self.loc[0] - self.width / 2, self.loc[1] - self.height / 2)
-
-    def draw(self):
-        pass
 
     # determine if the coordinates are within itself
     def within(self, x, y):

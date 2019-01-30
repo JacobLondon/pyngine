@@ -5,9 +5,10 @@ from .component import Component
 
 class Label(Component):
 
-    def __init__(self, controller, text, parent=None, in_foreground=True):
-        Component.__init__(self, controller, parent, in_foreground)
+    def __init__(self, controller, text, parent=None, z=0, in_foreground=True):
+        Component.__init__(self, controller, parent, z, in_foreground)
         self.text = text
+        self.background = None
 
     def load(self):
         pygame.font.init()
