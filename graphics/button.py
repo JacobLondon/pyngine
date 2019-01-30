@@ -8,8 +8,8 @@ from .layout import Relative
 
 class Button(Component):
 
-        def __init__(self, controller, text, parent=None, z=0, in_foreground=True):
-            Component.__init__(self, controller, parent, z, in_foreground)
+        def __init__(self, controller, text, parent=None, z=0):
+            Component.__init__(self, controller, parent, z)
             self.text = text
             self.action = None
             self.scale = 2

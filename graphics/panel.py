@@ -5,8 +5,8 @@ from .painter import Painter
 
 class Panel(Component):
 
-    def __init__(self, controller, parent=None, z=0, in_foreground=True):
-        Component.__init__(self, controller, parent, z, in_foreground)
+    def __init__(self, controller, parent=None, z=0):
+        Component.__init__(self, controller, parent, z)
         self.painter = Painter(self.controller.interface.display)
         self.text = 'Panel'
 

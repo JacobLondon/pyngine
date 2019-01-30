@@ -5,22 +5,13 @@ from .constants import Anchor, Font, Color, Mouse
 
 class Component(ScreenObject):
 
-    def __init__(self, controller, parent=None, z=0, in_foreground=True):
+    def __init__(self, controller, parent=None, z=0):
         ScreenObject.__init__(self)
         pygame.font.init()
 
         # the controller the component belongs to can be auto refreshed
         self.controller = controller
-        '''Depricated technique of tracking components!!!
-        '''
-        if self.controller.deprication:
-            if in_foreground:
-                self.controller.foreground_components.append(self)
-            else:
-                self.controller.background_components.append(self)
-        else:
-            '''New technique for tracking components'''
-            self.controller.add(self, z)
+        self.controller.add(self, z)
 
         # parent component's list of subcomponents
         if parent is not None:

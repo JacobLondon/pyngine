@@ -7,10 +7,9 @@ from .panel import Panel
 
 class Controller(object):
 
-    def __init__(self, interface, tick_rate=1, clear=True, debug=False, deprication=False):
+    def __init__(self, interface, tick_rate=1, clear=True, debug=False):
 
         self.debug = debug
-        self.deprication = deprication
         self.update_time = time.time()
         self.delta_time = 0
         self.fps = 0
@@ -67,21 +66,7 @@ class Controller(object):
     def initialize_components(self):
         pass
 
-    '''Depricated method!!!
-    '''
-    def load_components(self):
-        for component in self.background_components:
-            component.load()
-        for component in self.foreground_components:
-            component.load()
-
-    '''Depricated method!!!
-    '''
-    def update_components(self, components):
-        for component in components:
-            component.refresh()
-
-    '''New way of tracking components
+    ''' Tracking components
     '''
     def add(self, component, z=0):
         # append in next available index
@@ -99,7 +84,7 @@ class Controller(object):
         for z in self.components.keys():
             print('z = ', str(z), '\tComponent:', str(self.components[z]))
 
-    '''New way of updating components
+    ''' Updating components
     '''
     def draw(self):
         for key in self.components:
@@ -138,24 +123,7 @@ class Controller(object):
 
         # clear screen before drawing
         self.clear()
-        
-        '''Old technique of updating items
-        '''
-        if self.deprication:
-            # draw behind custom actions
-            self.draw_background()
-            self.update_components(self.background_components)
-            # draw and update controller items
-            self.update_actions()
-            # draw above custom actions and below components
-            self.draw_midground()
-            # custom component updates
-            self.update_components(self.foreground_components)
-            # draw above all
-            self.draw_foreground()
-
-        else:
-            self.draw()
+        self.draw()
 
         # pygame update
         self.interface.update()
@@ -214,13 +182,7 @@ class Controller(object):
 
         self.initialize_surfaces()
         self.initialize_components()
-
-        ''' depricated loading method!!! '''
-        if self.deprication:
-            self.load_components()
-        else:
-            ''' new loading method '''
-            self.load()
+        self.load()
         
         self.setup()
         self.tick_thread.start()
