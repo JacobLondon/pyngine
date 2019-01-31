@@ -1,4 +1,4 @@
-import pygame, time, copy, re, time
+import pygame, time, copy, re, time, collections
 from threading import Thread, active_count as active_threads
 from collections import defaultdict
 
@@ -48,7 +48,7 @@ class Controller(object):
         self.tick_thread = Thread(target=self.tick)
 
         # new technique for tracking components
-        self.components = {}
+        self.components = collections.OrderedDict()
         self.component_index = 0
         # depricated update method
         self.foreground_components = []
@@ -91,6 +91,7 @@ class Controller(object):
             self.components[key].refresh()
 
     def load(self):
+        self.components = collections.OrderedDict(sorted(self.components.items(), reverse=True))
         for key in self.components:
             self.components[key].load()
 

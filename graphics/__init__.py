@@ -5,6 +5,7 @@ from .constants import Font as Font
 from .constants import Anchor as Anchor
 from .constants import Mouse as Mouse
 from .controller import Controller as Controller
+from .drawer import Drawer as Drawer
 from .image import Image as Image
 from .imagebox import Imagebox as Imagebox
 from .interface import Interface as Interface

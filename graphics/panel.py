@@ -7,7 +7,7 @@ class Panel(Component):
 
     def __init__(self, controller, parent=None, z=0):
         Component.__init__(self, controller, parent, z)
-        self.painter = Painter(self.controller.interface.display)
+        self.painter = Painter(self.controller)
         self.text = 'Panel'
 
     def load(self):
