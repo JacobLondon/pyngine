@@ -1,6 +1,7 @@
 import pygame, time, copy, re, time, collections
 from threading import Thread, active_count as active_threads
 from collections import defaultdict
+from math import pi
 
 from .constants import Mouse
 from .panel import Panel
@@ -38,7 +39,10 @@ class Controller(object):
         self.key_presses = defaultdict(lambda: False)
         self.mouse_presses = defaultdict(lambda: False)
         self.mouse_x, self.mouse_y = pygame.mouse.get_pos()
-        self.delta_x, self.delta_y = 0, 0
+        self.delta_x, self.delta_y = 0.0, 0.0
+        self.yaw = 0.0
+        self.pitch = 0.0
+        self.mouse_sensitivity = 0.2
         self.l_clicked_x, self.l_clicked_y = -1, -1
         self.m_clicked_x, self.m_clicked_y = -1, -1
         self.r_clicked_x, self.r_clicked_y = -1, -1
@@ -121,6 +125,22 @@ class Controller(object):
     def update(self):
 
         self.update_time = time.time()
+        
+        # center mouse
+        if self.center_mouse:          
+            self.yaw += float(self.delta_x * self.delta_time * self.mouse_sensitivity)
+            self.pitch += float(self.delta_y * self.delta_time * self.mouse_sensitivity)
+            self.yaw %= 2 * pi
+            self.pitch %= 2 * pi
+            
+            if abs(self.delta_x) < 0.1:
+                self.delta_x = 0
+            if abs(self.delta_y) < 0.1:
+                self.delta_y = 0
+
+            self.delta_x *= 0.8
+            self.delta_y *= 0.8
+            self.fix_mouse()
 
         # clear screen before drawing
         self.clear()
@@ -131,20 +151,6 @@ class Controller(object):
         # track display stats
         self.delta_time = self.elapsed_time()
         self.fps = 1 / self.delta_time
-
-    # draw things behind all items
-    def draw_background(self):
-        pass
-
-    def draw_midground(self):
-        pass
-
-    def draw_foreground(self):
-        pass
-
-    # custom actions during update
-    def update_actions(self):
-        pass
 
     # do before the game loop, after component loading
     def setup(self):
@@ -233,17 +239,14 @@ class Controller(object):
         # mouse starts clicking/scrolling
         elif event.type == pygame.MOUSEBUTTONDOWN:
             self.mouse_presses[event.button] = True
-
+            
         # mouse moves
         if event.type == pygame.MOUSEMOTION:
             x, y = pygame.mouse.get_pos()
-            self.delta_x = x - self.mouse_x
-            self.delta_y = y - self.mouse_y
-            self.mouse_x, self.mouse_y = x, y
-
-            # center mouse
-            if self.center_mouse:
-                self.fix_mouse()
+            self.delta_x = float(self.mouse_x - x)
+            self.delta_y = float(self.mouse_y - y)
+            print(float(self.delta_x * self.delta_time * self.mouse_sensitivity))
+            self.mouse_x, self.mouse_y = pygame.mouse.get_pos()
 
     # actions for components
     def component_actions(self):
@@ -361,8 +364,7 @@ class Controller(object):
         pygame.mouse.set_visible(visible)
 
     def fix_mouse(self):
-        loc = [self.interface.resolution[0] / 2, self.interface.resolution[1] / 2]
-        pygame.mouse.set_pos(*loc)
+        pygame.mouse.set_pos(self.interface.center)
 
     def mouse_actions(self):
         if self.mouse_presses[Mouse.l_click]:

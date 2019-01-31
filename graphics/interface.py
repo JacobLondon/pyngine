@@ -12,6 +12,7 @@ class Interface(object):
         self.resolution = resolution
         self.tile_width = resolution[0] / grid_width
         self.tile_height = resolution[1] / grid_height
+        self.center = (self.resolution[0] / 2, self.resolution[1] / 2)
         self.refresh_rate = refresh_rate
         self.frame_time = 1 / self.refresh_rate
         self.display = pygame.display.set_mode(self.resolution)
