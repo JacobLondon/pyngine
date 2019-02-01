@@ -40,14 +40,19 @@ class Controller(object):
         self.mouse_presses = defaultdict(lambda: False)
         self.mouse_x, self.mouse_y = pygame.mouse.get_pos()
         self.delta_x, self.delta_y = 0.0, 0.0
+        self.last_delta_x = 0.0
+        self.last_delta_y = 0.0
         self.yaw = 0.0
         self.pitch = 0.0
-        self.mouse_sensitivity = 0.2
+        self.mouse_sensitivity = 0.4
+        self.mouse_unit = 40.0
+        self.mouse_smoothing = 0.3
+        self.mouse_cutoff = 0.1
         self.l_clicked_x, self.l_clicked_y = -1, -1
         self.m_clicked_x, self.m_clicked_y = -1, -1
         self.r_clicked_x, self.r_clicked_y = -1, -1
         self.mouse_visible = True
-        self.center_mouse = False
+        self.mouse_locked = False
 
         self.tick_thread = Thread(target=self.tick)
 
@@ -127,19 +132,20 @@ class Controller(object):
         self.update_time = time.time()
         
         # center mouse
-        if self.center_mouse:          
+        if self.mouse_locked:         
             self.yaw += float(self.delta_x * self.delta_time * self.mouse_sensitivity)
             self.pitch += float(self.delta_y * self.delta_time * self.mouse_sensitivity)
-            self.yaw %= 2 * pi
-            self.pitch %= 2 * pi
+            self.yaw %= 2.0 * pi
+            self.pitch %= 2.0 * pi
             
-            if abs(self.delta_x) < 0.1:
-                self.delta_x = 0
-            if abs(self.delta_y) < 0.1:
-                self.delta_y = 0
+            self.delta_x *= self.mouse_smoothing
+            self.delta_y *= self.mouse_smoothing
 
-            self.delta_x *= 0.8
-            self.delta_y *= 0.8
+            if abs(self.delta_x) < self.mouse_cutoff:
+                self.delta_x = 0.0
+            if abs(self.delta_y) < self.mouse_cutoff:
+                self.delta_y = 0.0
+
             self.fix_mouse()
 
         # clear screen before drawing
@@ -239,13 +245,29 @@ class Controller(object):
         # mouse starts clicking/scrolling
         elif event.type == pygame.MOUSEBUTTONDOWN:
             self.mouse_presses[event.button] = True
-            
+
         # mouse moves
         if event.type == pygame.MOUSEMOTION:
-            x, y = pygame.mouse.get_pos()
-            self.delta_x = float(self.mouse_x - x)
-            self.delta_y = float(self.mouse_y - y)
-            print(float(self.delta_x * self.delta_time * self.mouse_sensitivity))
+
+            if self.mouse_locked:
+                x, y = pygame.mouse.get_pos()
+                new_dx = float((self.mouse_x - x) * self.delta_time * self.mouse_sensitivity)
+                new_dy = float((self.mouse_y - y) * self.delta_time * self.mouse_sensitivity)
+
+                if self.last_delta_x - new_dx < 0 and self.mouse_x < self.interface.center[0]:
+                    self.delta_x -= self.mouse_sensitivity * self.mouse_unit
+                elif self.last_delta_x - new_dx > 0 and self.mouse_x > self.interface.center[0]:
+                    self.delta_x += self.mouse_sensitivity * self.mouse_unit
+
+                if self.last_delta_y - new_dy < 0 and self.mouse_y < self.interface.center[1]:
+                    self.delta_y -= self.mouse_sensitivity * self.mouse_unit
+                elif self.last_delta_y - new_dy > 0 and self.mouse_y > self.interface.center[1]:
+                    self.delta_y += self.mouse_sensitivity * self.mouse_unit
+
+                self.last_delta_x = new_dx
+                self.last_delta_y = new_dy
+
+                
             self.mouse_x, self.mouse_y = pygame.mouse.get_pos()
 
     # actions for components
@@ -365,6 +387,7 @@ class Controller(object):
 
     def fix_mouse(self):
         pygame.mouse.set_pos(self.interface.center)
+        self.mouse_x, self.mouse_y = pygame.mouse.get_pos()
 
     def mouse_actions(self):
         if self.mouse_presses[Mouse.l_click]:
