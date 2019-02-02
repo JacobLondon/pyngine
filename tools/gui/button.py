@@ -18,7 +18,7 @@ class Button(Component):
             # special properties of button
             self.text = text
             self.action = None
-            self.scale = 2 
+            self.scale = 1.5 
             self.pressed = False
 
             # default colors for the button

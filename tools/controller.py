@@ -2,7 +2,7 @@ import pygame, time, copy, re, time, collections
 from threading import Thread, active_count as active_threads
 from math import pi
 
-from .graphics import Painter
+from .graphics import Painter, Color
 from .gui import Panel
 from .keyboard import Keyboard
 from .mouse import Mouse
@@ -50,7 +50,7 @@ class Controller(object):
         self.background_panel = Panel(self)
         self.background_panel.width = interface.resolution[0]
         self.background_panel.height = interface.resolution[1]
-        self.background_panel.visible = False
+        self.background_panel.background = Color['gray5']
 
         # clear is the same as interface's clear
         self.clear = self.interface.clear

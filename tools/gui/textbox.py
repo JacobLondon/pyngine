@@ -31,6 +31,7 @@ class Textbox(Component):
 
         # set size to be arbitrarily wide
         self.width, self.height = self.font.size('o' * self.num_chars)
+        self.current_width = self.font.size(self.label.text)[0]
 
         # have a flashing cursor
         self.cursor_label = Label(self.controller, '|')
@@ -80,8 +81,19 @@ class Textbox(Component):
 
         # when the user is typing
         if self.focused and self.typing:
-            self.text = copy.copy(self.controller.keyboard.typed_text)
-            self.controller.keyboard.typed_text = self.controller.keyboard.typed_text[:self.num_chars]
+
+            # determine if the width of the text is wider than textbox's width
+            new_width = self.font.size(self.controller.keyboard.typed_text)[0]
+
+            # remove the new character if there is no room left
+            if new_width > self.width:
+                self.controller.keyboard.typed_text = self.controller.keyboard.typed_text[:-1]
+            
+            # update text because there is room
+            else:
+                self.text = copy.copy(self.controller.keyboard.typed_text)
+                self.current_width = self.font.size(self.text)[0]
+
             self.load()
 
         # start/stop typing
