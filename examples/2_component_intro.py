@@ -44,9 +44,6 @@ class ExampleController(Controller):
     def toggle_color_panel(self):
         self.color_panel.visible = not self.color_panel.visible
 
-    def setup(self):
-        print(self.components.values())
-
 if __name__ ==  '__main__':
     interface = Interface()
     example = ExampleController(interface)
