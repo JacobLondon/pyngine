@@ -1,6 +1,6 @@
 import pygame
 
-from .constants import Color, Font, Anchor
+from .constants import Font, Anchor
 from .component import Component
 
 class Label(Component):

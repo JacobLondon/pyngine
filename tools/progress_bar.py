@@ -1,6 +1,6 @@
 import pygame
 
-from .constants import Color, Font, Anchor
+from .constants import Font, Anchor
 from .component import Component
 from .panel import Panel
 from .label import Label
@@ -13,8 +13,8 @@ class Bar(Component):
         self.percentage = 0
         self.text = '0 %'
 
-        self.background = Color.dark_gray
-        self.foreground = Color.green
+        self.background = Color['darkgray']
+        self.foreground = Color['green']
         self.font = Font.large
         self.width, self.height = self.font.size(self.text)
 
@@ -52,7 +52,7 @@ class Bar(Component):
         self.label.loc = self.center_layout.center
         self.label.text = self.text
         self.label.font = self.font
-        self.label.foreground = Color.black
+        self.label.foreground = Color['black']
         self.label.background = None
         self.label.visible = self.visible
         self.label.load()

@@ -1,5 +1,6 @@
 import pygame, copy
 from collections import defaultdict
+from math import pi
 
 class Mouse(object):
 
@@ -29,43 +30,50 @@ class Mouse(object):
         self.pitch = 0.0
         # settings
         self.sensitivity = 0.8
-        self.unit_step = 500.0
+        self.unit_step = 10.0
         self.smoothing = 0.3
         self.cutoff = 0.1
 
-    def frame_update(self):
+    # lock the mouse
+    def lock_update(self):
         # center mouse
-        if self.locked:         
-            self.yaw += float(self.dx * self.delta_time * self.sensitivity)
-            self.pitch += float(self.dy * self.delta_time * self.sensitivity)
+        if self.locked:    
+            #      
+            self.yaw += float(self.dx * self.controller.delta_time * self.sensitivity)
+            self.pitch += float(self.dy * self.controller.delta_time * self.sensitivity)
             self.yaw %= 2.0 * pi
             self.pitch %= 2.0 * pi
             
-            self.dx *= self.smoothing
-            self.dy *= self.smoothing
-
+            # set vel to 0 if it is small else smooth the slowdown
             if abs(self.dx) < self.cutoff:
                 self.dx = 0.0
+            else:
+                self.dx *= self.smoothing
+
             if abs(self.dy) < self.cutoff:
                 self.dy = 0.0
+            else:
+                self.dy *= self.smoothing
 
             self.fix_mouse()
     
     def motion_update(self):
         if self.locked:
             x, y = pygame.mouse.get_pos()
-            new_dx = float((self.x - x) * self.delta_time * self.sensitivity)
-            new_dy = float((self.y - y) * self.delta_time * self.sensitivity)
+            new_dx = float((self.x - x) * self.controller.delta_time * self.sensitivity)
+            new_dy = float((self.y - y) * self.controller.delta_time * self.sensitivity)
 
-            if self.last_dx - new_dx < 0 and self.x < self.interface.center[0]:
-                self.dx -= self.sensitivity * self.unit_step * self.delta_time
-            elif self.last_dx - new_dx > 0 and self.x > self.interface.center[0]:
-                self.dx += self.sensitivity * self.unit_step * self.delta_time
+            # turning left/right
+            if self.last_dx - new_dx < 0 and self.x < self.controller.interface.center[0]:
+                self.dx -= self.sensitivity * self.unit_step
+            elif self.last_dx - new_dx > 0 and self.x > self.controller.interface.center[0]:
+                self.dx += self.sensitivity * self.unit_step
 
-            if self.last_dy - new_dy < 0 and self.y < self.interface.center[1]:
-                self.dy -= self.sensitivity * self.unit_step * self.delta_time
-            elif self.last_dy - new_dy > 0 and self.y > self.interface.center[1]:
-                self.dy += self.sensitivity * self.unit_step * self.delta_time
+            # turning up/down
+            if self.last_dy - new_dy < 0 and self.y < self.controller.interface.center[1]:
+                self.dy -= self.sensitivity * self.unit_step
+            elif self.last_dy - new_dy > 0 and self.y > self.controller.interface.center[1]:
+                self.dy += self.sensitivity * self.unit_step
 
             self.last_dx = new_dx
             self.last_dy = new_dy
@@ -76,8 +84,11 @@ class Mouse(object):
         self.visible = visible
         pygame.mouse.set_visible(visible)
 
+    def toggle_visibility(self):
+        self.set_visible(not self.visible)
+
     def fix_mouse(self):
-        pygame.mouse.set_pos(self.interface.center)
+        pygame.mouse.set_pos(self.controller.interface.center)
         self.x, self.y = pygame.mouse.get_pos()
 
     def actions(self):

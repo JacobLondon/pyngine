@@ -1,11 +1,12 @@
 import pygame, copy, time
 from threading import Thread
 
-from .constants import Color, Font, Anchor
+from .constants import Font, Anchor
 from .component import Component
 from .panel import Panel
 from .label import Label
 from .layout import Relative
+from .color import colors as Color
 
 class Textbox(Component):
 
@@ -16,8 +17,8 @@ class Textbox(Component):
         self.cursor_active = False
         self.cursor_rate = 0.5
 
-        self.background = Color.white
-        self.foreground = Color.black
+        self.background = Color['white']
+        self.foreground = Color['black']
         self.font = Font.large
 
         # textbox made with a label on a panel

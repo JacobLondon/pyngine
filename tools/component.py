@@ -1,7 +1,9 @@
 import pygame, copy
 
 from .screen_object import ScreenObject
-from .constants import Anchor, Font, Color, Mouse
+from .constants import Anchor, Font
+from .mouse import Mouse
+from .color import colors as Color
 
 class Component(ScreenObject):
 
@@ -25,8 +27,8 @@ class Component(ScreenObject):
 
         self.text = ''
         self.font = Font.standard
-        self.foreground = Color.foreground
-        self.background = Color.background
+        self.foreground = Color['white']
+        self.background = Color['black']
         self.anchor = Anchor.northwest
         self.anchored_loc = (0, 0)
 

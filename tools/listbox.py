@@ -1,9 +1,11 @@
 import pygame
 
 from .layout import Grid
-from .constants import Color, Font, Anchor, Mouse
+from .constants import Font, Anchor
+from .mouse import Mouse
 from .component import Component
 from .panel import Panel
+from .color import colors as Color
 
 class Listbox(Component):
 
@@ -13,7 +15,7 @@ class Listbox(Component):
         self.num_visible_items = 5
         self.height_scaling = 0.9
 
-        self.background = Color.dark_gray
+        self.background = Color['darkgray']
 
     def load(self):
         

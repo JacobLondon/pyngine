@@ -1,9 +1,8 @@
 from .button import Button as Button
-from .constants import Color as Color
+from .color import colors as Color
 from .constants import Dir as Dir
 from .constants import Font as Font
 from .constants import Anchor as Anchor
-from .constants import Mouse as Mouse
 from .controller import Controller as Controller
 from .drawer import Drawer as Drawer
 from .image import Image as Image
@@ -14,6 +13,7 @@ from .label import Label as Label
 from .layout import Grid as Grid
 from .layout import Relative as Relative
 from .listbox import Listbox as Listbox
+from .mouse import Mouse as Mouse
 from .painter import Painter as Painter
 from .panel import Panel as Panel
 from .progress_bar import Bar as Bar

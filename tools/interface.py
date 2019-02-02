@@ -1,6 +1,7 @@
 import pygame
 
-from .constants import Color, Font
+from .constants import Font
+from .color import colors as Color
 
 class Interface(object):
 
@@ -32,4 +33,4 @@ class Interface(object):
     # set the screen to background color
     def clear(self):
         area = [0, 0, self.resolution[0], self.resolution[1]]
-        pygame.draw.rect(self.display, Color.background, area)
+        pygame.draw.rect(self.display, Color['black'], area)
