@@ -1,12 +1,12 @@
 import pygame, copy, time
 from threading import Thread
 
-from .constants import Font, Anchor
+from ..graphics import Color
+from ..constants import Font, Anchor
 from .component import Component
 from .panel import Panel
 from .label import Label
 from .layout import Relative
-from .color import colors as Color
 
 class Textbox(Component):
 

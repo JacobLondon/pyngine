@@ -1,7 +1,7 @@
 import pygame
 
-from .constants import Font, Anchor
-from .color import colors as Color
+from ..constants import Font, Anchor
+from ..graphics import Color
 from .component import Component
 from .panel import Panel
 from .label import Label

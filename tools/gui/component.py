@@ -1,9 +1,9 @@
 import pygame, copy
 
+from ..graphics import Color
+from ..constants import Anchor, Font
+from ..mouse import Mouse
 from .screen_object import ScreenObject
-from .constants import Anchor, Font
-from .mouse import Mouse
-from .color import colors as Color
 
 class Component(ScreenObject):
 

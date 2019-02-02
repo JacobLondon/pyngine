@@ -1,7 +1,7 @@
 import pygame
 
+from .graphics import Color
 from .constants import Font
-from .color import colors as Color
 
 class Interface(object):
 

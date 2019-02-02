@@ -1,7 +1,7 @@
 import pygame
 
+from ..graphics import Painter
 from .component import Component
-from .painter import Painter
 
 class Panel(Component):
 
@@ -12,14 +12,13 @@ class Panel(Component):
 
     def load(self):
         self.set_anchor()
-        self.painter.color = self.background
 
     def draw(self):
 
         # draw the area of the panel
-        self.painter.color = self.background
         self.painter.fill_area(
             self.anchored_loc[0],
             self.anchored_loc[1],
             self.width,
-            self.height)
+            self.height,
+            self.background)

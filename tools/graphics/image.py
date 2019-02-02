@@ -1,6 +1,6 @@
 import pygame, numpy as np
 
-from .screen_object import ScreenObject
+from ..gui.screen_object import ScreenObject
 
 class Image(ScreenObject):
 

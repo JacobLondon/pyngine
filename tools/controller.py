@@ -2,7 +2,7 @@ import pygame, time, copy, re, time, collections
 from threading import Thread, active_count as active_threads
 from math import pi
 
-from .panel import Panel
+from .gui import Panel
 from .keyboard import Keyboard
 from .mouse import Mouse
 
@@ -69,7 +69,7 @@ class Controller(object):
             self.components[key].refresh()
 
     def load(self):
-        self.components = collections.OrderedDict(sorted(self.components.items(), reverse=True))
+        self.components = collections.OrderedDict(sorted(self.components.items(), reverse=False))
         for key in self.components:
             self.components[key].load()
 

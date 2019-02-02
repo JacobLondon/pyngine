@@ -1,11 +1,11 @@
 import pygame
 
+from ..graphics import Color
+from ..constants import Font, Anchor
+from ..mouse import Mouse
 from .layout import Grid
-from .constants import Font, Anchor
-from .mouse import Mouse
 from .component import Component
 from .panel import Panel
-from .color import colors as Color
 
 class Listbox(Component):
 

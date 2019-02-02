@@ -1,6 +1,6 @@
 import pygame
 
-from .constants import Font, Anchor
+from ..constants import Font, Anchor
 from .component import Component
 from .panel import Panel
 from .label import Label

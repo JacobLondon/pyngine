@@ -1,20 +1,10 @@
-from .button import Button as Button
-from .color import colors as Color
-from .constants import Dir as Dir
-from .constants import Font as Font
-from .constants import Anchor as Anchor
-from .controller import Controller as Controller
-from .drawer import Drawer as Drawer
-from .image import Image as Image
-from .imagebox import Imagebox as Imagebox
-from .interface import Interface as Interface
-from .keyboard import Keyboard as Keyboard
-from .label import Label as Label
-from .layout import Grid as Grid
-from .layout import Relative as Relative
-from .listbox import Listbox as Listbox
-from .mouse import Mouse as Mouse
-from .painter import Painter as Painter
-from .panel import Panel as Panel
-from .progress_bar import Bar as Bar
-from .textbox import Textbox as Textbox
+from .gui import *
+from .graphics import *
+from .constants import Dir
+from .constants import Font
+from .constants import Anchor
+from .controller import Controller
+from .interface import Interface
+from .keyboard import Keyboard
+from .mouse import Mouse
+

@@ -1,6 +1,5 @@
-
+from ..graphics import Image
 from .component import Component
-from .image import Image
 
 class Imagebox(Component):
 

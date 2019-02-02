@@ -18,7 +18,7 @@ class ExampleController(Controller):
 
         # create a panel to make a background color
         self.color_panel = Panel(self)
-        self.color_panel.background = Color.blue
+        self.color_panel.background = Color['blue']
         # set the panel size to be the size of the window
         self.color_panel.width = self.interface.resolution[0]
         self.color_panel.height = self.interface.resolution[1]
@@ -43,6 +43,9 @@ class ExampleController(Controller):
     '''
     def toggle_color_panel(self):
         self.color_panel.visible = not self.color_panel.visible
+
+    def setup(self):
+        print(self.components.values())
 
 if __name__ ==  '__main__':
     interface = Interface()
