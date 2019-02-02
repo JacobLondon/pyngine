@@ -8,10 +8,13 @@ from .panel import Panel
 from .label import Label
 from .layout import Relative
 
+"""Box for users to type text into"""
 class Textbox(Component):
 
     def __init__(self, controller, num_chars=15, parent=None, z=0):
         Component.__init__(self, controller, parent, z)
+
+        # textbox specific details
         self.num_chars = num_chars
         self.typing = False
         self.cursor_active = False
@@ -21,20 +24,24 @@ class Textbox(Component):
         self.foreground = Color['black']
         self.font = Font.large
 
-        # textbox made with a label on a panel
+        # textbox made with a panel
         self.panel = Panel(self.controller, parent=self)
-
+        # typed text goes into the label
         self.label = Label(self.controller, self.text, parent=self)
 
+        # set size to be arbitrarily wide
         self.width, self.height = self.font.size('o' * self.num_chars)
 
+        # have a flashing cursor
         self.cursor_label = Label(self.controller, '|')
         self.cursor_label.visible = False
 
+    """Load all subcomponents of textbox"""
     def load(self):
 
         self.set_anchor()
 
+        # load panel
         self.panel.anchor = self.anchor
         self.panel.loc = self.loc
         self.panel.background = self.background
@@ -60,6 +67,10 @@ class Textbox(Component):
         self.cursor_label.background = None
         self.cursor_label.load()
 
+    """Every frame, check if typing is occurring
+    If it is, then load text from the controller's keyboard,
+    and handle cursor flashing
+    """
     def refresh_actions(self):
         # typing setup
         if self.focused and not self.typing:
@@ -81,12 +92,13 @@ class Textbox(Component):
             self.cursor_active = True
             Thread(target=self.flash_cursor, daemon=True).start()
 
+    """Refresh all subcomponents after typing has been checked"""
     def draw(self):
         self.panel.refresh()
         self.label.refresh()
         self.cursor_label.refresh()
 
-    # running and close down of cursor flashing
+    """Running and close down of cursor flashing"""
     def flash_cursor(self):
         while self.typing:
             self.cursor_label.visible = not self.cursor_label.visible

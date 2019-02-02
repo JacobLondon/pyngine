@@ -1,11 +1,13 @@
 import pygame
 
+from ..graphics import Color
 from ..constants import Font, Anchor
 from .component import Component
 from .panel import Panel
 from .label import Label
 from .layout import Relative
 
+"""A progress bar for showing progress on a task"""
 class Bar(Component):
     
     def __init__(self, controller, parent=None, z=0):
@@ -13,6 +15,7 @@ class Bar(Component):
         self.percentage = 0
         self.text = '0 %'
 
+        # loading bar has text over the loading color
         self.background = Color['darkgray']
         self.foreground = Color['green']
         self.font = Font.large
@@ -24,6 +27,7 @@ class Bar(Component):
         self.label = Label(self.controller, self.text, parent=self)
         self.label.anchor = Anchor.center
 
+    """Load all subcomponents to be in the correct order"""
     def load(self):
 
         self.set_anchor()
@@ -57,6 +61,7 @@ class Bar(Component):
         self.label.visible = self.visible
         self.label.load()
 
+    """Every frame check to see if the percentage changed"""
     def refresh_actions(self):
         self.text = str(self.percentage) + ' %'
 
@@ -74,6 +79,7 @@ class Bar(Component):
 
         self.load()
 
+    """Set the bar to be full"""
     def complete(self):
         self.percentage = 100
         self.load()

@@ -1,20 +1,28 @@
 
+"""Create a grid within the given component
+for ease of component placement on the display
+"""
 class Grid(object):
 
-    # map the grid to the entire display
+    """Map a grid to the given component"""
     def __init__(self, component, width=1, height=1):
         self.component = component
         self.width = component.width // width
         self.height = component.height // height
 
     # return top left pixel of given x, y coord on the grid
-    def get_pixel(self, x, y):
-        gx = self.component.loc[0] + self.width * x
-        gy = self.component.loc[1] + self.height * y
-        return (gx, gy)
+    """Return top left pixel x, y of a given grid intersection gx, gy"""
+    def get_pixel(self, gx, gy):
+        x = self.component.loc[0] + self.width * x
+        y = self.component.loc[1] + self.height * y
+        return (x, y)
 
+"""Use relative locations on a given component
+for ease of component placement on the display
+"""
 class Relative(object):
 
+    """Find all relative locations within given component"""
     def __init__(self, component):
 
         self.x = component.anchored_loc[0]

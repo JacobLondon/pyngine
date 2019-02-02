@@ -1,6 +1,7 @@
 import pygame
 from collections import defaultdict
 
+"""Used by controllers to track keyboard input"""
 class Keyboard(object):
 
     def __init__(self, controller):
@@ -22,6 +23,7 @@ class Keyboard(object):
 
         self.presses = defaultdict(lambda: False)
 
+    """Set typed text based on a pygame keypress event"""
     def typing_actions(self, event):
         self.shift = self.presses[pygame.K_RSHIFT] or \
             self.presses[pygame.K_LSHIFT]
@@ -128,7 +130,7 @@ class Keyboard(object):
         elif event.key not in self.ignored_keys:
             self.typed_text += pygame.key.name(event.key)
 
-     # do actions based on what was pressed
+    """Do actions based on a key press"""
     def actions(self):
 
         self.custom_key_actions()
@@ -160,6 +162,8 @@ class Keyboard(object):
             self.lshift_keydown()
 
     # let the user define custom key checks
+    """Meant to be assigned in controller to define
+    custom sets of key presses"""
     def custom_key_actions(self):
         pass
 

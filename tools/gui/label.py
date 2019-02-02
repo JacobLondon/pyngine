@@ -3,6 +3,7 @@ import pygame
 from ..constants import Font, Anchor
 from .component import Component
 
+"""A simple component used for displaying text"""
 class Label(Component):
 
     def __init__(self, controller, text, parent=None, z=0):
@@ -10,11 +11,13 @@ class Label(Component):
         self.text = text
         self.background = None
 
+    """Load text details into Label"""
     def load(self):
         pygame.font.init()
         self.width, self.height = self.font.size(self.text)
         self.set_anchor()
 
+    """Put the text into a surface and blit it to the display"""
     def draw(self):
 
         # draw the text in the component

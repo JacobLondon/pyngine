@@ -2,6 +2,7 @@ import pygame, copy
 from collections import defaultdict
 from math import pi
 
+"""Control mouse presses/scrolling"""
 class Mouse(object):
 
     l_click = 1
@@ -34,7 +35,7 @@ class Mouse(object):
         self.smoothing = 0.3
         self.cutoff = 0.1
 
-    # lock the mouse
+    """Called every frame to lock the mouse if applicable"""
     def lock_update(self):
         # center mouse
         if self.locked:    
@@ -57,6 +58,9 @@ class Mouse(object):
 
             self.fix_mouse()
     
+    """Called every time the mouse moves to track position
+    Calculates dx/dy mouse movement if locked mode
+    """
     def motion_update(self):
         if self.locked:
             x, y = pygame.mouse.get_pos()
@@ -80,17 +84,21 @@ class Mouse(object):
 
         self.x, self.y = pygame.mouse.get_pos()
 
+    """Specify mouse visibility"""
     def set_visible(self, visible=True):
         self.visible = visible
         pygame.mouse.set_visible(visible)
 
+    """Toggles the mouse visible or not"""
     def toggle_visibility(self):
         self.set_visible(not self.visible)
 
+    """Sets the mouse to the center of the screen"""
     def fix_mouse(self):
         pygame.mouse.set_pos(self.controller.interface.center)
         self.x, self.y = pygame.mouse.get_pos()
 
+    """Mouse button press action checks"""
     def actions(self):
         if self.presses[Mouse.l_click]:
             self.l_clicked_x, self.l_clicked_y = pygame.mouse.get_pos()

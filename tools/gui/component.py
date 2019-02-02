@@ -5,6 +5,9 @@ from ..constants import Anchor, Font
 from ..mouse import Mouse
 from .screen_object import ScreenObject
 
+"""Parent component
+Handles controller z index insertion, focus, and relative anchoring
+"""
 class Component(ScreenObject):
 
     def __init__(self, controller, parent=None, z=0):
@@ -19,12 +22,16 @@ class Component(ScreenObject):
         if parent is not None:
             parent.subcomponents.append(self)
 
-        self.focused = False
-        self.pressing = False   # true when mouse down on component
-        self.pressed = False    # true when pressing first becomes true
-        self.hovering = False
+        # own subcomponent list
         self.subcomponents = []
 
+        # tools for focus
+        self.focused = False    # true for the frame after an 'unclick' on a component
+        self.pressing = False   # true when mouse down on component
+        self.pressed = False    # true when pressing first becomes true
+        self.hovering = False   # true when mouse is over the component
+
+        # default visual characteristics
         self.text = ''
         self.font = Font.standard
         self.foreground = Color['white']
@@ -32,12 +39,20 @@ class Component(ScreenObject):
         self.anchor = Anchor.northwest
         self.anchored_loc = (0, 0)
 
+    """Returns self.text at (x, y)"""
     def __str__(self):
         return "'" + str(self.text) + "' at " + str(self.anchored_loc)
 
+    """Method meant to be overwritten by children to
+    initialize visual attributes/subcomponents
+    """
     def load(self):
         pass
 
+    """Called every frame
+    Handles giving children the same visibility, determining
+    pressing/hovering/focus/drawing
+    """
     def refresh(self):
         # ensure visibility is the same to children components
         for sub in self.subcomponents:
@@ -48,6 +63,8 @@ class Component(ScreenObject):
             self.focused = False
             for sub in self.subcomponents:
                 sub.focused = False
+
+            # do make checks if not visible
             return
 
         # mouse within bounds of component
@@ -59,9 +76,12 @@ class Component(ScreenObject):
         self.pressing = self.within(x, y) and self.controller.mouse.presses[Mouse.l_click]
 
         self.determine_focus()
+
+        # perform custom method overwritten by component children
         self.refresh_actions()
         self.draw()
 
+    """Give/take focus from items clicked on"""
     def determine_focus(self):
         # component started being pressed on / positive edge of click
         if self.pressing and not self.pressed:
@@ -77,14 +97,20 @@ class Component(ScreenObject):
             self.pressed = False
             self.focused = True
 
-    # do every frame for the component if it is visible
+    """Do every frame if the component is visible.
+    Meant to be overwritten by component children
+    """
     def refresh_actions(self):
         pass
 
+    """Do every frame if the component is visible.
+    Meant to be overwritten by component children,
+    called after refresh_actions.
+    """
     def draw(self):
         pass
 
-     # set the relative location determined by the anchor used
+    """Set the relative location determined by the anchored specified"""
     def set_anchor(self):
 
         if self.anchor == Anchor.northwest:
@@ -98,7 +124,7 @@ class Component(ScreenObject):
         elif self.anchor == Anchor.center:
             self.anchored_loc = (self.loc[0] - self.width / 2, self.loc[1] - self.height / 2)
 
-    # determine if the coordinates are within itself
+    """Determine if the given coordinates are within the bounds of itself"""
     def within(self, x, y):
         left = self.anchored_loc[0]
         right = self.anchored_loc[0] + self.width

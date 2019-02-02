@@ -1,6 +1,10 @@
 
-''' Acts like a component but with custom functions to pass in
-'''
+"""Acts as a component, but with custom functions that are
+defined within the controller and passed into refresh/load
+
+This allows for z index loading which may have
+complex drawing functionality
+"""
 class Drawer(object):
 
     def __init__(self, controller, refresh=None, load=None, z=0):

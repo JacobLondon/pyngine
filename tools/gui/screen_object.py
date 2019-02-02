@@ -1,4 +1,5 @@
 
+"""Parent for all things shown on screen"""
 class ScreenObject(object):
 
     def __init__(self):
