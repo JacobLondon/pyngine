@@ -44,8 +44,8 @@ class Controller(object):
         self.last_delta_y = 0.0
         self.yaw = 0.0
         self.pitch = 0.0
-        self.mouse_sensitivity = 0.4
-        self.mouse_unit = 40.0
+        self.mouse_sensitivity = 0.8
+        self.mouse_unit = 500.0
         self.mouse_smoothing = 0.3
         self.mouse_cutoff = 0.1
         self.l_clicked_x, self.l_clicked_y = -1, -1
@@ -255,14 +255,14 @@ class Controller(object):
                 new_dy = float((self.mouse_y - y) * self.delta_time * self.mouse_sensitivity)
 
                 if self.last_delta_x - new_dx < 0 and self.mouse_x < self.interface.center[0]:
-                    self.delta_x -= self.mouse_sensitivity * self.mouse_unit
+                    self.delta_x -= self.mouse_sensitivity * self.mouse_unit * self.delta_time
                 elif self.last_delta_x - new_dx > 0 and self.mouse_x > self.interface.center[0]:
-                    self.delta_x += self.mouse_sensitivity * self.mouse_unit
+                    self.delta_x += self.mouse_sensitivity * self.mouse_unit * self.delta_time
 
                 if self.last_delta_y - new_dy < 0 and self.mouse_y < self.interface.center[1]:
-                    self.delta_y -= self.mouse_sensitivity * self.mouse_unit
+                    self.delta_y -= self.mouse_sensitivity * self.mouse_unit * self.delta_time
                 elif self.last_delta_y - new_dy > 0 and self.mouse_y > self.interface.center[1]:
-                    self.delta_y += self.mouse_sensitivity * self.mouse_unit
+                    self.delta_y += self.mouse_sensitivity * self.mouse_unit * self.delta_time
 
                 self.last_delta_x = new_dx
                 self.last_delta_y = new_dy
