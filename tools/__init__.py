@@ -9,6 +9,7 @@ from .drawer import Drawer as Drawer
 from .image import Image as Image
 from .imagebox import Imagebox as Imagebox
 from .interface import Interface as Interface
+from .keyboard import Keyboard as Keyboard
 from .label import Label as Label
 from .layout import Grid as Grid
 from .layout import Relative as Relative

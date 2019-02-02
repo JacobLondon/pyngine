@@ -1,7 +1,7 @@
 import sys
 sys.path.append('..')
 
-from graphics import *
+from tools import *
 
 class ExampleController(Controller):
 

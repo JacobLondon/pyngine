@@ -7,12 +7,19 @@ class ExampleController(Controller):
 
     def __init__(self, interface):
         Controller.__init__(self, interface, debug=True)
+        self.keyboard.return_keydown = self.test
 
-if __name__ ==  '__main__':
-    # create a pygame interface
+    '''Initialize components and their attributes here
+    '''
+    def initialize_components(self):
+        
+        self.text = Textbox(self)
+
+    def test(self):
+        print('test')
+
+if __name__ == '__main__':
     interface = Interface()
-    # create a controller to run the interface
     example = ExampleController(interface)
-    # run the controller
     example.run()
     

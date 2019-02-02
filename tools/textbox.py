@@ -62,14 +62,14 @@ class Textbox(Component):
     def refresh_actions(self):
         # typing setup
         if self.focused and not self.typing:
-            self.controller.typing = True
+            self.controller.keyboard.typing = True
             self.typing = True
-            self.controller.typed_text = copy.copy(self.text)
+            self.controller.keyboard.typed_text = copy.copy(self.text)
 
         # when the user is typing
         if self.focused and self.typing:
-            self.text = copy.copy(self.controller.typed_text)
-            self.controller.typed_text = self.controller.typed_text[:self.num_chars]
+            self.text = copy.copy(self.controller.keyboard.typed_text)
+            self.controller.keyboard.typed_text = self.controller.keyboard.typed_text[:self.num_chars]
             self.load()
 
         # start/stop typing

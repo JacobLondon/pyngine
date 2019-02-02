@@ -49,12 +49,12 @@ class Component(ScreenObject):
             return
 
         # mouse within bounds of component
-        x, y = copy.copy((self.controller.mouse_x, self.controller.mouse_y))
+        x, y = copy.copy((self.controller.mouse.x, self.controller.mouse.y))
         self.hovering = self.within(x, y)
 
         # holding left click in the component
-        x, y = copy.copy((self.controller.l_clicked_x, self.controller.l_clicked_y))
-        self.pressing = self.within(x, y) and self.controller.mouse_presses[Mouse.l_click]
+        x, y = copy.copy((self.controller.mouse.l_clicked_x, self.controller.mouse.l_clicked_y))
+        self.pressing = self.within(x, y) and self.controller.mouse.presses[Mouse.l_click]
 
         self.determine_focus()
         self.refresh_actions()
@@ -71,7 +71,7 @@ class Component(ScreenObject):
             self.pressed = False
 
         # negative edge of click
-        if self.pressed and not self.controller.mouse_presses[Mouse.l_click] and self.hovering:
+        if self.pressed and not self.controller.mouse.presses[Mouse.l_click] and self.hovering:
             self.pressed = False
             self.focused = True
 
