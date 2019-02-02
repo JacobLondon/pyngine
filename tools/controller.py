@@ -74,7 +74,7 @@ class Controller(object):
             self.components[self.component_index] = component
         # insert at given z index
         else:
-            if z in self.components and self.debug:
+            if z in self.components:
                 print('Warning: overriding component at z index:', z)
             self.components[z] = component
 
