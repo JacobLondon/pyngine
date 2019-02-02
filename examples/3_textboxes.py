@@ -8,8 +8,7 @@ class ExampleController(Controller):
     def __init__(self, interface):
         Controller.__init__(self, interface, debug=True)
 
-    '''Initialize components and their attributes here
-    '''
+    """Initialize components and their attributes here"""
     def initialize_components(self):
         
         self.text = Textbox(self)

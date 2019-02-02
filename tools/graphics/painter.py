@@ -2,12 +2,13 @@ import pygame
 
 from .color import colors as Color
 
+# helper class to color lines/shapes/areas
 class Painter(object):
     
-    def __init__(self, controller):
-        self.display = controller.interface.display
-        self.tile_width = controller.interface.tile_width
-        self.tile_height = controller.interface.tile_height
+    def __init__(self, interface):
+        self.display = interface.display
+        self.tile_width = interface.tile_width
+        self.tile_height = interface.tile_height
 
     # fill tile with color
     def fill_tile(self, gx, gy, color=Color['white']):
