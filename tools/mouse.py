@@ -72,7 +72,7 @@ class Mouse(object):
 
         self.x, self.y = pygame.mouse.get_pos()
 
-    def set_mouse_visible(self, visible=True):
+    def set_visible(self, visible=True):
         self.visible = visible
         pygame.mouse.set_visible(visible)
 
