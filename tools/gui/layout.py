@@ -13,8 +13,8 @@ class Grid(object):
     # return top left pixel of given x, y coord on the grid
     """Return top left pixel x, y of a given grid intersection gx, gy"""
     def get_pixel(self, gx, gy):
-        x = self.component.loc[0] + self.width * x
-        y = self.component.loc[1] + self.height * y
+        x = self.component.loc[0] + self.width * gx
+        y = self.component.loc[1] + self.height * gy
         return (x, y)
 
 """Use relative locations on a given component
