@@ -37,7 +37,7 @@ class Textbox(Component):
         self.cursor_char = '|'
         self.cursor_offset = 3
         self.cursor_width = self.font.size(self.cursor_char)[0]
-        self.cursor_label = Label(self.controller, '|')
+        self.cursor_label = Label(self.controller, self.cursor_char)
         self.cursor_label.visible = False
 
     """Load all subcomponents of textbox"""
