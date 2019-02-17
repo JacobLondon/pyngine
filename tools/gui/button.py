@@ -1,11 +1,11 @@
 import pygame
 
-from ..constants import Font, Anchor
+from ..constants import Font
 from ..graphics import Color
 from .component import Component
 from .panel import Panel
 from .label import Label
-from .layout import Relative
+from .layout import Anchor, Relative
 
 """Let user click in a designated area
 to perform an action set by the controller

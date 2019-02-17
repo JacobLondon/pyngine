@@ -109,8 +109,6 @@ class Controller(object):
 
     """Do every frame in another thread from input"""
     def update(self):
-        # set update time
-        self.update_time = time.time()
         
         # if mouse is locked, reset it to locked position
         self.mouse.lock_update()
@@ -122,8 +120,9 @@ class Controller(object):
         # pygame update
         self.interface.update()
 
-        # record duration of update
+        # record update
         self.delta_time = self.elapsed_time()
+        self.update_time = time.time()
         self.fps = 1 / self.delta_time
 
     """Find how much time has passed since the last update"""

@@ -1,7 +1,8 @@
 import pygame
 
-from ..constants import Font, Anchor
+from ..constants import Font
 from .component import Component
+from .layout import Anchor
 
 """A simple component used for displaying text"""
 class Label(Component):

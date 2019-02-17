@@ -1,3 +1,13 @@
+from enum import Enum
+
+"""Hold relative mapping locations
+"""
+class Anchor(Enum):
+    northwest = 0
+    northeast = 1
+    southeast = 2
+    southwest = 3
+    center = 4
 
 """Create a grid within the given component
 for ease of component placement on the display

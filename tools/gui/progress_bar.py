@@ -1,11 +1,11 @@
 import pygame
 
 from ..graphics import Color
-from ..constants import Font, Anchor
+from ..constants import Font
 from .component import Component
 from .panel import Panel
 from .label import Label
-from .layout import Relative
+from .layout import Anchor, Relative
 
 """A progress bar for showing progress on a task"""
 class Bar(Component):

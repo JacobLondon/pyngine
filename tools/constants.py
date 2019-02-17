@@ -11,13 +11,6 @@ class Dir(object):
     down_left = 7
     up_left = 8
 
-class Anchor(object):
-    northwest = 0
-    northeast = 1
-    southeast = 2
-    southwest = 3
-    center = 4
-
 class Font(object):
     pygame.font.init()
     default = 'Calibri'
@@ -29,8 +22,3 @@ class Font(object):
     button = pygame.font.SysFont(default, 40)
     menu = pygame.font.SysFont(default, 60)
     title = pygame.font.SysFont(default, 80)
-
-    @staticmethod
-    def create(name, point):
-        return pygame.font.SysFont(name, point)
-

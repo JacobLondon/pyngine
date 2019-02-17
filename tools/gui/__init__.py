@@ -2,8 +2,7 @@ from .button import Button
 from .component import Component
 from .imagebox import Imagebox
 from .label import Label
-from .layout import Grid
-from .layout import Relative
+from .layout import Anchor, Grid, Relative
 from .listbox import Listbox
 from .panel import Panel
 from .progress_bar import Bar

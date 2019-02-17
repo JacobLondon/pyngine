@@ -2,11 +2,11 @@ import pygame, copy, time
 from threading import Thread
 
 from ..graphics import Color
-from ..constants import Font, Anchor
+from ..constants import Font
 from .component import Component
 from .panel import Panel
 from .label import Label
-from .layout import Relative
+from .layout import Anchor, Relative
 
 """Box for users to type text into"""
 class Textbox(Component):
@@ -34,6 +34,9 @@ class Textbox(Component):
         self.current_width = self.font.size(self.label.text)[0]
 
         # have a flashing cursor
+        self.cursor_char = '|'
+        self.cursor_offset = 3
+        self.cursor_width = self.font.size(self.cursor_char)[0]
         self.cursor_label = Label(self.controller, '|')
         self.cursor_label.visible = False
 
@@ -62,7 +65,9 @@ class Textbox(Component):
         # keep the cursor on the far right of the text
         w = self.label.font.size(self.label.text)[0]
         self.cursor_label.loc = self.center_layout.northwest
-        self.cursor_label.loc = (self.cursor_label.loc[0] + w, self.cursor_label.loc[1])
+        cursor_x_offset = self.cursor_label.loc[0] + w - self.cursor_width / self.cursor_offset
+        self.cursor_label.loc = (cursor_x_offset, self.cursor_label.loc[1])
+        
         self.cursor_label.font = self.font
         self.cursor_label.foreground = self.foreground
         self.cursor_label.background = None

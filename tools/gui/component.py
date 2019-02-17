@@ -1,9 +1,10 @@
 import pygame, copy
 
 from ..graphics import Color
-from ..constants import Anchor, Font
+from ..constants import Font
 from ..mouse import Mouse
 from .screen_object import ScreenObject
+from .layout import Anchor
 
 """Parent component
 Handles controller z index insertion, focus, and relative anchoring

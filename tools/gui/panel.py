@@ -1,6 +1,5 @@
 import pygame
 
-from ..graphics import Painter
 from .component import Component
 
 """A simple component used for displaying color"""
