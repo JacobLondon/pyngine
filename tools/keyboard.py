@@ -44,9 +44,7 @@ class Keyboard(object):
             self.typed_text = self.typed_text[:-1]
         elif self.presses[pygame.K_TAB]:
             self.typed_text += ' ' * 4
-        elif self.presses[pygame.K_RETURN]:
-            self.typing = False
-        elif self.presses[pygame.K_KP_ENTER] or self.presses[pygame.K_ESCAPE]:
+        elif self.presses[pygame.K_KP_ENTER] or self.presses[pygame.K_ESCAPE] or self.presses[pygame.K_RETURN]:
             self.typing = False
         elif self.presses[pygame.K_SPACE]:
             self.typed_text += ' '
