@@ -2,6 +2,7 @@ import pygame, time, copy, re, time, collections
 from threading import Thread, active_count as active_threads
 from math import pi
 
+from .event import Event
 from .graphics import Painter, Color
 from .gui import Panel, Grid, Relative
 from .keyboard import Keyboard
@@ -39,6 +40,7 @@ class Controller(object):
         # control input
         self.keyboard = Keyboard(self)
         self.mouse = Mouse(self)
+        self.events = {}
 
         # do regularly in a different thread
         self.tick_thread = Thread(target=self.tick)
@@ -73,7 +75,7 @@ class Controller(object):
         pass
 
     """Add components to the OrderedDict of components based on their z index"""
-    def add(self, component, z=0):
+    def add_component(self, component, z=0):
         # no z index given
         if z == 0:
             # append in next available index
@@ -85,6 +87,16 @@ class Controller(object):
             if z in self.components:
                 print('Warning: overriding component at z index:', z)
             self.components[z] = component
+
+    """Add an event specified by a key and an action function"""
+    def add_event(self, event):
+        self.events[event.key] = event
+
+    """Call all events specified by the user the they are occurring"""
+    def call_events(self):
+        for key in self.events.keys():
+            if self.keyboard.presses[key] or self.mouse.presses[key]:
+                self.events[key].action()
 
     """Draw all components to screen in their z index order"""
     def draw(self):
@@ -203,6 +215,9 @@ class Controller(object):
             # receive keyboard/mouse input
             self.keyboard.actions()
             self.mouse.actions()
+            #TODO
+            #self.call_events()
+            #print(self.events)
 
             # custom actions defined by child
             self.custom_actions()

@@ -17,7 +17,7 @@ class Component(ScreenObject):
 
         # the controller the component belongs to can be auto refreshed
         self.controller = controller
-        self.controller.add(self, z)
+        self.controller.add_component(self, z)
 
         # parent component's list of subcomponents
         if parent is not None:
