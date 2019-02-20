@@ -21,6 +21,17 @@ class Keyboard(object):
             pygame.K_F1, pygame.K_F2, pygame.K_F3, pygame.K_F4, pygame.K_F5, pygame.K_F6,
             pygame.K_F7, pygame.K_F8, pygame.K_F9, pygame.K_F10, pygame.K_F11, pygame.K_F12]
 
+        self.shifted_keys = {
+            pygame.K_1:'!', pygame.K_2:'@', pygame.K_3:'#',
+            pygame.K_4:'$', pygame.K_5:'%', pygame.K_6:'^',
+            pygame.K_7:'&', pygame.K_8:'*', pygame.K_9:'(',
+            pygame.K_0:')',
+            pygame.K_BACKQUOTE:'~', pygame.K_MINUS:'_', pygame.K_EQUALS:'+',
+            pygame.K_LEFTBRACKET:'{', pygame.K_RIGHTBRACKET:'}',
+            pygame.K_BACKSLASH:'|', pygame.K_SEMICOLON:':',
+            pygame.K_QUOTE:'"', pygame.K_PERIOD:'<', pygame.K_COMMA:'>',
+            pygame.K_SLASH:'?'}
+
         self.presses = defaultdict(lambda: False)
 
     """Set typed text based on a pygame keypress event"""
@@ -35,100 +46,28 @@ class Keyboard(object):
             self.typed_text += ' ' * 4
         elif self.presses[pygame.K_RETURN]:
             self.typing = False
-        elif self.presses[pygame.K_ESCAPE]:
+        elif self.presses[pygame.K_KP_ENTER] or self.presses[pygame.K_ESCAPE]:
             self.typing = False
         elif self.presses[pygame.K_SPACE]:
             self.typed_text += ' '
 
         elif self.shift:
-            # shifted number keys
-            if self.presses[pygame.K_1]:
-                self.typed_text += '!'
-            elif self.presses[pygame.K_2]:
-                self.typed_text += '@'
-            elif self.presses[pygame.K_3]:
-                self.typed_text += '#'
-            elif self.presses[pygame.K_4]:
-                self.typed_text += '$'
-            elif self.presses[pygame.K_5]:
-                self.typed_text += '%'
-            elif self.presses[pygame.K_6]:
-                self.typed_text += '^'
-            elif self.presses[pygame.K_7]:
-                self.typed_text += '&'
-            elif self.presses[pygame.K_8]:
-                self.typed_text += '*'
-            elif self.presses[pygame.K_9]:
-                self.typed_text += '('
-            elif self.presses[pygame.K_0]:
-                self.typed_text += ')'
-
             # shifted letter keys
-            elif pygame.key.name(event.key).isalpha():
+            if pygame.key.name(event.key).isalpha():
                 self.typed_text += pygame.key.name(event.key).upper()
 
-            # misc shifted keys
-            elif self.presses[pygame.K_BACKQUOTE]:
-                self.typed_text += '~'
-            elif self.presses[pygame.K_MINUS]:
-                self.typed_text += '_'
-            elif self.presses[pygame.K_EQUALS]:
-                self.typed_text += '+'
-            elif self.presses[pygame.K_LEFTBRACKET]:
-                self.typed_text += '{'
-            elif self.presses[pygame.K_RIGHTBRACKET]:
-                self.typed_text += '}'
-            elif self.presses[pygame.K_BACKSLASH]:
-                self.typed_text += '|'
-            elif self.presses[pygame.K_SEMICOLON]:
-                self.typed_text += ':'
-            elif self.presses[pygame.K_QUOTE]:
-                self.typed_text += '"'
-            elif self.presses[pygame.K_PERIOD]:
-                self.typed_text += '<'
-            elif self.presses[pygame.K_COMMA]:
-                self.typed_text += '>'
-            elif self.presses[pygame.K_SLASH]:
-                self.typed_text += '?'
+            # special shifted keys
+            if event.key in self.shifted_keys:
+                self.typed_text += self.shifted_keys[event.key]
 
         # keypad keys
-        elif self.presses[pygame.K_KP0]:
-            self.typed_text += '0'
-        elif self.presses[pygame.K_KP1]:
-            self.typed_text += '1'
-        elif self.presses[pygame.K_KP2]:
-            self.typed_text += '2'
-        elif self.presses[pygame.K_KP3]:
-            self.typed_text += '3'
-        elif self.presses[pygame.K_KP4]:
-            self.typed_text += '4'
-        elif self.presses[pygame.K_KP5]:
-            self.typed_text += '5'
-        elif self.presses[pygame.K_KP6]:
-            self.typed_text += '6'
-        elif self.presses[pygame.K_KP7]:
-            self.typed_text += '7'
-        elif self.presses[pygame.K_KP8]:
-            self.typed_text += '8'
-        elif self.presses[pygame.K_KP9]:
-            self.typed_text += '9'
-        elif self.presses[pygame.K_KP_PERIOD]:
-            self.typed_text += '.'
-        elif self.presses[pygame.K_KP_DIVIDE]:
-            self.typed_text += '/'
-        elif self.presses[pygame.K_KP_MULTIPLY]:
-            self.typed_text += '*'
-        elif self.presses[pygame.K_KP_MINUS]:
-            self.typed_text += '-'
-        elif self.presses[pygame.K_KP_PLUS]:
-            self.typed_text += '+'
-        elif self.presses[pygame.K_KP_ENTER]:
-            self.typing = False
-        elif self.presses[pygame.K_KP_EQUALS]:
-            self.typed_text += '='
+        elif all(bracket in pygame.key.name(event.key) for bracket in ['[', ']']):
+            self.typed_text += pygame.key.name(event.key)[1]
 
+        # all other keys
         elif event.key not in self.ignored_keys:
             self.typed_text += pygame.key.name(event.key)
+
 
     """Do actions based on a key press"""
     def actions(self):

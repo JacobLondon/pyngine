@@ -19,6 +19,10 @@ class Controller(object):
         self.interface = interface
         if clear:
             self.interface.clear()
+
+        self.screen_width = self.interface.resolution[0]
+        self.screen_height = self.interface.resolution[1]
+
         # interface with pygame to draw shapes/lines/areas
         self.painter = Painter(self.interface)
         
@@ -81,7 +85,6 @@ class Controller(object):
             if z in self.components:
                 print('Warning: overriding component at z index:', z)
             self.components[z] = component
-
 
     """Draw all components to screen in their z index order"""
     def draw(self):
@@ -213,8 +216,7 @@ class Controller(object):
 
         # close the controller and handle close actions
         self.close()
-
-    
+ 
     """Custom actions done every frame
     Meant to be overwritten by controller children
     """

@@ -20,8 +20,8 @@ class ExampleController(Controller):
         self.color_panel = Panel(self)
         self.color_panel.background = Color['blue']
         # set the panel size to be the size of the window
-        self.color_panel.width = self.interface.resolution[0]
-        self.color_panel.height = self.interface.resolution[1]
+        self.color_panel.width = self.screen_width
+        self.color_panel.height = self.screen_height
 
         # create a text label
         self.hello_world_label = Label(self, 'Hello, World!')
