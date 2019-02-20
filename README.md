@@ -17,3 +17,18 @@ Easily interface with Pygame to capture keyboard and mouse inputs.
 - Draw using Pygame's or build in Painter functions at z-indices using Drawers
 - Measure real frame time
 - Built in colors
+
+## Todo
+- Tutorial/examples
+-- each component
+-- drawers utilizing painters
+- multiline textbox option
+- all keydown actions initialized in parent controller/keyboard
+- remove constants
+- font size relative to screen size
+-- remove direction
+- remove initialize_components, just use constructor
+- is it possible to user drawers? have all methods been initialized yet?
+- gui for building guis
+--save controller formats to json
+--load controller formats from json

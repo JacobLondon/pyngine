@@ -33,11 +33,10 @@ class ExampleController(Controller):
         # to center the button on the screen, create a layout
         # all controllers have a background_panel which is the size of the screen
         # this creates a way of getting the center of any panel
-        self.example_layout = Relative(self.background_panel)
         # anchor the button at its center (top left is default)
         self.example_button.anchor = Anchor.center
-        # set the location of the panel at the center of background_panel
-        self.example_button.loc = self.example_layout.center
+        # set the location of the panel at the center of the screen
+        self.example_button.loc = self.screen_relative.center
 
     '''Example method to toggle the visibility of color panel
     '''

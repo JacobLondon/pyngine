@@ -3,7 +3,7 @@ from threading import Thread, active_count as active_threads
 from math import pi
 
 from .graphics import Painter, Color
-from .gui import Panel
+from .gui import Panel, Grid, Relative
 from .keyboard import Keyboard
 from .mouse import Mouse
 
@@ -51,6 +51,10 @@ class Controller(object):
         self.background_panel.width = interface.resolution[0]
         self.background_panel.height = interface.resolution[1]
         self.background_panel.background = Color['gray5']
+
+        # create default screen layouts based on background panel
+        self.screen_grid = Grid(self.background_panel, self.interface.tile_width, self.interface.tile_height)
+        self.screen_relative = Relative(self.background_panel)
 
         # clear is the same as interface's clear
         self.clear = self.interface.clear
