@@ -1,5 +1,6 @@
 import sys
 sys.path.append('..')
+import pygame
 
 from tools import *
 
@@ -12,6 +13,11 @@ class ExampleController(Controller):
     def initialize_components(self):
         
         self.text = Textbox(self)
+
+        #self.test_event = Event(controller=self, key=pygame.K_ESCAPE, action=self.test)
+
+    def test(self):
+        print('test')
 
 if __name__ == '__main__':
     interface = Interface()

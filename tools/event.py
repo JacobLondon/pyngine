@@ -5,6 +5,3 @@ class Event(object):
         self.key = key
         self.action = action
         controller.add_event(self)
-
-    def action(self):
-        pass
