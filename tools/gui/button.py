@@ -5,7 +5,7 @@ from ..graphics import Color
 from .component import Component
 from .panel import Panel
 from .label import Label
-from .layout import Anchor, Relative
+from .layout import Relative
 
 """Let user click in a designated area
 to perform an action set by the controller
@@ -38,7 +38,7 @@ class Button(Component):
 
             # use a label as the text on the button
             self.label = Label(self.controller, self.text, parent=self)
-            self.label.anchor = Anchor.center
+            self.label.anchor = self.center
 
         """Load all of the attributes of button
         and all of its subcomponents

@@ -6,7 +6,7 @@ from ..constants import Font
 from .component import Component
 from .panel import Panel
 from .label import Label
-from .layout import Anchor, Relative
+from .layout import Relative
 
 """Box for users to type text into"""
 class Textbox(Component):
@@ -121,5 +121,11 @@ class Textbox(Component):
             self.cursor_label.visible = not self.cursor_label.visible
             time.sleep(self.cursor_rate)
 
+            # stop the cursor flashing when it should not be
+            if not self.controller.keyboard.typing:
+                self.focused = False
+                break
+
+        # reset the cursor state to be gone
         self.cursor_active = False
         self.cursor_label.visible = False

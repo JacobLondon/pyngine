@@ -3,7 +3,7 @@ import pygame
 from ..graphics import Color
 from ..constants import Font
 from ..mouse import Mouse
-from .layout import Anchor, Grid
+from .layout import Grid
 from .component import Component
 from .panel import Panel
 
@@ -40,7 +40,7 @@ class Listbox(Component):
             self.subcomponents[i].loc = self.item_layout.get_pixel(0, i - self.scrolled_index)
             self.subcomponents[i].width = self.width
             self.subcomponents[i].height = self.item_height
-            self.subcomponents[i].anchor = Anchor.northeast
+            self.subcomponents[i].anchor = self.northeast
 
             # set visibility if on/off scrolled area
             if i < self.scrolled_index:

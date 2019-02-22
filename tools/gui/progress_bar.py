@@ -5,7 +5,7 @@ from ..constants import Font
 from .component import Component
 from .panel import Panel
 from .label import Label
-from .layout import Anchor, Relative
+from .layout import Relative
 
 """A progress bar for showing progress on a task"""
 class Bar(Component):
@@ -25,7 +25,7 @@ class Bar(Component):
         self.back_panel = Panel(self.controller, parent=self)
         self.front_panel = Panel(self.controller, parent=self)
         self.label = Label(self.controller, self.text, parent=self)
-        self.label.anchor = Anchor.center
+        self.label.anchor = self.center
 
     """Load all subcomponents to be in the correct order"""
     def load(self):
@@ -47,7 +47,7 @@ class Bar(Component):
         self.front_panel.width = self.width * self.percentage / 100
         self.front_panel.height = self.height
         self.front_panel.background = self.foreground
-        self.front_panel.anchor = Anchor.northwest
+        self.front_panel.anchor = self.northwest
         self.front_panel.visible = self.visible
         self.front_panel.load()
 

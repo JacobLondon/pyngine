@@ -39,7 +39,7 @@ class Mouse(object):
     def lock_update(self):
         # center mouse
         if self.locked:    
-            #      
+            # control direction based on movement
             self.yaw += float(self.dx * self.controller.delta_time * self.sensitivity)
             self.pitch += float(self.dy * self.controller.delta_time * self.sensitivity)
             self.yaw %= 2.0 * pi
@@ -104,15 +104,19 @@ class Mouse(object):
             self.l_clicked_x, self.l_clicked_y = pygame.mouse.get_pos()
             self.controller.keyboard.typing = copy.copy(self.controller.background_panel.focused)
             self.l_click_down()
+            
         if self.presses[Mouse.m_click]:
             self.m_clicked_x, self.m_clicked_y = pygame.mouse.get_pos()
             self.m_click_down()
+
         if self.presses[Mouse.r_click]:
             self.r_clicked_x, self.r_clicked_y = pygame.mouse.get_pos()
             self.r_click_down()
+
         if self.presses[Mouse.scroll_up]:
             self.scroll_up()
             self.presses[Mouse.scroll_up] = False
+
         if self.presses[Mouse.scroll_down]:
             self.scroll_down()
             self.presses[Mouse.scroll_down] = False

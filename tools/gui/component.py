@@ -4,7 +4,6 @@ from ..graphics import Color
 from ..constants import Font
 from ..mouse import Mouse
 from .screen_object import ScreenObject
-from .layout import Anchor
 
 """Parent component
 Handles controller z index insertion, focus, and relative anchoring
@@ -32,12 +31,19 @@ class Component(ScreenObject):
         self.pressed = False    # true when pressing first becomes true
         self.hovering = False   # true when mouse is over the component
 
+        # anchor identifiers
+        self.northwest = 0
+        self.northeast = 1
+        self.southeast = 2
+        self.southwest = 3
+        self.center = 4
+
         # default visual characteristics
         self.text = ''
         self.font = Font.standard
         self.foreground = Color['white']
         self.background = Color['black']
-        self.anchor = Anchor.northwest
+        self.anchor = self.northwest
         self.anchored_loc = (0, 0)
 
     """Returns self.text at (x, y)"""
@@ -114,15 +120,15 @@ class Component(ScreenObject):
     """Set the relative location determined by the anchored specified"""
     def set_anchor(self):
 
-        if self.anchor == Anchor.northwest:
+        if self.anchor == self.northwest:
             self.anchored_loc = self.loc
-        elif self.anchor == Anchor.northeast:
+        elif self.anchor == self.northeast:
             self.anchored_loc = (self.loc[0] - self.width, self.loc[1])
-        elif self.anchor == Anchor.southwest:
+        elif self.anchor == self.southwest:
             self.anchored_loc = (self.loc[0], self.loc[1] - self.height)
-        elif self.anchor == Anchor.southeast:
+        elif self.anchor == self.southeast:
             self.anchored_loc = (self.loc[0] - self.width, self.loc[1] - self.height)
-        elif self.anchor == Anchor.center:
+        elif self.anchor == self.center:
             self.anchored_loc = (self.loc[0] - self.width / 2, self.loc[1] - self.height / 2)
 
     """Determine if the given coordinates are within the bounds of itself"""

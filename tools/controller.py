@@ -2,7 +2,6 @@ import pygame, time, copy, re, time, collections
 from threading import Thread, active_count as active_threads
 from math import pi
 
-from .event import Event
 from .graphics import Painter, Color
 from .gui import Panel, Grid, Relative
 from .keyboard import Keyboard
@@ -20,6 +19,8 @@ class Controller(object):
         self.interface = interface
         if clear:
             self.interface.clear()
+        # clear is the same as interface's clear
+        self.clear = self.interface.clear
 
         self.screen_width = self.interface.resolution[0]
         self.screen_height = self.interface.resolution[1]
@@ -40,6 +41,7 @@ class Controller(object):
         # control input
         self.keyboard = Keyboard(self)
         self.mouse = Mouse(self)
+        # all custom key events defined by the user
         self.events = {}
 
         # do regularly in a different thread
@@ -62,8 +64,6 @@ class Controller(object):
         self.screen_grid = Grid(self.background_panel, self.interface.tile_width, self.interface.tile_height)
         self.screen_relative = Relative(self.background_panel)
 
-        # clear is the same as interface's clear
-        self.clear = self.interface.clear
 
     """Get the component.text and its z index for all components"""
     def __str__(self):
@@ -213,11 +213,10 @@ class Controller(object):
             t.start()
 
             # receive keyboard/mouse input
-            self.keyboard.actions()
             self.mouse.actions()
-            #TODO
-            #self.call_events()
-            #print(self.events)
+            
+            # call all custom user defined events
+            self.call_events()
 
             # custom actions defined by child
             self.custom_actions()

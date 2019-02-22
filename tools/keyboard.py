@@ -11,6 +11,7 @@ class Keyboard(object):
         self.shift = False
         self.typed_text = ''
 
+        # key presses which are not displayed as text
         self.ignored_keys = [
             pygame.K_CAPSLOCK, pygame.K_LSHIFT, pygame.K_RSHIFT,
             pygame.K_LCTRL, pygame.K_RCTRL, pygame.K_LALT, pygame.K_RALT,
@@ -21,6 +22,7 @@ class Keyboard(object):
             pygame.K_F1, pygame.K_F2, pygame.K_F3, pygame.K_F4, pygame.K_F5, pygame.K_F6,
             pygame.K_F7, pygame.K_F8, pygame.K_F9, pygame.K_F10, pygame.K_F11, pygame.K_F12]
 
+        # keys when shifted
         self.shifted_keys = {
             pygame.K_1:'!', pygame.K_2:'@', pygame.K_3:'#',
             pygame.K_4:'$', pygame.K_5:'%', pygame.K_6:'^',
@@ -65,67 +67,3 @@ class Keyboard(object):
         # all other keys
         elif event.key not in self.ignored_keys:
             self.typed_text += pygame.key.name(event.key)
-
-
-    """Do actions based on a key press"""
-    def actions(self):
-
-        self.custom_key_actions()
-
-        if self.presses[pygame.K_RETURN]:
-            self.return_keydown()
-        if self.presses[pygame.K_ESCAPE]:
-            self.escape_keydown()
-        if self.presses[pygame.K_LEFT]:
-            self.left_keydown()
-        if self.presses[pygame.K_RIGHT]:
-            self.right_keydown()
-        if self.presses[pygame.K_UP]:
-            self.up_keydown()
-        if self.presses[pygame.K_DOWN]:
-            self.down_keydown()
-
-        if self.presses[pygame.K_w]:
-            self.w_keydown()
-        if self.presses[pygame.K_a]:
-            self.a_keydown()
-        if self.presses[pygame.K_s]:
-            self.s_keydown()
-        if self.presses[pygame.K_d]:
-            self.d_keydown()
-        if self.presses[pygame.K_SPACE]:
-            self.space_keydown()
-        if self.presses[pygame.K_LSHIFT]:
-            self.lshift_keydown()
-
-    # let the user define custom key checks
-    """Meant to be assigned in controller to define
-    custom sets of key presses"""
-    def custom_key_actions(self):
-        pass
-
-    def return_keydown(self):
-        pass
-    def escape_keydown(self):
-        pass
-    def left_keydown(self):
-        pass
-    def right_keydown(self):
-        pass
-    def up_keydown(self):
-        pass
-    def down_keydown(self):
-        pass
-
-    def w_keydown(self):
-        pass
-    def a_keydown(self):
-        pass
-    def s_keydown(self):
-        pass
-    def d_keydown(self):
-        pass
-    def space_keydown(self):
-        pass
-    def lshift_keydown(self):
-        pass

@@ -34,7 +34,7 @@ class ExampleController(Controller):
         # all controllers have a background_panel which is the size of the screen
         # this creates a way of getting the center of any panel
         # anchor the button at its center (top left is default)
-        self.example_button.anchor = Anchor.center
+        self.example_button.anchor = self.example_button.center
         # set the location of the panel at the center of the screen
         self.example_button.loc = self.screen_relative.center
 
