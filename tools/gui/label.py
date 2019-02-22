@@ -1,6 +1,5 @@
 import pygame
 
-from ..constants import Font
 from .component import Component
 
 """A simple component used for displaying text"""

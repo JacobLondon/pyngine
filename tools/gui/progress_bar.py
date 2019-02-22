@@ -1,7 +1,6 @@
 import pygame
 
 from ..graphics import Color
-from ..constants import Font
 from .component import Component
 from .panel import Panel
 from .label import Label
@@ -18,7 +17,7 @@ class Bar(Component):
         # loading bar has text over the loading color
         self.background = Color['darkgray']
         self.foreground = Color['green']
-        self.font = Font.large
+        self.font = self.controller.font['large']
         self.width, self.height = self.font.size(self.text)
 
         # panels for front/back, label for percentage text

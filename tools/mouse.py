@@ -37,26 +37,25 @@ class Mouse(object):
 
     """Called every frame to lock the mouse if applicable"""
     def lock_update(self):
-        # center mouse
-        if self.locked:    
-            # control direction based on movement
-            self.yaw += float(self.dx * self.controller.delta_time * self.sensitivity)
-            self.pitch += float(self.dy * self.controller.delta_time * self.sensitivity)
-            self.yaw %= 2.0 * pi
-            self.pitch %= 2.0 * pi
-            
-            # set vel to 0 if it is small else smooth the slowdown
-            if abs(self.dx) < self.cutoff:
-                self.dx = 0.0
-            else:
-                self.dx *= self.smoothing
+         
+        # control direction based on movement
+        self.yaw += float(self.dx * self.controller.delta_time * self.sensitivity)
+        self.pitch += float(self.dy * self.controller.delta_time * self.sensitivity)
+        self.yaw %= 2.0 * pi
+        self.pitch %= 2.0 * pi
+        
+        # set vel to 0 if it is small else smooth the slowdown
+        if abs(self.dx) < self.cutoff:
+            self.dx = 0.0
+        else:
+            self.dx *= self.smoothing
 
-            if abs(self.dy) < self.cutoff:
-                self.dy = 0.0
-            else:
-                self.dy *= self.smoothing
+        if abs(self.dy) < self.cutoff:
+            self.dy = 0.0
+        else:
+            self.dy *= self.smoothing
 
-            self.fix_mouse()
+        self.fix_mouse()
     
     """Called every time the mouse moves to track position
     Calculates dx/dy mouse movement if locked mode

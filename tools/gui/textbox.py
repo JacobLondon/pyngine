@@ -2,7 +2,6 @@ import pygame, copy, time
 from threading import Thread
 
 from ..graphics import Color
-from ..constants import Font
 from .component import Component
 from .panel import Panel
 from .label import Label
@@ -22,7 +21,7 @@ class Textbox(Component):
 
         self.background = Color['white']
         self.foreground = Color['black']
-        self.font = Font.large
+        self.font = self.controller.font['large']
 
         # textbox made with a panel
         self.panel = Panel(self.controller, parent=self)

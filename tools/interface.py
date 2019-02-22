@@ -1,7 +1,6 @@
 import pygame, os
 
 from .graphics import Color, Image
-from .constants import Font
 
 """Pygame interface for controller to use.
 
@@ -18,12 +17,13 @@ class Interface(object):
 
         # screen definitions
         self.resolution = resolution
+        self.aspect_ratio = resolution[0] / resolution[1]
         self.tile_width = resolution[0] / grid_width
         self.tile_height = resolution[1] / grid_height
         self.center = (self.resolution[0] / 2, self.resolution[1] / 2)
         self.area = [0, 0, self.resolution[0], self.resolution[1]]
 
-        # how long each from SHOULD take
+        # how long each frame SHOULD take
         self.refresh_rate = refresh_rate
         self.frame_time = 1 / self.refresh_rate
 

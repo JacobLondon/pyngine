@@ -6,7 +6,7 @@ from tools import *
 class ExampleController(Controller):
 
     def __init__(self, interface):
-        Controller.__init__(self, interface, debug=False)
+        Controller.__init__(self, interface, debug=True)
 
         # test number modification
         self.numbers = 0
@@ -25,9 +25,9 @@ class ExampleController(Controller):
         self.number_label.anchor = self.number_label.center
         
         # events to do the custom actions
-        Event(self, key=(pygame.K_LCTRL, pygame.K_UP,), action=self.increase)
-        Event(self, key=(pygame.K_LSHIFT, pygame.K_DOWN,), action=self.decrease)
-        Event(self, key=(pygame.K_r,), action=self.reset)
+        Event(self, action=self.increase, keys=(pygame.K_LCTRL, pygame.K_UP,))
+        Event(self, action=self.decrease, keys=(pygame.K_LSHIFT, pygame.K_DOWN,))
+        Event(self, action=self.reset, keys=(pygame.K_r,))
 
     def increase(self):
         self.numbers += 1

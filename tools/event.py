@@ -8,7 +8,7 @@ class Event(object):
     @param key: tuple of pygame.key presses
     @param action: a function to call on when the key combination is pressed
     """
-    def __init__(self, controller, key=(), action=None):
-        self.key = key
+    def __init__(self, controller, action=None, keys=()):
+        self.keys = keys
         self.action = action
         controller.add_event(self)

@@ -1,6 +1,5 @@
 import pygame
 
-from ..constants import Font
 from ..graphics import Color
 from .component import Component
 from .panel import Panel
@@ -25,7 +24,7 @@ class Button(Component):
             self.background = Color['azure4']
             self.foreground = Color['black']
             self.hover = Color['gray80']
-            self.font = Font.button
+            self.font = self.controller.font['large']
 
             # adjust the button to the given scale size
             self.width, self.height = self.font.size(self.text)

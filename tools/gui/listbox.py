@@ -1,7 +1,6 @@
 import pygame
 
 from ..graphics import Color
-from ..constants import Font
 from ..mouse import Mouse
 from .layout import Grid
 from .component import Component

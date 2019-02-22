@@ -6,6 +6,7 @@ from .graphics import Painter, Color
 from .gui import Panel, Grid, Relative
 from .keyboard import Keyboard
 from .mouse import Mouse
+from .font import Font
 
 """Handle drawing things to screen and user input from mouse/keyboard.
 
@@ -21,12 +22,13 @@ class Controller(object):
             self.interface.clear()
         # clear is the same as interface's clear
         self.clear = self.interface.clear
-
         self.screen_width = self.interface.resolution[0]
         self.screen_height = self.interface.resolution[1]
 
         # interface with pygame to draw shapes/lines/areas
         self.painter = Painter(self.interface)
+        # default font for the controller
+        self.font = Font('Calibri', self.interface)
         
         # tools for tracking fps/time to update
         self.update_time = time.time()
@@ -44,7 +46,7 @@ class Controller(object):
         # all custom key events defined by the user
         self.events = {}
 
-        # do regularly in a different thread
+        # regularly do every tick
         self.tick_thread = Thread(target=self.tick)
         self.tick_rate = tick_rate
         self.ticking = True
@@ -90,18 +92,18 @@ class Controller(object):
 
     """Add an event specified by a key and an action function"""
     def add_event(self, event):
-        self.events[event.key] = event
+        self.events[event.keys] = event
 
     """Call all events specified by the user the they are occurring"""
     def call_events(self):
         # each key is a tuple with a combo of keypresses
-        for key in self.events.keys():
+        for keycombo in self.events.keys():
             # check to see if all given keys are pressed
-            pressed = all(self.keyboard.presses[k] for k in key)
+            pressed = all(self.keyboard.presses[k] for k in keycombo)
 
             # do the action if the combination is fulfilled
-            if pressed or self.mouse.presses[key]:
-                self.events[key].action()
+            if pressed or self.mouse.presses[keycombo]:
+                self.events[keycombo].action()
 
     """Draw all components to screen in their z index order"""
     def draw(self):
@@ -131,24 +133,6 @@ class Controller(object):
     def tick_actions(self):
         pass
 
-    """Do every frame in another thread from input"""
-    def update(self):
-        
-        # if mouse is locked, reset it to locked position
-        self.mouse.lock_update()
-
-        # clear screen before drawing
-        self.clear()
-        self.draw()
-
-        # pygame update
-        self.interface.update()
-
-        # record update
-        self.delta_time = self.elapsed_time()
-        self.update_time = time.time()
-        self.fps = 1 / self.delta_time
-
     """Find how much time has passed since the last update"""
     def elapsed_time(self):
         t = time.time() - self.update_time
@@ -160,10 +144,6 @@ class Controller(object):
     """
     def setup(self):
         pass
-
-    """Method for stopping the program loop"""
-    def stop(self):
-        self.done = True
 
     """Handle closing the controller by
     stopping threads, doing custom close actions,
@@ -196,6 +176,32 @@ class Controller(object):
         # by default, close the program
         self.interface.close()
 
+     
+    """Custom actions done every frame
+    Meant to be overwritten by controller children
+    """
+    def custom_actions(self):
+        pass
+
+    """Everyframe, update the screen"""
+    def handle_update(self):
+
+        # if mouse is locked, reset it to locked position
+        if self.mouse.locked:
+            self.mouse.lock_update()
+
+        # clear screen before drawing
+        self.clear()
+        self.draw()
+
+        # pygame update
+        self.interface.update()
+
+        # record update
+        self.delta_time = self.elapsed_time()
+        self.update_time = time.time()
+        self.fps = 1 / self.delta_time
+
     """The program loop
     Includes pre-program loop actions, the loop, and updating
     """
@@ -208,14 +214,14 @@ class Controller(object):
         self.initialize_components()
         self.load()
         self.setup()
+
+        # start program
         self.tick_thread.start()
 
-        # the program loop
         while not self.done:
-
-            # update in another thread
-            t = Thread(target=self.update)
-            t.start()
+        
+            update_thread = Thread(target=self.handle_update)
+            update_thread.start()
 
             # receive keyboard/mouse input
             self.mouse.actions()
@@ -226,21 +232,22 @@ class Controller(object):
             # custom actions defined by child
             self.custom_actions()
 
-            # handle all events per frame
+            # handle all pygame events per frame
             for event in pygame.event.get():
                 self.handle_event(event)
-            
-            # ensure the updating has finished
-            t.join()
+
+            update_thread.join()
+
+        # stop program
+        self.tick_thread.join()
 
         # close the controller and handle close actions
         self.close()
- 
-    """Custom actions done every frame
-    Meant to be overwritten by controller children
-    """
-    def custom_actions(self):
-        pass
+
+    """Method for stopping the program loop"""
+    def stop(self):
+        self.done = True
+        self.ticking = False
 
     """Given a pygame event, record it in its
     respective mouse/keyboard presses DefaultDict.
@@ -250,7 +257,7 @@ class Controller(object):
 
         # top right corner X
         if event.type == pygame.QUIT:
-            self.done = True
+            self.stop()
             self.quit = True
 
         # player starts doing actions
@@ -278,3 +285,4 @@ class Controller(object):
         # mouse moves
         if event.type == pygame.MOUSEMOTION:
             self.mouse.motion_update()
+ 

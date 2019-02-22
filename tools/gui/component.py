@@ -1,7 +1,6 @@
 import pygame, copy
 
 from ..graphics import Color
-from ..constants import Font
 from ..mouse import Mouse
 from .screen_object import ScreenObject
 
@@ -40,7 +39,7 @@ class Component(ScreenObject):
 
         # default visual characteristics
         self.text = ''
-        self.font = Font.standard
+        self.font = self.controller.font['standard']
         self.foreground = Color['white']
         self.background = Color['black']
         self.anchor = self.northwest
