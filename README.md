@@ -31,3 +31,6 @@ Easily interface with Pygame to capture keyboard and mouse inputs.
 - gui for building guis
 - save controller formats to json
 - load controller formats from json
+
+## Known Issues
+- Bar component does not always fill up to 100% when finished

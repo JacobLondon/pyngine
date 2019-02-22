@@ -16,9 +16,9 @@ class ExampleController(Controller):
         
         self.inc_label = Label(self, 'press ctrl+up_arrow to increment')
         self.dec_label = Label(self, 'press lshift + down_arrow to decrement')
-        self.dec_label.loc = self.screen_grid.get_pixel(0, 1)
+        self.dec_label.loc = self.screen_grid.get_pixel(0, 3)
         self.res_label = Label(self, 'press r to reset to zero')
-        self.res_label.loc = self.screen_grid.get_pixel(0, 2)
+        self.res_label.loc = self.screen_grid.get_pixel(0, 6)
 
         self.number_label = Label(self, str(self.numbers))
         self.number_label.loc = self.screen_relative.center

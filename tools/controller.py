@@ -63,7 +63,7 @@ class Controller(object):
         self.background_panel.background = Color['gray5']
 
         # create default screen layouts based on background panel
-        self.screen_grid = Grid(self.background_panel, self.interface.tile_width, self.interface.tile_height)
+        self.screen_grid = Grid(self.background_panel, self.interface.grid_width, self.interface.grid_height)
         self.screen_relative = Relative(self.background_panel)
 
 

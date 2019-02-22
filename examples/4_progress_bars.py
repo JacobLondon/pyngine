@@ -18,14 +18,14 @@ class ExampleController(Controller):
         self.start_button = Button(self, 'Start')
         self.start_button.action = self.start_timer
         self.reset_button = Button(self, 'Reset')
-        self.reset_button.loc = self.screen_grid.get_pixel(0, 2)
+        self.reset_button.loc = self.screen_grid.get_pixel(0, 8)
         self.reset_button.action = self.reset_timer
 
         # details about the timer duration, defaulting to 5s
         self.duration_label = Label(self, 'Duration (s)')
-        self.duration_label.loc = self.screen_grid.get_pixel(1, 7)
+        self.duration_label.loc = self.screen_grid.get_pixel(4, 29)
         self.duration_textbox = Textbox(self)
-        self.duration_textbox.loc = self.screen_grid.get_pixel(1, 8)
+        self.duration_textbox.loc = self.screen_grid.get_pixel(4, 32)
         self.duration_textbox.text = '5'
 
         # loading bar details and width setting

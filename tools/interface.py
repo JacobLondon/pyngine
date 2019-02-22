@@ -18,8 +18,10 @@ class Interface(object):
         # screen definitions
         self.resolution = resolution
         self.aspect_ratio = resolution[0] / resolution[1]
-        self.tile_width = resolution[0] / grid_width
-        self.tile_height = resolution[1] / grid_height
+        self.grid_width = grid_width
+        self.grid_height = grid_height
+        self.tile_width = resolution[0] / self.grid_width
+        self.tile_height = resolution[1] / self.grid_height
         self.center = (self.resolution[0] / 2, self.resolution[1] / 2)
         self.area = [0, 0, self.resolution[0], self.resolution[1]]
 
