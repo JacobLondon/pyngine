@@ -1,6 +1,5 @@
 import sys
 sys.path.append('..')
-import pygame
 
 from tools import *
 
@@ -12,12 +11,9 @@ class ExampleController(Controller):
     """Initialize components and their attributes here"""
     def initialize_components(self):
         
-        self.text = Textbox(self)
-        
-        Event(self, key=pygame.K_LCTRL, action=self.test)
-
-    def test(self):
-        print('test')
+        self.test_textbox = Textbox(self)
+        self.test_textbox.loc = self.screen_relative.center
+        self.test_textbox.anchor = self.test_textbox.center
 
 if __name__ == '__main__':
     interface = Interface()

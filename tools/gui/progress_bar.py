@@ -69,11 +69,11 @@ class Bar(Component):
     total_size: the total number of steps needed for 100%
     step: the step that the program is at
     '''
-    def increment(self, total_size, step):
-        if step > total_size:
+    def increment(self, num_steps, step):
+        if step >= num_steps:
             self.percentage = 100
         elif step > 0:
-            self.percentage = int(step / total_size * 100)
+            self.percentage = int(step / num_steps * 100)
         else:
             self.percentage = 0
 
@@ -82,4 +82,9 @@ class Bar(Component):
     """Set the bar to be full"""
     def complete(self):
         self.percentage = 100
+        self.load()
+
+    """Set the bar to be empty"""
+    def reset(self):
+        self.percentage = 0
         self.load()

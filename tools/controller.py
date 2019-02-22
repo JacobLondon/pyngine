@@ -94,8 +94,13 @@ class Controller(object):
 
     """Call all events specified by the user the they are occurring"""
     def call_events(self):
+        # each key is a tuple with a combo of keypresses
         for key in self.events.keys():
-            if self.keyboard.presses[key] or self.mouse.presses[key]:
+            # check to see if all given keys are pressed
+            pressed = all(self.keyboard.presses[k] for k in key)
+
+            # do the action if the combination is fulfilled
+            if pressed or self.mouse.presses[key]:
                 self.events[key].action()
 
     """Draw all components to screen in their z index order"""
