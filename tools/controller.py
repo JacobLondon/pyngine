@@ -248,6 +248,7 @@ class Controller(object):
     def stop(self):
         self.done = True
         self.ticking = False
+        self.quit = True
 
     """Given a pygame event, record it in its
     respective mouse/keyboard presses DefaultDict.
@@ -258,7 +259,6 @@ class Controller(object):
         # top right corner X
         if event.type == pygame.QUIT:
             self.stop()
-            self.quit = True
 
         # player starts doing actions
         elif event.type == pygame.KEYDOWN:
