@@ -10,7 +10,7 @@ class Font(object):
         # details about the font created
         self.name = font
         # scale is the ratio of screen width / number of grids wide the screen is
-        self.scale = interface.tile_width / 10
+        self.scale = interface.tile_width / 15
 
         # make a set of font point sizes for built in components to use
         self.set = {}
