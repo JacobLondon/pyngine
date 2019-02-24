@@ -57,9 +57,9 @@ class Listbox(Component):
 
         # scroll control
         if self.hovering:
-            if self.controller.mouse_presses[Mouse.scroll_up]:
+            if self.controller.mouse.presses[Mouse.scroll_up]:
                 self.scroll_up()
-            elif self.controller.mouse_presses[Mouse.scroll_down]:
+            elif self.controller.mouse.presses[Mouse.scroll_down]:
                 self.scroll_down()
 
     """Scroll up with bounds check"""
