@@ -16,7 +16,7 @@ Easily interface with Pygame to capture keyboard and mouse inputs.
 - Define grids for relative component placement
 - Draw using Pygame's or build in Painter functions at z-indices using Drawers
 - Measure real frame time
-- Built in colors, fonts
+- Built in colors
 
 ## Todo
 - Example for each component
