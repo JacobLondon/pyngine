@@ -8,7 +8,7 @@ complex drawing functionality
 class Drawer(object):
 
     def __init__(self, controller, refresh=None, load=None, z=0):
-        controller.add(self, z)
+        controller.add_component(self, z)
 
         if refresh is not None:
             self.refresh = refresh
