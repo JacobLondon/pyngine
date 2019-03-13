@@ -28,7 +28,7 @@ class Controller(object):
         # interface with pygame to draw shapes/lines/areas
         self.painter = Painter(self.interface)
         # default font for the controller
-        self.font = Font('Calibri', self.interface)
+        self.font = Font('Calibri', scale=1)
         
         # tools for tracking fps/time to update
         self.update_time = time.time()

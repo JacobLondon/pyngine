@@ -3,14 +3,14 @@ import pygame
 """Hold a set of fonts and allow for user defined fonts"""
 class Font(object):
 
-    def __init__(self, font, interface):
+    def __init__(self, font, scale):
 
         pygame.font.init()
 
         # details about the font created
         self.name = font
         # scale is the ratio of screen width / number of grids wide the screen is
-        self.scale = interface.tile_width / 15
+        self.scale = scale
 
         # make a set of font point sizes for built in components to use
         self.set = {}
