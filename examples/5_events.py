@@ -1,7 +1,7 @@
 import sys, pygame
 sys.path.append('..')
 
-from tools import *
+from util import *
 
 class ExampleController(Controller):
 

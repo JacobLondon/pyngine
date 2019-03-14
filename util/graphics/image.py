@@ -1,6 +1,6 @@
 import pygame, numpy as np
 
-from ..gui.screen_object import ScreenObject
+from ..components.screen_object import ScreenObject
 
 """Wrapper class for pygame's image functionality
 

@@ -1,12 +1,10 @@
-import pygame, time, copy, re, time, collections
+import pygame, time, copy, re, time, collections, json
 from threading import Thread, active_count as active_threads
 from math import pi
 
-from .graphics import Painter, Color
-from .gui import Panel, Grid, Relative
-from .keyboard import Keyboard
-from .mouse import Mouse
-from .font import Font
+from .graphics import Painter, Color, Font
+from .components import Panel, Grid, Relative
+from .input import Keyboard, Mouse
 
 """Handle drawing things to screen and user input from mouse/keyboard.
 
@@ -89,6 +87,23 @@ class Controller(object):
             if z in self.components:
                 print('Warning: overriding component at z index:', z)
             self.components[z] = component
+
+    """Save component json to file"""
+    def save_components(self, path=''):
+        if path == '':
+            path = 'components.json'
+        with open(path, 'w') as components_json:
+            json.dump(self.components, components_json)
+            print('saved')
+
+    """Load a json to components"""
+    def load_components(self, path=''):
+        if path == '':
+            path = 'components.json'
+
+        with open(path, 'r') as components_json:
+            self.components = json.load(components_json, object_pairs=collections.OrderedDict)
+            print('loaded')
 
     """Add an event specified by a key and an action function"""
     def add_event(self, event):

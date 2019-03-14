@@ -1,7 +1,7 @@
 import pygame, copy
 
 from ..graphics import Color
-from ..mouse import Mouse
+from ..input import Mouse
 from .screen_object import ScreenObject
 
 """Parent component

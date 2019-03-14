@@ -1,4 +1,4 @@
-import sys
+import sys, pygame
 sys.path.append('..')
 
 from util import *
@@ -11,15 +11,10 @@ class ExampleController(Controller):
     '''Initialize components and their attributes here
     '''
     def initialize_components(self):
-        '''
-        The order you initialize is the order components are layered
-        unless a z index is specified
-        '''
 
         # create a panel to make a background color
         self.color_panel = Panel(self)
         self.color_panel.background = Color['blue']
-        # set the panel size to be the size of the window
         self.color_panel.width = self.screen_width
         self.color_panel.height = self.screen_height
 
@@ -28,15 +23,14 @@ class ExampleController(Controller):
         
         # create a button
         self.example_button = Button(self, 'Toggle Panel')
-        # the button needs an action: create a func and assign it to action
         self.example_button.action = self.toggle_color_panel
-        # to center the button on the screen, create a layout
-        # all controllers have a background_panel which is the size of the screen
-        # this creates a way of getting the center of any panel
-        # anchor the button at its center (top left is default)
         self.example_button.anchor = self.example_button.center
-        # set the location of the panel at the center of the screen
         self.example_button.loc = self.screen_relative.center
+
+        # press s to save
+        Event(self, action=self.save_components, keys=(pygame.K_LCTRL, pygame.K_s,))
+        # press l to load
+        Event(self, action=self.load_components, keys=(pygame.K_LCTRL, pygame.K_l,))
 
     '''Example method to toggle the visibility of color panel
     '''
@@ -47,4 +41,4 @@ if __name__ ==  '__main__':
     interface = Interface()
     example = ExampleController(interface)
     example.run()
-    
+ 
