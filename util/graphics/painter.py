@@ -25,8 +25,8 @@ class Painter(object):
         pygame.draw.line(self.display, color, (x0, y0), (x1, y1))
 
     """Draw a circle given the top left corner of a surrounding square"""
-    def draw_circle(self, x, y, color=Color['white']):
-        pygame.draw.circle(self.display, color, (x, y))
+    def draw_circle(self, x, y, radius, color=Color['white']):
+        pygame.draw.circle(self.display, color, (x, y), radius)
 
     """Draw triangle border lines"""
     def draw_triangle(self, x0, y0, x1, y1, x2, y2, color=Color['white']):
