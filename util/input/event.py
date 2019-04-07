@@ -11,4 +11,10 @@ class Event(object):
     def __init__(self, controller, action=None, keys=()):
         self.keys = keys
         self.action = action
-        controller.add_event(self)
+        self.controller = controller
+        self.controller.add_event(self)
+
+    """Forcibly stop the input from being read until the next input"""
+    def halt(self):
+        for key in self.keys:
+            self.controller.keyboard.presses[key] = False
