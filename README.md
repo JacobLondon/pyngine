@@ -15,6 +15,12 @@ Within the ~/examples directory
 ## Hot Keys
 ![Hot Keys](/images/hot_keys.png)
 
+## Related Projects
+[Pyngine Rasterizer](https://github.com/JacobLondon/rasterization)
+
+[Pyngine  Connect Four](https://github.com/JacobLondon/ConnectFour)
+
+[Pyngine Multiplayer Game](https://github.com/JacobLondon/PeoplePlayingGames)
 # GUI
 Built into Pyngine, the following components allow for easy component implementation.
 - panels, labels
