@@ -1,8 +1,9 @@
 import pygame
 from collections import defaultdict
 
-"""Used by controllers to track keyboard input"""
 class Keyboard(object):
+    """@brief Used by controllers to track keyboard input.
+    """
 
     def __init__(self, controller):
         self.controller = controller
@@ -36,8 +37,9 @@ class Keyboard(object):
 
         self.presses = defaultdict(lambda: False)
 
-    """Set typed text based on a pygame keypress event"""
     def typing_actions(self, event):
+        """@brief Set typed text based on a pygame keypress event.
+        """
         self.shift = self.presses[pygame.K_RSHIFT] or \
             self.presses[pygame.K_LSHIFT]
 

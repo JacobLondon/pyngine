@@ -2,14 +2,22 @@ import pygame, os
 
 from .graphics import Color, Image
 
-"""Pygame interface for controller to use.
-
-Use defaults to simplify screen/display creation.
-Icon path is specified from top level of pyngine.
-"""
 class Interface(object):
+    """@brief Pygame interface for controller to use.
+
+    Use defaults to simplify screen/display creation.
+    Icon path is specified from top level of pyngine.
+    """
 
     def __init__(self, window_text='Pyngine', resolution=(400,400), grid_width=40, grid_height=40, refresh_rate=60, icon_path='icon.png'):
+        """@brief Initialize the Pygame Interface object. \\
+        @param window_text The text which appears on top of the window. \\
+        @param resolution The tuple which determines the (height, width) in pixels of the window. \\
+        @param grid_width Number of grids wide to use as a grid template. \\
+        @param grid_height Number of grids high to use as a grid template. \\
+        @param refresh_rate The target frame rate to run the window at. \\
+        @param icon_path The path to the window's icon relative to the top level of Pyngine.
+        """
 
         # pygame initialization
         pygame.init()
@@ -45,24 +53,27 @@ class Interface(object):
         # calling close is the same as calling pygame.quit()
         self.close = pygame.quit
 
-    """Return the x, y tile that the mouse is in."""
     def get_mouse_tile(self):
+        """@return The x, y tile that the mouse is in.
+        """
         x, y = pygame.mouse.get_pos()
         tx = x // self.tile_width
         ty = y // self.tile_height
         return (tx, ty)
 
-    """Return the top left x, y pixel that tile tx, ty is at"""
     def get_tile_pixel(self, tx, ty):
+        """@return The top left x, y pixel that tile tx, ty is at.
+        """
         return (tx * self.tile_width, ty * self.tile_height)
 
-    """Update Pygame based on clock and refresh rate."""
     def update(self):
-        # update loaded images
+        """@brief Update Pygame based on clock and refresh rate.
+        """
         pygame.display.update()
         self.clock.tick(self.refresh_rate)
 
-    """Set the screen to black"""
     def clear(self):
+        """@brief Set the screen to black
+        """
         pygame.draw.rect(self.display, Color['black'], self.area)
 

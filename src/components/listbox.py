@@ -6,10 +6,10 @@ from .layout import Grid
 from .component import Component
 from .panel import Panel
 
-"""Component to hold many subcomponents in a
-vertically scrolling list
-"""
 class Listbox(Component):
+    """@brief Component to hold many subcomponents in a
+    vertically scrolling list.
+    """
 
     def __init__(self, controller, parent=None, z=0):
         Component.__init__(self, controller, parent)
@@ -22,8 +22,9 @@ class Listbox(Component):
 
         self.background = Color['darkgray']
 
-    """Load all subcomponents and set their visiblity based on their index"""
     def load(self):
+        """@brief Load all subcomponents and set their visiblity based on their index.
+        """
         
         # calculate height by given height scaling
         self.item_height = self.height / self.num_visible_items * self.height_scaling
@@ -52,8 +53,9 @@ class Listbox(Component):
             # load all subcomponents to apply visibility, etc...
             self.subcomponents[i].load()
 
-    """Allow scrolling control if the mouse is over the listbox"""
     def refresh_actions(self):
+        """@brief Allow scrolling control if the mouse is over the listbox.
+        """
 
         # scroll control
         if self.hovering:
@@ -62,22 +64,26 @@ class Listbox(Component):
             elif self.controller.mouse.presses[Mouse.scroll_down]:
                 self.scroll_down()
 
-    """Scroll up with bounds check"""
     def scroll_up(self):
+        """@brief Scroll up with bounds check.
+        """
         if self.scrolled_index - 1 >= 0:
             self.scrolled_index -= 1
             self.load()
 
-    """Scroll down with bounds check"""
     def scroll_down(self):
+        """Scroll down with bounds check.
+        """
         if self.scrolled_index + self.num_visible_items < len(self.subcomponents):
             self.scrolled_index += 1
             self.load()
 
-    """Simple way of adding a component to the listbox"""
     def add(self, component):
+        """@brief Simple way of adding a component to the listbox.
+        """
         self.subcomponents.append(component)
 
-    """Simple way of removing a component to the listbox"""
     def remove(self, component):
+        """@brief Simple way of removing a component to the listbox.
+        """
         self.subcomponents.remove(component)

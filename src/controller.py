@@ -1,6 +1,10 @@
-import pygame, time, copy, re, time, collections, json
+import collections
+import copy
+import json
+import pygame
+import re
 from threading import Thread, active_count as active_threads
-from math import pi
+import time
 
 from .graphics import Painter, Color, Font
 from .components import Panel, Grid, Relative

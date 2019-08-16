@@ -6,8 +6,9 @@ from .panel import Panel
 from .label import Label
 from .layout import Relative
 
-"""A progress bar for showing progress on a task"""
 class Bar(Component):
+    """@brief A progress bar for showing progress on a task.
+    """
     
     def __init__(self, controller, parent=None, z=0):
         Component.__init__(self, controller, parent, z)
@@ -26,8 +27,9 @@ class Bar(Component):
         self.label = Label(self.controller, self.text, parent=self)
         self.label.anchor = self.center
 
-    """Load all subcomponents to be in the correct order"""
     def load(self):
+        """@brief Load all subcomponents to be in the correct order.
+        """
 
         self.set_anchor()
 
@@ -60,15 +62,16 @@ class Bar(Component):
         self.label.visible = self.visible
         self.label.load()
 
-    """Every frame check to see if the percentage changed"""
     def refresh_actions(self):
+        """@brief Every frame check to see if the percentage changed.
+        """
         self.text = str(self.percentage) + ' %'
 
-    '''Increase the percentage bar showing
-    total_size: the total number of steps needed for 100%
-    step: the step that the program is at
-    '''
     def increment(self, num_steps, step):
+        """@brief Increase the percentage bar showing. \\
+        @param num_steps The total number of steps needed for 100%. \\
+        @param step The step that the program is at.
+        """
         if step >= num_steps:
             self.percentage = 100
         elif step > 0:
@@ -78,12 +81,14 @@ class Bar(Component):
 
         self.load()
 
-    """Set the bar to be full"""
     def complete(self):
+        """@brief Set the bar to be full.
+        """
         self.percentage = 100
         self.load()
 
-    """Set the bar to be empty"""
     def reset(self):
+        """@brief Set the bar to be empty.
+        """
         self.percentage = 0
         self.load()

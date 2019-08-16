@@ -1,11 +1,11 @@
 
-"""Acts as a component, but with custom functions that are
-defined within the controller and passed into refresh/load
-
-This allows for z index loading which may have
-complex drawing functionality
-"""
 class Drawer(object):
+    """@brief Acts as a component, but with custom functions that are
+    defined within the controller and passed into refresh/load.
+
+    This allows for z index loading which may have
+    complex drawing functionality.
+    """
 
     def __init__(self, controller, refresh=None, load=None, z=0):
         controller.add_component(self, z)

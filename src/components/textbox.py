@@ -7,8 +7,9 @@ from .panel import Panel
 from .label import Label
 from .layout import Relative
 
-"""Box for users to type text into"""
 class Textbox(Component):
+    """@brief Box for users to type text into.
+    """
 
     def __init__(self, controller, num_chars=15, parent=None, z=0):
         Component.__init__(self, controller, parent, z)
@@ -39,8 +40,9 @@ class Textbox(Component):
         self.cursor_label = Label(self.controller, self.cursor_char)
         self.cursor_label.visible = False
 
-    """Load all subcomponents of textbox"""
     def load(self):
+        """@brief Load all subcomponents of textbox.
+        """
 
         self.set_anchor()
 
@@ -72,11 +74,11 @@ class Textbox(Component):
         self.cursor_label.background = None
         self.cursor_label.load()
 
-    """Every frame, check if typing is occurring
-    If it is, then load text from the controller's keyboard,
-    and handle cursor flashing
-    """
     def refresh_actions(self):
+        """@brief Every frame, check if typing is occurring.
+        If it is, load text from the controller's keyboard,
+        and handle cursor flashing.
+        """
         # typing setup
         if self.focused and not self.typing:
             self.controller.keyboard.typing = True
@@ -108,14 +110,16 @@ class Textbox(Component):
             self.cursor_active = True
             Thread(target=self.flash_cursor, daemon=True).start()
 
-    """Refresh all subcomponents after typing has been checked"""
     def draw(self):
+        """@brief Refresh all subcomponents after typing has been checked.
+        """
         self.panel.refresh()
         self.label.refresh()
         self.cursor_label.refresh()
 
-    """Running and close down of cursor flashing"""
     def flash_cursor(self):
+        """@brief Running and close down of cursor flashing.
+        """
         while self.typing:
             self.cursor_label.visible = not self.cursor_label.visible
             time.sleep(self.cursor_rate)

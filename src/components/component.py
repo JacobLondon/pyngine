@@ -4,12 +4,16 @@ from ..graphics import Color
 from ..input import Mouse
 from .screen_object import ScreenObject
 
-"""Parent component
-Handles controller z index insertion, focus, and relative anchoring
-"""
 class Component(ScreenObject):
+    """@brief Parent component handles controller z index insertion, focus, and relative anchoring
+    """
 
     def __init__(self, controller, parent=None, z=0):
+        """@brief Definition of a Component, not meant to be created, just inherited. \\
+        @param controller Reference to the controller the Component is in. \\
+        @param parent The parent Component object in case Button should be a nested object. \\
+        @param z The z index to put the Button on the Controller window at.
+        """
         ScreenObject.__init__(self)
         pygame.font.init()
 
@@ -45,21 +49,21 @@ class Component(ScreenObject):
         self.anchor = self.northwest
         self.anchored_loc = (0, 0)
 
-    """Returns self.text at (x, y)"""
     def __str__(self):
+        """@return 'self.text at (x, y)'
+        """
         return "'" + str(self.text) + "' at " + str(self.anchored_loc)
 
-    """Method meant to be overwritten by children to
-    initialize visual attributes/subcomponents
-    """
     def load(self):
+        """@brief Method meant to be overwritten by children to
+        initialize visual attributes/subcomponents
+        """
         pass
 
-    """Called every frame
-    Handles giving children the same visibility, determining
-    pressing/hovering/focus/drawing
-    """
     def refresh(self):
+        """@brief Called every frame, handles giving children the same visibility,
+        determining pressing/hovering/focus/drawing
+        """
         # ensure visibility is the same to children components
         for sub in self.subcomponents:
             sub.visible = self.visible
@@ -87,8 +91,9 @@ class Component(ScreenObject):
         self.refresh_actions()
         self.draw()
 
-    """Give/take focus from items clicked on"""
     def determine_focus(self):
+        """@brief Give/take focus from items clicked on
+        """
         # component started being pressed on / positive edge of click
         if self.pressing and not self.pressed:
             self.pressed = True
@@ -103,21 +108,22 @@ class Component(ScreenObject):
             self.pressed = False
             self.focused = True
 
-    """Do every frame if the component is visible.
-    Meant to be overwritten by component children
-    """
     def refresh_actions(self):
+        """@brief Do every frame if the component is visible.
+        Meant to be overwritten by component children.
+        """
         pass
 
-    """Do every frame if the component is visible.
-    Meant to be overwritten by component children,
-    called after refresh_actions.
-    """
     def draw(self):
+        """@brief Do every frame if the component is visible.
+        Meant to be overwritten by component children,
+        called after refresh_actions.
+        """
         pass
 
-    """Set the relative location determined by the anchored specified"""
     def set_anchor(self):
+        """@brief Set the relative location determined by the anchored specified.
+        """
 
         if self.anchor == self.northwest:
             self.anchored_loc = self.loc
@@ -130,8 +136,9 @@ class Component(ScreenObject):
         elif self.anchor == self.center:
             self.anchored_loc = (self.loc[0] - self.width / 2, self.loc[1] - self.height / 2)
 
-    """Determine if the given coordinates are within the bounds of itself"""
     def within(self, x, y):
+        """@brief Determine if the given coordinates are within the bounds of itself.
+        """
         left = self.anchored_loc[0]
         right = self.anchored_loc[0] + self.width
         top = self.anchored_loc[1]

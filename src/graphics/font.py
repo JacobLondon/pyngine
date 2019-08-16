@@ -1,7 +1,8 @@
 import pygame
 
-"""Hold a set of fonts and allow for user defined fonts"""
 class Font(object):
+    """@brief Hold a set of fonts and allow for user defined fonts.
+    """
 
     def __init__(self, font, scale):
 
@@ -19,19 +20,23 @@ class Font(object):
         self.set['standard'] = self.named_font(20)
         self.set['large'] = self.named_font(40)
 
-    """Add user defined fonts"""
     def __setitem__(self, key, val):
+        """@brief Add user defined fonts.
+        """
         self.set[key] = val
 
-    """Get set fonts"""
     def __getitem__(self, key):
+        """@brief Get set fonts.
+        """
         return self.set[key]
 
-    """Create a font from the specified name"""
     def named_font(self, point):
+        """@brief Create a font from the specified name.
+        """
         return Font.create(self.name, point * self.scale)
 
-    """Simplify creating a font"""
     @staticmethod
     def create(font_name, point):
+        """@brief Simplify creating a font.
+        """
         return pygame.font.SysFont(font_name, int(point))

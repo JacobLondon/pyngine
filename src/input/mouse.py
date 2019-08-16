@@ -2,8 +2,9 @@ import pygame, copy
 from collections import defaultdict
 from math import pi
 
-"""Control mouse presses/scrolling"""
 class Mouse(object):
+    """@brief Control mouse presses/scrolling.
+    """
 
     l_click = 1
     m_click = 2
@@ -35,8 +36,9 @@ class Mouse(object):
         self.smoothing = 0.3
         self.cutoff = 0.1
 
-    """Called every frame to lock the mouse if applicable"""
     def lock_update(self):
+        """@brief Called every frame to lock the mouse if applicable.
+        """
          
         # control direction based on movement
         self.yaw += float(self.dx * self.controller.delta_time * self.sensitivity)
@@ -57,10 +59,10 @@ class Mouse(object):
 
         self.fix_mouse()
     
-    """Called every time the mouse moves to track position
-    Calculates dx/dy mouse movement if locked mode
-    """
     def motion_update(self):
+        """@brief Called every time the mouse moves to track position.
+        Calculates dx/dy mouse movement if locked mode.
+        """
         if self.locked:
             x, y = pygame.mouse.get_pos()
             new_dx = float((self.x - x) * self.controller.delta_time * self.sensitivity)
@@ -83,22 +85,26 @@ class Mouse(object):
 
         self.x, self.y = pygame.mouse.get_pos()
 
-    """Specify mouse visibility"""
     def set_visible(self, visible=True):
+        """@brief Specify mouse visibility.
+        """
         self.visible = visible
         pygame.mouse.set_visible(visible)
 
-    """Toggles the mouse visible or not"""
     def toggle_visibility(self):
+        """@brief Toggles the mouse visible or not.
+        """
         self.set_visible(not self.visible)
 
-    """Sets the mouse to the center of the screen"""
     def fix_mouse(self):
+        """@brief Sets the mouse to the center of the screen.
+        """
         pygame.mouse.set_pos(self.controller.interface.center)
         self.x, self.y = pygame.mouse.get_pos()
 
-    """Mouse button press action checks"""
     def actions(self):
+        """@brief Mouse button press action checks.
+        """
         if self.presses[Mouse.l_click]:
             self.l_clicked_x, self.l_clicked_y = pygame.mouse.get_pos()
             self.controller.keyboard.typing = copy.copy(self.controller.background_panel.focused)
