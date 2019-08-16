@@ -4,8 +4,8 @@ import pygame
 from threading import Thread, active_count as active_threads
 import time
 
-from .graphics import Color, Font, Painter
 from .components import Component, Grid, Panel, Relative
+from .graphics import Color, Font, Painter
 from .input import Keyboard, Mouse
 from .interface import Interface
 
@@ -73,7 +73,6 @@ class Controller(object):
         self.screen_grid = Grid(self.background_panel, self.interface.grid_width, self.interface.grid_height)
         self.screen_relative = Relative(self.background_panel)
 
-
     def __str__(self):
         """@brief Get the component.text and its z index for all components.
         """
@@ -82,6 +81,12 @@ class Controller(object):
 
     def pre_component_setup(self):
         """@brief Initialize components after run() is called on the controller.
+        """
+        pass
+
+    def post_component_setup(self):
+        """@brief Do before the program loop,
+        but after components have been loaded.
         """
         pass
 
@@ -100,7 +105,7 @@ class Controller(object):
                 print('Warning: overriding component at z index:', z)
             self._components[z] = component
 
-    def save_components(self, path: str=''):
+    def json_save(self, path: str=''):
         """@brief Save component json to file.
         """
         if path == '':
@@ -109,7 +114,7 @@ class Controller(object):
             json.dump(self._components, components_json)
             print('saved')
 
-    def load_components(self, path: str=''):
+    def json_load(self, path: str=''):
         """@brief Load a json to components.
         """
         if path == '':
@@ -176,43 +181,6 @@ class Controller(object):
         # make sure that t is not zero, prevent div by zero
         return t if not t == 0 else self.delta_time
 
-    def post_component_setup(self):
-        """@brief Do before the program loop,
-        but after components have been loaded.
-        """
-        pass
-
-    def close(self):
-        """@brief Handle closing the controller by
-        stopping threads, doing custom close actions,
-        and opening another controller if given.
-        """
-        # close actions
-        self.ticking = False
-        self._tick_thread.join()
-        # custom close actions
-        self.close_actions()
-
-        # shutdown the program or open the parent container
-        if self.quit:
-            self.interface.close()
-        else:
-            self.on_close()
-
-    def close_actions(self):
-        """@brief Custom actions to do when the controller is closing
-        Meant to be overwritten by controller children.
-        """
-        pass
-
-    def on_close(self):
-        """@brief Stop the program by default.
-        Override in child by importing a controller and running it here.
-        """
-
-        # by default, just close the program
-        self.interface.close()
-
     def _handle_update(self):
         """@brief Everyframe, update the screen.
         """
@@ -254,7 +222,7 @@ class Controller(object):
             
             # call all custom user defined events
             self._call_events()
-            
+
             self._handle_update()
 
             # handle all pygame events per frame
@@ -263,18 +231,6 @@ class Controller(object):
 
         # close the controller and handle close actions
         self.close()
-
-    def stop_program(self):
-        """@brief Exit the program loop and program.
-        """
-        self.stop_loop()
-        self.quit = True
-
-    def stop_loop(self):
-        """@brief Method for stopping the program loop.
-        """
-        self.done = True
-        self.ticking = False
 
     def _handle_event(self, event):
         """@brief Given a Pygame event, record it in its
@@ -311,4 +267,46 @@ class Controller(object):
         # mouse moves
         if event.type == pygame.MOUSEMOTION:
             self.mouse.motion_update()
- 
+
+    def stop_program(self):
+        """@brief Exit the program loop and program.
+        """
+        self.stop_loop()
+        self.quit = True
+
+    def stop_loop(self):
+        """@brief Method for stopping the program loop.
+        """
+        self.done = True
+        self.ticking = False
+
+    def close(self):
+        """@brief Handle closing the controller by
+        stopping threads, doing custom close actions,
+        and opening another controller if given.
+        """
+        # close actions
+        self.ticking = False
+        self._tick_thread.join()
+        # custom close actions
+        self.close_actions()
+
+        # shutdown the program or open the parent container
+        if self.quit:
+            self.interface.close()
+        else:
+            self.on_close()
+
+    def close_actions(self):
+        """@brief Custom actions to do when the controller is closing
+        Meant to be overwritten by controller children.
+        """
+        pass
+
+    def on_close(self):
+        """@brief Stop the program by default.
+        Override in child by importing a controller and running it here.
+        """
+
+        # by default, just close the program
+        self.interface.close()
