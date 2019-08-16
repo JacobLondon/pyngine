@@ -80,7 +80,7 @@ class Controller(object):
         for z in self._components.keys():
             print('z = ', str(z), '\tComponent:', str(self._components[z]))
 
-    def initialize_components(self):
+    def pre_component_setup(self):
         """@brief Initialize components after run() is called on the controller.
         """
         pass
@@ -136,7 +136,7 @@ class Controller(object):
             if pressed or self.mouse.presses[keycombo]:
                 self.events[keycombo].action()
 
-    def _draw(self):
+    def _draw_components(self):
         """@brief Draw all components to screen in their z index order.
         """
         for key in self._components:
@@ -176,7 +176,7 @@ class Controller(object):
         # make sure that t is not zero, prevent div by zero
         return t if not t == 0 else self.delta_time
 
-    def setup(self):
+    def post_component_setup(self):
         """@brief Do before the program loop,
         but after components have been loaded.
         """
@@ -213,13 +213,6 @@ class Controller(object):
         # by default, just close the program
         self.interface.close()
 
-     
-    def custom_actions(self):
-        """@brief Custom actions done every frame.
-        Meant to be overwritten by controller children.
-        """
-        pass
-
     def _handle_update(self):
         """@brief Everyframe, update the screen.
         """
@@ -230,7 +223,7 @@ class Controller(object):
 
         # clear screen before drawing
         self.clear()
-        self._draw()
+        self._draw_components()
 
         # pygame update
         self.interface.update()
@@ -249,35 +242,24 @@ class Controller(object):
             self.on_close()
 
         # pre-program loop actions
-        self.initialize_components()
+        self.pre_component_setup()
         self._load()
-        self.setup()
-
-        # start program
+        self.post_component_setup()
         self._tick_thread.start()
 
         while not self.done:
-        
-            update_thread = Thread(target=self._handle_update)
-            update_thread.start()
 
-            # receive keyboard/mouse input
+            # receive mouse input
             self.mouse.actions()
             
             # call all custom user defined events
             self._call_events()
-
-            # custom actions defined by child
-            self.custom_actions()
+            
+            self._handle_update()
 
             # handle all pygame events per frame
             for event in pygame.event.get():
                 self._handle_event(event)
-
-            update_thread.join()
-
-        # stop program
-        self._tick_thread.join()
 
         # close the controller and handle close actions
         self.close()
