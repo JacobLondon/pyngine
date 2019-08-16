@@ -5,7 +5,7 @@ class Imagebox(Component):
     """@brief Component to hold an image for simpler z index placement.
     """
 
-    def __init__(self, controller, path, parent=None, z=0):
+    def __init__(self, controller, path: str, parent: Component=None, z: int=0):
         Component.__init__(self, controller, parent, z)
         self.text = 'Imagebox'
         

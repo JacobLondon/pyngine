@@ -1,9 +1,7 @@
-import pygame
-
 from ..graphics import Color
 from ..input import Mouse
-from .layout import Grid
 from .component import Component
+from .layout import Grid
 from .panel import Panel
 
 class Listbox(Component):
@@ -11,7 +9,7 @@ class Listbox(Component):
     vertically scrolling list.
     """
 
-    def __init__(self, controller, parent=None, z=0):
+    def __init__(self, controller, parent: Component=None, z: int=0):
         Component.__init__(self, controller, parent)
         self.text = 'Listbox'
 
@@ -78,12 +76,12 @@ class Listbox(Component):
             self.scrolled_index += 1
             self.load()
 
-    def add(self, component):
+    def add(self, component: Component):
         """@brief Simple way of adding a component to the listbox.
         """
         self.subcomponents.append(component)
 
-    def remove(self, component):
+    def remove(self, component: Component):
         """@brief Simple way of removing a component to the listbox.
         """
         self.subcomponents.remove(component)

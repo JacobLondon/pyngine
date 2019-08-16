@@ -1,12 +1,10 @@
-import pygame
-
 from .component import Component
 
 class Panel(Component):
     """@brief A simple component used for displaying color.
     """
 
-    def __init__(self, controller, parent=None, z=0):
+    def __init__(self, controller, parent: Component=None, z: int=0):
         Component.__init__(self, controller, parent, z)
         self.text = 'Panel'
 

@@ -1,4 +1,5 @@
-import pygame, copy, time
+import copy
+import time
 from threading import Thread
 
 from ..graphics import Color
@@ -11,7 +12,7 @@ class Textbox(Component):
     """@brief Box for users to type text into.
     """
 
-    def __init__(self, controller, num_chars=15, parent=None, z=0):
+    def __init__(self, controller, num_chars: int=15, parent: Component=None, z: int=0):
         Component.__init__(self, controller, parent, z)
 
         # textbox specific details

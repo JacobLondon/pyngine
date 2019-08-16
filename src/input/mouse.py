@@ -1,6 +1,7 @@
-import pygame, copy
 from collections import defaultdict
+import copy
 from math import pi
+import pygame
 
 class Mouse(object):
     """@brief Control mouse presses/scrolling.

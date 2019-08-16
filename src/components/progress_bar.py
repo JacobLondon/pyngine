@@ -1,16 +1,14 @@
-import pygame
-
 from ..graphics import Color
 from .component import Component
-from .panel import Panel
 from .label import Label
 from .layout import Relative
+from .panel import Panel
 
 class Bar(Component):
     """@brief A progress bar for showing progress on a task.
     """
     
-    def __init__(self, controller, parent=None, z=0):
+    def __init__(self, controller, parent: Component=None, z: int=0):
         Component.__init__(self, controller, parent, z)
         self.percentage = 0
         self.text = '0 %'
@@ -67,7 +65,7 @@ class Bar(Component):
         """
         self.text = str(self.percentage) + ' %'
 
-    def increment(self, num_steps, step):
+    def increment(self, num_steps: int, step: int):
         """@brief Increase the percentage bar showing. \\
         @param num_steps The total number of steps needed for 100%. \\
         @param step The step that the program is at.

@@ -1,5 +1,3 @@
-import pygame
-
 from ..graphics import Color
 from .component import Component
 from .panel import Panel
@@ -11,7 +9,7 @@ class Button(Component):
     to perform an action set by the controller
     """
 
-    def __init__(self, controller, text, parent=None, z=0):
+    def __init__(self, controller, text: str, parent: Component=None, z: int=0):
         """@brief Initialize a Button object. \\
         @param controller Reference to the controller the Button is in. \\
         @param text The text which appears on the button. \\

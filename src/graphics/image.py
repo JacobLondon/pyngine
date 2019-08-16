@@ -1,4 +1,5 @@
-import pygame, numpy as np
+import pygame
+import numpy as np
 
 from ..components.screen_object import ScreenObject
 

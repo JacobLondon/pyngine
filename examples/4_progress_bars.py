@@ -2,7 +2,7 @@ import sys, time
 from threading import Thread
 sys.path.append('..')
 
-from util import *
+from src import *
 
 class ExampleController(Controller):
 

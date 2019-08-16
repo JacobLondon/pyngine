@@ -1,4 +1,5 @@
-import pygame, copy
+import copy
+import pygame
 
 from ..graphics import Color
 from ..input import Mouse
@@ -8,7 +9,7 @@ class Component(ScreenObject):
     """@brief Parent component handles controller z index insertion, focus, and relative anchoring
     """
 
-    def __init__(self, controller, parent=None, z=0):
+    def __init__(self, controller, parent=None, z: int=0):
         """@brief Definition of a Component, not meant to be created, just inherited. \\
         @param controller Reference to the controller the Component is in. \\
         @param parent The parent Component object in case Button should be a nested object. \\
@@ -19,7 +20,7 @@ class Component(ScreenObject):
 
         # the controller the component belongs to can be auto refreshed
         self.controller = controller
-        self.controller.add_component(self, z)
+        self.controller._add_component(self, z)
 
         # parent component's list of subcomponents
         if parent is not None:
@@ -136,7 +137,7 @@ class Component(ScreenObject):
         elif self.anchor == self.center:
             self.anchored_loc = (self.loc[0] - self.width / 2, self.loc[1] - self.height / 2)
 
-    def within(self, x, y):
+    def within(self, x: int, y: int):
         """@brief Determine if the given coordinates are within the bounds of itself.
         """
         left = self.anchored_loc[0]

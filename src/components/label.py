@@ -6,7 +6,7 @@ class Label(Component):
     """@brief A simple component used for displaying text.
     """
 
-    def __init__(self, controller, text, parent=None, z=0):
+    def __init__(self, controller, text: str, parent: Component=None, z: int=0):
         Component.__init__(self, controller, parent, z)
         self.text = text
         self.background = None

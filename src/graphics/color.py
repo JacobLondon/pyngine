@@ -1,4 +1,4 @@
-#https://www.webucator.com/blog/2015/03/python-color-constants-module/
+# https://www.webucator.com/blog/2015/03/python-color-constants-module/
 """Provide RGB color constants and a colors dictionary with
     elements formatted: colors[colorname] = CONSTANT"""
 

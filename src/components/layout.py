@@ -4,14 +4,14 @@ class Grid(object):
     for ease of component placement on the display.
     """
 
-    def __init__(self, component, width=1, height=1):
+    def __init__(self, component, width: int=1, height: int=1):
         """@brief Map a grid to the given component.
         """
         self.component = component
         self.width = component.width // width
         self.height = component.height // height
 
-    def get_pixel(self, gx, gy):
+    def get_pixel(self, gx: int, gy: int):
         """@return The top left pixel x, y of a given grid intersection gx, gy.
         """
         x = self.component.loc[0] + self.width * gx

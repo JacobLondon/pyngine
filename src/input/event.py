@@ -1,3 +1,4 @@
+
 class Event(object):
     """@brief Event object is used to simplify connecting a
     keypress or set of keypresses to a given function.
@@ -12,7 +13,7 @@ class Event(object):
         self.keys = keys
         self.action = action
         self.controller = controller
-        self.controller.add_event(self)
+        self.controller._add_event(self)
 
     def halt(self):
         """@brief Forcibly stop the input from being read until the next input.
