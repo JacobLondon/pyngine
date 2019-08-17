@@ -139,7 +139,7 @@ class Controller(object):
 
             # do the action if the combination is fulfilled
             if pressed or self.mouse.presses[keycombo]:
-                self.events[keycombo].action()
+                self.events[keycombo].action(*self.events[keycombo].args)
 
     def _draw_components(self):
         """@brief Draw all components to screen in their z index order.

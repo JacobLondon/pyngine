@@ -4,14 +4,21 @@ class Event(object):
     keypress or set of keypresses to a given function.
     """
 
-    def __init__(self, controller, action=None, keys=()):
+    def __init__(self, controller, action=None, args=(), keys=()):
         """@brief Setup the event into the controller. \\
         @param Controller the parent controller. \\
         @param key Tuple of pygame.key presses. \\
         @param action A function to call on when the key combination is pressed
         """
-        self.keys = keys
+        if type(keys) == tuple:
+            self.keys = keys
+        else:
+            self.keys = tuple([keys])
         self.action = action
+        if type(args) == tuple:
+            self.args = args
+        else:
+            self.args = tuple([args])
         self.controller = controller
         self.controller._add_event(self)
 
