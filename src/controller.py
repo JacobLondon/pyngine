@@ -265,8 +265,7 @@ class Controller(object):
             self.mouse.presses[event.button] = True
 
         # mouse moves
-        if event.type == pygame.MOUSEMOTION:
-            self.mouse.motion_update()
+        self.mouse.motion_update()
 
     def stop_program(self):
         """@brief Exit the program loop and program.
