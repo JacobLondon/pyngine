@@ -44,9 +44,9 @@ class Controller(Interface):
         self.events = {}
 
         # regularly do every tick
-        if tick_rate > 0:
+        self.tick_rate = tick_rate
+        if self.tick_rate > 0:
             self._tick_thread = Thread(target=self._tick)
-            self.tick_rate = tick_rate
             self.ticking = True
             self.debug = debug
 

@@ -18,7 +18,7 @@ class Panel(Component):
         """
 
         # draw the area of the panel
-        self.controller.painter.fill_area(
+        self.controller.painter.fill_rect(
             self.anchored_loc[0],
             self.anchored_loc[1],
             self.width,
