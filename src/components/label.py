@@ -25,4 +25,4 @@ class Label(Component):
         # draw the text in the component
         surface_args = [self.text, True, self.foreground, self.background]
         self.text_surface = self.font.render(*surface_args)
-        self.controller.interface.display.blit(self.text_surface, self.anchored_loc)
+        self.controller.display.blit(self.text_surface, self.anchored_loc)

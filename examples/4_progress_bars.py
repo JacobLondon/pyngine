@@ -6,33 +6,31 @@ from src import *
 
 class ExampleController(Controller):
 
-    def __init__(self, interface):
-        Controller.__init__(self, interface, debug=False)
+    def __init__(self):
+        Controller.__init__(self, tick_rate=1, debug=False)
 
         # prevent multiple threads from accessing the timer
         self.timer_on = False
-
-    def initialize_components(self):
         
         # components to control the timer
         self.start_button = Button(self, 'Start')
         self.start_button.action = self.start_timer
         self.reset_button = Button(self, 'Reset')
-        self.reset_button.loc = self.screen_grid.get_pixel(0, 8)
+        self.reset_button.loc = self.screen_grid.pixel_at(0, 8)
         self.reset_button.action = self.reset_timer
 
         # details about the timer duration, defaulting to 5s
         self.duration_label = Label(self, 'Duration (s)')
-        self.duration_label.loc = self.screen_grid.get_pixel(4, 29)
+        self.duration_label.loc = self.screen_grid.pixel_at(4, 29)
         self.duration_textbox = Textbox(self)
-        self.duration_textbox.loc = self.screen_grid.get_pixel(4, 32)
+        self.duration_textbox.loc = self.screen_grid.pixel_at(4, 32)
         self.duration_textbox.text = '5'
 
         # loading bar details and width setting
         self.timer_bar = Bar(self)
         self.timer_bar.loc = self.screen_relative.center
         self.timer_bar.anchor = self.timer_bar.center
-        self.timer_bar.width = self.screen_width * 0.8
+        self.timer_bar.width = self.swidth * 0.8
 
 
     """Start the timer in another thread to prevent the main window from freezing"""
@@ -63,7 +61,6 @@ class ExampleController(Controller):
         self.timer_bar.reset()
         
 if __name__ == '__main__':
-    interface = Interface()
-    example = ExampleController(interface)
+    example = ExampleController()
     example.run()
     

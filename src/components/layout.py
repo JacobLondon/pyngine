@@ -11,7 +11,7 @@ class Grid(object):
         self.width = component.width // width
         self.height = component.height // height
 
-    def get_pixel(self, gx: int, gy: int):
+    def pixel_at(self, gx: int, gy: int):
         """@return The top left pixel x, y of a given grid intersection gx, gy.
         """
         x = self.component.loc[0] + self.width * gx

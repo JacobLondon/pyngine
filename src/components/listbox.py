@@ -35,7 +35,7 @@ class Listbox(Component):
         for i in range(len(self.subcomponents)):
 
             # set sizes to fill the width/height so all subcomponents are the same size
-            self.subcomponents[i].loc = self.item_layout.get_pixel(0, i - self.scrolled_index)
+            self.subcomponents[i].loc = self.item_layout.pixel_at(0, i - self.scrolled_index)
             self.subcomponents[i].width = self.width
             self.subcomponents[i].height = self.item_height
             self.subcomponents[i].anchor = self.northeast

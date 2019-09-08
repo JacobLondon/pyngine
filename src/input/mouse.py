@@ -10,8 +10,8 @@ class Mouse(object):
     l_click = 1
     m_click = 2
     r_click = 3
-    scroll_up = 4
-    scroll_down = 5
+    scroll_u = 4
+    scroll_d = 5
 
     def __init__(self, controller):
         self.controller = controller
@@ -70,15 +70,15 @@ class Mouse(object):
             new_dy = float((self.y - y) * self.controller.delta_time * self.sensitivity)
 
             # turning left/right
-            if self.last_dx - new_dx < 0 and self.x < self.controller.interface.center[0]:
+            if self.last_dx - new_dx < 0 and self.x < self.controller.center[0]:
                 self.dx -= self.sensitivity * self.unit_step
-            elif self.last_dx - new_dx > 0 and self.x > self.controller.interface.center[0]:
+            elif self.last_dx - new_dx > 0 and self.x > self.controller.center[0]:
                 self.dx += self.sensitivity * self.unit_step
 
             # turning up/down
-            if self.last_dy - new_dy < 0 and self.y < self.controller.interface.center[1]:
+            if self.last_dy - new_dy < 0 and self.y < self.controller.center[1]:
                 self.dy -= self.sensitivity * self.unit_step
-            elif self.last_dy - new_dy > 0 and self.y > self.controller.interface.center[1]:
+            elif self.last_dy - new_dy > 0 and self.y > self.controller.center[1]:
                 self.dy += self.sensitivity * self.unit_step
 
             self.last_dx = new_dx
@@ -100,7 +100,7 @@ class Mouse(object):
     def fix_mouse(self):
         """@brief Sets the mouse to the center of the screen.
         """
-        pygame.mouse.set_pos(self.controller.interface.center)
+        pygame.mouse.set_pos(self.controller.center)
         self.x, self.y = pygame.mouse.get_pos()
 
     def actions(self):

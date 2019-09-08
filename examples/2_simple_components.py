@@ -5,23 +5,15 @@ from src import *
 
 class ExampleController(Controller):
 
-    def __init__(self, interface):
-        Controller.__init__(self, interface, debug=True)
-
-    '''Initialize components and their attributes here
-    '''
-    def initialize_components(self):
-        '''
-        The order you initialize is the order components are layered
-        unless a z index is specified
-        '''
+    def __init__(self):
+        Controller.__init__(self, tick_rate=1, debug=True)
 
         # create a panel to make a background color
         self.color_panel = Panel(self)
         self.color_panel.background = Color['blue']
         # set the panel size to be the size of the window
-        self.color_panel.width = self.screen_width
-        self.color_panel.height = self.screen_height
+        self.color_panel.width = self.swidth
+        self.color_panel.height = self.sheight
 
         # create a text label
         self.hello_world_label = Label(self, 'Hello, World!')
@@ -44,7 +36,6 @@ class ExampleController(Controller):
         self.color_panel.visible = not self.color_panel.visible
 
 if __name__ ==  '__main__':
-    interface = Interface()
-    example = ExampleController(interface)
+    example = ExampleController()
     example.run()
     

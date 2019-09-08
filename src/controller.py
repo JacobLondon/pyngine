@@ -1,5 +1,4 @@
 import collections
-import json
 import pygame
 from threading import Thread, active_count as active_threads
 import time
@@ -9,31 +8,22 @@ from .graphics import Color, Font, Painter
 from .input import Keyboard, Mouse
 from .interface import Interface
 
-class Controller(object):
+class Controller(Interface):
     """@brief Handle drawing things to screen and user input from mouse/keyboard.
 
     This class is meant to be extended for simple functionality.
     """
 
-    def __init__(self, interface: Interface, tick_rate: int=1, clear: bool=True, debug: bool=False):
+    def __init__(self, name='Pyngine', resolution=(400,400), grid=(40,40), fps=60, icon='icon.png', tick_rate: int=0, debug: bool=False):
         """@brief Initialize a controller object. \\
-        @param interface The Pygame Interface object for this Controller to control. \\
         @param tick_rate The rate the tick thread will loop events at. \\
-        @param clear Clear the interface on initialization if True, else don't clear. \\
         @param debug Display debug information every tick if True.
         """
 
-        # pygame interface with controller
-        self.interface = interface
-        if clear:
-            self.interface.clear()
-        # clear is the same as interface's clear
-        self.clear = self.interface.clear
-        self.screen_width = self.interface.resolution[0]
-        self.screen_height = self.interface.resolution[1]
+        Interface.__init__(self, name, resolution, grid, fps, icon)
 
         # interface with pygame to draw shapes/lines/areas
-        self.painter = Painter(self.interface)
+        self.painter = Painter(self)
         # default font for the controller
         self.font = Font('Calibri', scale=1)
         
@@ -54,10 +44,11 @@ class Controller(object):
         self.events = {}
 
         # regularly do every tick
-        self._tick_thread = Thread(target=self._tick)
-        self.tick_rate = tick_rate
-        self.ticking = True
-        self.debug = debug
+        if tick_rate > 0:
+            self._tick_thread = Thread(target=self._tick)
+            self.tick_rate = tick_rate
+            self.ticking = True
+            self.debug = debug
 
         # load/refresh components/drawers based on their z index
         self._components = collections.OrderedDict()
@@ -65,12 +56,12 @@ class Controller(object):
 
         # create an empty panel for components to be on
         self.background_panel = Panel(self)
-        self.background_panel.width = interface.resolution[0]
-        self.background_panel.height = interface.resolution[1]
+        self.background_panel.width = self.resolution[0]
+        self.background_panel.height = self.resolution[1]
         self.background_panel.background = Color['gray5']
 
         # create default screen layouts based on background panel
-        self.screen_grid = Grid(self.background_panel, self.interface.grid_width, self.interface.grid_height)
+        self.screen_grid = Grid(self.background_panel, self.gwidth, self.gheight)
         self.screen_relative = Relative(self.background_panel)
 
     def __str__(self):
@@ -78,17 +69,6 @@ class Controller(object):
         """
         for z in self._components.keys():
             print('z = ', str(z), '\tComponent:', str(self._components[z]))
-
-    def pre_component_setup(self):
-        """@brief Initialize components after run() is called on the controller.
-        """
-        pass
-
-    def post_component_setup(self):
-        """@brief Do before the program loop,
-        but after components have been loaded.
-        """
-        pass
 
     def _add_component(self, component: Component, z: int=0):
         """@brief Add components to the OrderedDict of components based on their z index.
@@ -104,25 +84,6 @@ class Controller(object):
             if z in self._components:
                 print('Warning: overriding component at z index:', z)
             self._components[z] = component
-
-    def json_save(self, path: str=''):
-        """@brief Save component json to file.
-        """
-        if path == '':
-            path = 'components.json'
-        with open(path, 'w') as components_json:
-            json.dump(self._components, components_json)
-            print('saved')
-
-    def json_load(self, path: str=''):
-        """@brief Load a json to components.
-        """
-        if path == '':
-            path = 'components.json'
-
-        with open(path, 'r') as components_json:
-            self._components = json.load(components_json, object_pairs=collections.OrderedDict)
-            print('loaded')
 
     def _add_event(self, event):
         """@brief Add an event specified by a key and an action function.
@@ -189,12 +150,10 @@ class Controller(object):
         if self.mouse.locked:
             self.mouse.lock_update()
 
-        # clear screen before drawing
-        self.clear()
         self._draw_components()
 
         # pygame update
-        self.interface.update()
+        self.update()
 
         # record update
         self.delta_time = self.elapsed_time()
@@ -210,10 +169,9 @@ class Controller(object):
             self.on_close()
 
         # pre-program loop actions
-        self.pre_component_setup()
         self._load()
-        self.post_component_setup()
-        self._tick_thread.start()
+        if self.tick_rate > 0:
+            self._tick_thread.start()
 
         while not self.done:
 
@@ -292,7 +250,7 @@ class Controller(object):
 
         # shutdown the program or open the parent container
         if self.quit:
-            self.interface.close()
+            pygame.quit()
         else:
             self.on_close()
 
@@ -308,4 +266,4 @@ class Controller(object):
         """
 
         # by default, just close the program
-        self.interface.close()
+        pygame.quit()

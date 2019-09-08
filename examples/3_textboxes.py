@@ -5,18 +5,13 @@ from src import *
 
 class ExampleController(Controller):
 
-    def __init__(self, interface):
-        Controller.__init__(self, interface, debug=False)
+    def __init__(self):
+        Controller.__init__(self, tick_rate=1, debug=False)
 
-    """Initialize components and their attributes here"""
-    def initialize_components(self):
-        
         self.test_textbox = Textbox(self)
         self.test_textbox.loc = self.screen_relative.center
         self.test_textbox.anchor = self.test_textbox.center
 
 if __name__ == '__main__':
-    interface = Interface()
-    example = ExampleController(interface)
+    example = ExampleController()
     example.run()
-    

@@ -9,7 +9,7 @@ class Interface(object):
     Icon path is specified from top level of pyngine.
     """
 
-    def __init__(self, window_text='Pyngine', resolution=(400,400), grid_width=40, grid_height=40, refresh_rate=60, icon_path='icon.png'):
+    def __init__(self, name, resolution, grid, refresh_rate, icon_path):
         """@brief Initialize the Pygame Interface object. \\
         @param window_text The text which appears on top of the window. \\
         @param resolution The tuple which determines the (height, width) in pixels of the window. \\
@@ -25,11 +25,13 @@ class Interface(object):
 
         # screen definitions
         self.resolution = resolution
+        self.swidth = resolution[0]
+        self.sheight = resolution[1]
         self.aspect_ratio = resolution[0] / resolution[1]
-        self.grid_width = grid_width
-        self.grid_height = grid_height
-        self.tile_width = resolution[0] / self.grid_width
-        self.tile_height = resolution[1] / self.grid_height
+        self.gwidth = grid[0]
+        self.gheight = grid[1]
+        self.px = resolution[0] / self.gwidth
+        self.py = resolution[1] / self.gheight
         self.center = (self.resolution[0] / 2, self.resolution[1] / 2)
         self.area = [0, 0, self.resolution[0], self.resolution[1]]
 
@@ -46,34 +48,25 @@ class Interface(object):
         self.display = pygame.display.set_mode(self.resolution)
         icon = Image(abs_icon_path)
         pygame.display.set_icon(icon.surf)
-        pygame.display.set_caption(window_text)
+        pygame.display.set_caption(name)
         pygame.display.update()
         self.clock = pygame.time.Clock()
 
-        # calling close is the same as calling pygame.quit()
-        self.close = pygame.quit
-
-    def get_mouse_tile(self):
+    def mouse_gpixel(self):
         """@return The x, y tile that the mouse is in.
         """
         x, y = pygame.mouse.get_pos()
-        tx = x // self.tile_width
-        ty = y // self.tile_height
+        tx = x // self.px
+        ty = y // self.py
         return (tx, ty)
 
-    def get_tile_pixel(self, tx, ty):
+    def grid_pixel(self, gx, gy):
         """@return The top left x, y pixel that tile tx, ty is at.
         """
-        return (tx * self.tile_width, ty * self.tile_height)
+        return (gx * self.px, gy * self.py)
 
     def update(self):
         """@brief Update Pygame based on clock and refresh rate.
         """
         pygame.display.update()
         self.clock.tick(self.refresh_rate)
-
-    def clear(self):
-        """@brief Set the screen to black
-        """
-        pygame.draw.rect(self.display, Color['black'], self.area)
-

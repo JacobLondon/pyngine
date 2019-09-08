@@ -6,20 +6,25 @@ class Painter(object):
     """@brief Helper class to use Pygame for drawing lines/shapes/areas.
     """
     
-    def __init__(self, interface):
-        self.display = interface.display
-        self.tile_width = interface.tile_width
-        self.tile_height = interface.tile_height
+    def __init__(self, controller):
+        self.display = controller.display
+        self.px = controller.px
+        self.py = controller.py
 
-    def fill_tile(self, gx, gy, color=Color['white']):
+    def fill_grid(self, gx, gy, color=Color['white']):
         """@brief Fill tile with color."""
-        area = [gx * self.tile_width, gy * self.tile_height, self.tile_width, self.tile_height]
+        area = [gx * self.px, gy * self.py, self.px, self.py]
         pygame.draw.rect(self.display, color, area)
 
-    def fill_area(self, x, y, width, height, color=Color['white']):
+    def fill_rect(self, x, y, width, height, color=Color['white']):
         """@brief Fill area with color."""
         area = [x, y, width, height]
         pygame.draw.rect(self.display, color, area)
+
+    def fill_triangle(self, x0, y0, x1, y1, x2, y2, color=Color['white']):
+        """@brief Fill the triangle with color."""
+        pointlist = [(x0, y0), (x1, y1), (x2, y2)]
+        pygame.draw.polygon(self.display, color, pointlist)
 
     def draw_line(self, x0, y0, x1, y1, color=Color['white']):
         """@brief Draw line from x0, y0 to x1, y1."""
@@ -34,8 +39,3 @@ class Painter(object):
         self.draw_line(x0, y0, x1, y1, color)
         self.draw_line(x1, y1, x2, y2, color)
         self.draw_line(x2, y2, x0, y0, color)
-
-    def fill_triangle(self, x0, y0, x1, y1, x2, y2, color=Color['white']):
-        """@brief Fill the triangle with color."""
-        pointlist = [(x0, y0), (x1, y1), (x2, y2)]
-        pygame.draw.polygon(self.display, color, pointlist)

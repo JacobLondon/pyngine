@@ -30,5 +30,5 @@ class Imagebox(Component):
     def draw(self):
         """@brief Draw using the image's draw method.
         """
-        self.image.draw(self.controller.interface.display)
+        self.image.draw(self.controller.display)
 
