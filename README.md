@@ -16,6 +16,8 @@ Within the ~/examples directory
 ![Hot Keys](/images/hot_keys.png)
 
 ## Related Projects
+[Pyngine First Person Maze](https://github.com/JacobLondon/first)
+
 [Pyngine Rasterizer](https://github.com/JacobLondon/rasterization)
 
 [Pyngine  Connect Four](https://github.com/JacobLondon/ConnectFour)
