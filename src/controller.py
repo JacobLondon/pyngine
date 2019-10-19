@@ -178,14 +178,14 @@ class Controller(Interface):
             # receive mouse input
             self.mouse.actions()
             
+            # handle all pygame events per frame
+            for event in pygame.event.get():
+                self._handle_event(event)
+            
             # call all custom user defined events
             self._call_events()
 
             self._handle_update()
-
-            # handle all pygame events per frame
-            for event in pygame.event.get():
-                self._handle_event(event)
 
         # close the controller and handle close actions
         self.close()
