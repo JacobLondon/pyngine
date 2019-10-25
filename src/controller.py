@@ -65,7 +65,7 @@ class Controller(Interface):
         self.background_panel.background = Color['gray5']
 
         # create default screen layouts based on background panel
-        self.screen_grid = Grid(self.background_panel, self.gwidth, self.gheight)
+        self.screen_grid = Grid(self.background_panel, self.grid_width, self.grid_height)
         self.screen_relative = Relative(self.background_panel)
 
     def __str__(self):
@@ -131,8 +131,7 @@ class Controller(Interface):
         """@brief Show thread count and frames per second.
         """
         if self.debug:
-            print('Threads:', active_threads())
-            print('FPS:', self.fps)
+            print('Threads:', active_threads(), 'FPS:', self.fps, end='\r')
 
     def tick_actions(self):
         """@brief Empty method meant to be overwritten by controller children.
@@ -202,7 +201,7 @@ class Controller(Interface):
 
         # top right corner X
         if event.type == pygame.QUIT:
-            self.stop_program()
+            self.exit_program()
 
         # player starts doing actions
         elif event.type == pygame.KEYDOWN:
@@ -229,13 +228,13 @@ class Controller(Interface):
         # mouse moves
         self.mouse.motion_update()
 
-    def stop_program(self):
+    def exit_program(self):
         """@brief Exit the program loop and program.
         """
-        self.stop_loop()
+        self.exit_loop()
         self.quit = True
 
-    def stop_loop(self):
+    def exit_loop(self):
         """@brief Method for stopping the program loop.
         """
         self.done = True
@@ -250,20 +249,12 @@ class Controller(Interface):
         self.ticking = False
         if self._tick_thread:
             self._tick_thread.join()
-        # custom close actions
-        self.close_actions()
 
         # shutdown the program or open the parent container
         if self.quit:
             pygame.quit()
         else:
             self.on_close()
-
-    def close_actions(self):
-        """@brief Custom actions to do when the controller is closing
-        Meant to be overwritten by controller children.
-        """
-        pass
 
     def on_close(self):
         """@brief Stop the program by default.

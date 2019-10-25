@@ -25,15 +25,15 @@ class Interface(object):
 
         # screen definitions
         self.resolution = resolution
-        self.swidth = resolution[0]
-        self.sheight = resolution[1]
+        self.screen_width = resolution[0]
+        self.screen_height = resolution[1]
         self.aspect_ratio = resolution[0] / resolution[1]
-        self.gwidth = grid[0]
-        self.gheight = grid[1]
-        self.px = resolution[0] / self.gwidth
-        self.py = resolution[1] / self.gheight
+        self.grid_width = grid[0]
+        self.grid_height = grid[1]
+        self.px = resolution[0] / self.grid_width
+        self.py = resolution[1] / self.grid_height
         self.center = (self.resolution[0] / 2, self.resolution[1] / 2)
-        self.area = [0, 0, self.resolution[0], self.resolution[1]]
+        self.screen_rect = [0, 0, self.resolution[0], self.resolution[1]]
 
         # how long each frame SHOULD take
         self.refresh_rate = refresh_rate
@@ -51,19 +51,6 @@ class Interface(object):
         pygame.display.set_caption(name)
         pygame.display.update()
         self.clock = pygame.time.Clock()
-
-    def mouse_gpixel(self):
-        """@return The x, y tile that the mouse is in.
-        """
-        x, y = pygame.mouse.get_pos()
-        tx = x // self.px
-        ty = y // self.py
-        return (tx, ty)
-
-    def grid_pixel(self, gx, gy):
-        """@return The top left x, y pixel that tile tx, ty is at.
-        """
-        return (gx * self.px, gy * self.py)
 
     def update(self):
         """@brief Update Pygame based on clock and refresh rate.

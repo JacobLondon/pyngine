@@ -30,7 +30,7 @@ class ExampleController(Controller):
         self.timer_bar = Bar(self)
         self.timer_bar.loc = self.screen_relative.center
         self.timer_bar.anchor = self.timer_bar.center
-        self.timer_bar.width = self.swidth * 0.8
+        self.timer_bar.width = self.screen_width * 0.8
 
 
     """Start the timer in another thread to prevent the main window from freezing"""
