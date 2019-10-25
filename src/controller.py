@@ -49,6 +49,10 @@ class Controller(Interface):
             self._tick_thread = Thread(target=self._tick)
             self.ticking = True
             self.debug = debug
+        else:
+            self._tick_thread = None
+            self.ticking = False
+            self.debug = False
 
         # load/refresh components/drawers based on their z index
         self._components = collections.OrderedDict()
@@ -244,7 +248,8 @@ class Controller(Interface):
         """
         # close actions
         self.ticking = False
-        self._tick_thread.join()
+        if self._tick_thread:
+            self._tick_thread.join()
         # custom close actions
         self.close_actions()
 
