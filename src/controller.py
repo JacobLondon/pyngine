@@ -253,8 +253,7 @@ class Controller(Interface):
         # shutdown the program or open the parent container
         if self.quit:
             pygame.quit()
-        else:
-            self.on_close()
+        self.on_close()
 
     def on_close(self):
         """@brief Stop the program by default.
