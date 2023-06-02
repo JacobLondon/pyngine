@@ -1,4 +1,3 @@
-import copy
 import pygame
 
 from ..graphics import Color
@@ -79,12 +78,10 @@ class Component(ScreenObject):
             return
 
         # mouse within bounds of component
-        x, y = copy.copy((self.controller.mouse.x, self.controller.mouse.y))
-        self.hovering = self.within(x, y)
+        self.hovering = self.within(self.controller.mouse.x, self.controller.mouse.y)
 
         # holding left click in the component
-        x, y = copy.copy((self.controller.mouse.l_clicked_x, self.controller.mouse.l_clicked_y))
-        self.pressing = self.within(x, y) and self.controller.mouse.presses[Mouse.l_click]
+        self.pressing = self.within(self.controller.mouse.l_clicked_x, self.controller.mouse.l_clicked_y) and self.controller.mouse.presses[Mouse.l_click]
 
         self.determine_focus()
 
